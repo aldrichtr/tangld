@@ -1,0 +1,27 @@
+#+TITLE: tangld : A literate config management system
+#+AUTHOR: Timothy Aldrich
+#+EMAIL: timothy.r.aldrich@gmail.com
+#+STARTUP: hidestars overview
+#+FILETAGS: tangld
+
+* Overview
+  tangld is a system combining [[http://literateprogramming.com/][literate programming]] and a [[https://dotfiles.github.io/utilities/][dotfiles manager]].  It is based on the amazing emacs
+  org-mode package and the org-babel library.
+
+  If you are new to the concept of "tangling files" and "noweb", then I suggest you start with
+  [[https://orgmode.org/manual/Working-with-Source-Code.html][this section]] of the org-mode manual.  Other excellent documents / systems are:
+
+  - Literate Config by Diego Zamboni :: https://leanpub.com/lit-config/
+  - Emacs Starter Kit :: https://github.com/xgarrido/emacs-starter-kit/
+    
+* Walkthrough
+  =tangld= provides three basic functions:
+  - tangld-init :: =tangld= sets up a new, local repository for managing the configuration files.
+  - tangld-config :: =tangld= gathers environment, system and user settings and stores them in your local =tangld
+    project= 
+  - tangld-build :: =tangld= calls =org-babel-tangle= on all of your source files, which produce your system's
+    configuration files.
+
+  Using these three functions, tangld provides the same functionality that a build system such as cmake, ant or
+  rake.
+  
