@@ -1,0 +1,184 @@
+The tangld manual.  How to use the system
+------------------------------------------------------------------------------
+#+TITLE: tangld Manual
+#+AUTHOR: Timothy Aldrich
+#+EMAIL: timothy.r.aldrich@gmail.com
+#+INDEX:Documentation!tangld
+#+STARTUP: hidestars
+#+FILETAGS: tangld org emacs
+
+* Pre-requisites
+  tangld is a set of functions that are built on other technologies, all with
+  their own unique functionality, options and add-ons.  That makes understanding
+  tangld dependent on understanding them first.  As this project matures, I hope
+  to expand this manual so that it includes those technologies, the
+  best-practices for their use, and a complete understanding of the eco-system.
+  However, I also want to get the project up and running, so I'm going to start
+  out by asking that you do a bit of study on your own if you aren't familiar
+  with the following:
+** Emacs
+   A basic understanding of packages, "IDE" features such as compiler/build tool
+   integration, snippet and template functionality, project features, and
+   version control integration are important.
+** Emacs-lisp
+   Because Emacs is the environment for tangld, it's embedded lisp language is
+   used to interact with files and processes.  You may not need to write any,
+   but it will probably make a whole lot more sense as you look at the "inner
+   workings" of tangld if you can read lisp.
+** Org-mode
+   Although it may have started life as an outliner, org-mode is really it's own
+   ecosystem now.  At it's core, it is a markup language like markdown or json,
+   but from there it can export text to documents in many formats, it can manage
+   calendaring and scheduling, project and task management, and many other
+   useful features.  The part that is most relevant to tangld though is the
+   concept of tangling.  Org-mode files can have embedded blocks of code that
+   can be _executed_.  The output can be recorded in the org-mode file, or out
+   to another file or process.  This is the core concept on which tangld is
+   built.
+* Terminology
+  There are a few important components of tangld that need to be defined before
+  we dive into how the system works.
+  - org-mode file :: This is a file that emacs would recognize as using the
+    org-mode major mode.  This is most often done by using the ".org" file
+    extension, but could also use a file header directive, or any of the
+    file-association techniques in Emacs.
+    - source-block :: a combination of source code (many languages are supported,
+      such as emacs-lisp, python, bash, etc) and it's metadata.
+      - name :: a unique identifier for this block.  Used by the tangle process to
+        reference the source-block.
+      - language :: identify the source-code programming language, such as python,
+        etc.
+      - switches :: while mainly intended to control export features, some
+        influence tangle as well.
+      - header-arguments :: provide options, parameters and options for tangle.
+        These are the "language" of tangle, and control the interpretation,
+        tranformation, output and many other aspects of the tangle function.  They
+        can be set per file, per block or both.
+    - export :: print the content of, the result of (or both) the source-block
+      in various formats and file types, such as html or LaTeX.
+    - eval :: Here we mean an emacs function in the org-mode package that will
+      execute the source-block.  Emacs will send the code in the source-block to
+      the appropriate compiler or interpreter and capture the result. The eval,
+      the results, and the display are controlled by header-arguments and other
+      environmental settings.
+    - tangle :: an emacs function in the org-mode package.  This is the
+      combination of export and eval, and is the implementation of literate
+      programming.  Functions, methods and their results, can be woven together
+      to produce additional results, code-blocks and output that can be written
+      to new files, transformed by additional source-blocks, etc.
+    - call :: an emacs function in the org-mode package.  This is a block in an
+      org-mode file that directs emacs to eval a source-block.  You are
+      "calling" the function, that was previously defined in a source-block.
+    - noweb :: a syntax for naming and calling code in a literate style.  The
+      noweb system exists independently, but it is implemented in org-mode as a
+      means of naming, evaluating and controlling the source-blocks.
+    - library-of-babel :: a library of tangled source-blocks that can be called
+      and executed when tangling.  Much like a python library provides functions
+      for use in other python files, the library-of-babel provides tangle with
+      functions you can use either for their side-effects or for their output in
+      your source-blocks.  To use a source-block from another file, you *ingest*
+      that file into the library-of-babel, and then call it from your file.
+  - tangld :: the collection of an emacs package, org-mode files, and a
+    directory structure that ultimately manages configuration files for other
+    programs, apps and processes on your system.
+    - tangld-lib :: a directory of org-mode files whose content provides
+      functions and features for use in writing org-mode files as the source for
+      configuration files on your system.  These are the "source code" that will
+      build the library-of-babel for use in your org-mode files.
+    - tangld-source :: (source) org-mode files that the user writes.  These are
+      the source code of the configuration files.  They get tangled and their
+      output is written to files used by other programs.
+    - target :: the intended output file and directory of the tangle process.
+      see [[Target Options][target options]] for further details.
+    - source-tree :: One method of defining where the target files will be
+      written is by where they are in relation to the root of the source-tree.
+      The tangld-source files are organized into directories that define the
+      target directory.
+    - tangld-package :: collection of emacs-lisp files that conform to the
+      package system conventions.
+      - tangld-init :: Download, create, unpack, and build components onto a
+        system.  This would be any required Emacs packages, system packages
+        (apt, yum, pip, etc), git clone, submodules.  These components would be
+        both part of the tangld system, and any additional components defined in
+        the tangld configuration.
+      - tangld-config :: setup the source, lib and build environment.  Identify
+        any conditions set (should all files be tangled?, cache options, etc)
+      - tangld-build :: Create the library-of-babel, and tangle any
+        tangld-source that has changed since the last build.  Analogous to
+        'make' or the build phase in other systems
+      - tangld-clean :: Remove, undo, reset anything from build. "start over
+        with the current config"
+      - tangld-check :: Run tests to verify proper functionality
+      - tangld-install :: Move, copy and/or link target files to their proper
+        locations. See [[Target options]] for further details.
+      - tangld-update :: Refresh any components from a repository
+* Workflow
+  To set up a new system, we start by installing the Emacs package tangld.
+  There are several options and customizations, and they can be configured using
+  any of the various Emacs customization facilities.  Next, define the root
+  directory for this system's tangld project:
+  #+BEGIN_SRC emacs-lisp
+    (setq tangld-project-root-dir "~/.tangld")
+    (setq tangld-install-type 'stow) ;; options are direct, link, stow, nil
+    (setq tangld-install-root-dir "config") ;; this is where targets will be installed
+  #+END_SRC
+  Next, we need to initialize our project
+  #+BEGIN_SRC emacs-lisp
+  (tangld-init)
+  #+END_SRC
+  This will set up the project directory like so:
+  : M-x tangld-config
+  : ~/.tangld
+  : - build
+  : - config
+  : - lib
+  : - src
+  - build :: the staging area for files as they are tangled.  the tangld-check
+    would test files and settings here before we make changes to the system's
+  - config :: the name is configurable, but this would be the "production" root
+    directory for the final target files, depending on the symlink-manager and
+  - lib :: tangld-lib org-mode files.  Default files are added, user can add
+    their own here.
+  - src :: tangld-source org-mode files.  The user adds their source here.
+* Target options
+  Ultimately, the goal is to produce configuration files on your system that
+  other programs will read.  These are usually in various files and folders
+  below the users home directory (though we can also set other directories to
+  add targets to during the install phase).  One common method of managing these
+  files is to place them in a directory (typically under version control using
+  git) and link them to the actual locations.  These links can be scripted,
+  using the =ln= command, or with a symlink manager such as
+  [[https://www.gnu.org/software/stow/stow.html][GNU Stow]]. There are several basic target options you can use with tangld
+  - direct :: tangled target files are written to the build directory and then
+    placed directly in the system file location (using mv)
+  - link :: tangled target files are written to the install-root-dir,
+    and symlinks are created from the system file location to them.
+  - stow :: invoke stow to manage the links
+  - nil :: files are installed in the install-root-dir only.  This can be used
+    to customize the install by calling a script in the post-install-hook.
+* Version control options
+  At the present time, version control systems other than git are not supported.
+
+  tangld supports several repository options that pertain to where the
+  repository roots are.
+  - local :: this means that the "git repo root" and the "tangld-project-root"
+    are the same.  All changes to the org-source, org-lib, install-dir (if local
+    also) and any other files are managed by a single git repo.
+  - multi :: a list of "git repo roots"
+
+* Hooks
+  - Before and after =tangld-build=
+    - pre-build-hook
+    - post-build-hook
+  - Before and after calling =org-babel-tangle= on a file
+    - pre-tangle-hook
+    - post-tangle-hook
+  - Before and after calling =tangld-install=
+    - pre-install-hook
+    - post-install-hook
+
+* tangld-lib
+  - core.org :: basic building-block functions
+    - table-plist :: a function for looking up values in a named table
+  - defaults.org :: default information
+  - theme.org :: colors, fonts, icons etc

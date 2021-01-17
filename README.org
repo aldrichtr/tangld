@@ -1,0 +1,95 @@
+Readme file for tangld project repo
+------------------------------------------------------------------------------
+#+TITLE: tangld: A literate config system built on emacs and org-mode
+#+AUTHOR: Timothy Aldrich
+#+EMAIL: timothy.r.aldrich@gmail.com
+#+INDEX: Projects!Tools
+#+STARTUP: hidestars
+#+FILETAGS: org dev emacs
+
+ | Status: | Under Development |
+ | Location: | [[https://github.com/aldrichtr/tangld][github]] |
+ | Version: | 0.0.1 |
+
+* Introduction
+  A literate config system built on emacs and org-mode.  Using org-mode and
+  it's built in babel/tangle functionality, =tangld= provides a /developer environment/
+  for documenting, automating, and versioning configuration files on your system.
+
+* Installing / Getting started
+  This is a very new project, so the install process is not really built out yet.
+  The intent is to get the first stable release into melpa for distribution through
+  =emacs' packaging system=, but until then, you can try it out using:
+  #+BEGIN_SRC sh
+  : git clone https://github.com/aldrichtr/tangld.git
+  #+END_SRC
+  and then, load it manually in to emacs
+  #+BEGIN_SRC emacs-lisp
+  : ;; in your emacs init
+  : (add-to-list 'load-path "/path/to/tangld/lib/elisp)
+  : (require 'tangld)
+  #+END_SRC
+* Overview
+  If you've landed here, chances are you're looking for a "dotfiles manager".
+  tangld /is/ that, but in the same way that Emacs is a text editor...
+
+  tangld aims to be a complete development environment for your dotfiles.  It
+  implements literate programming concepts, putting your system's configuration
+  files, scripts and setup files in the same file as the documentation of those
+  files... a concept called literate config.
+** dotfile management
+  There are [[https://github.com/webpro/awesome-dotfiles][so many]] dotfiles managers out there.  Almost all of them, revolve
+  around:
+  1) A git repo that tracks changes to, and publishes (usually to github) the
+     actual configuration files in the users home directory and the "standard"
+     config locations (~/. , ~/config , etc. )
+  2) links from the git repo to the standard locations (scripted linking or a
+     utility like GNU stow)
+
+  Although there are so many, they all are basically trying to accomplish the
+  same two goals:
+  1) version control the configuration of a workspace, environment and/or
+     system, which is really a collection of tools and utilities such as window
+     managers, text editors, script engines, compilers, applications, and
+     processes, etc.
+  2) make a holistic process to capture, document, and transfer that set of tool's
+     configurations from one system to another.
+
+** Literate config
+   Literate programming is the idea that you have an explanation of the program's
+   logic, written for a _human_, and in the same document, you have the source
+   code, written for a _computer_ to create the program.
+   That idea, transferred to configuration files for your system, is literate
+   configuration.
+** Tangling
+   Emacs and it's borderline-magical org-mode system does this using source
+   blocks in an org-mode file, and a library called org-babel.  Now, org-mode can
+   also _export_ your source blocks, but that's just making it print with pretty
+   colors... babel lets you /execute/ the source in a process called tangling.
+
+* Usage
+  Please see [[tangld-manual.org][the manual]]
+  - An Emacs package
+  - A org-mode babel library
+  - A convenience wrapper script
+** Emacs package - tangld
+   Once tangld gets to it's first stable version, the intent is to have it
+   available through the standard emacs package system.
+
+   The package provides functionality similar to a build system such as cmake or
+   meson.
+* Contributing
+  First of all, thank you very much for your interest in tangld! Issues, Bugs, and
+  Feature Requests are wanted, please submit them [[https://github.com/aldrichtr/tangld/issues][here or github]] . If you'd like to
+  contribute to documentation or development, that is also welcome.
+
+  Please see [[CONTRIBUTING.org]] for those details.
+
+* License
+  [[http://www.opensource.org/licenses/mit-license.php][MIT License]]
+* Credits
+  - Tyler Ware :: When I went looking for a literate config system [[https://github.com/tylerware/dotfiles][Tyler's dotfiles]]
+    already had many of the features I wanted.  He has many improvements to the tangle
+    function, and some really great features I didn't even know I wanted.  I used that
+    code as the basis for this project.
+  - Diego Zamboni :: Literally wrote [[https://leanpub.com/lit-config][the book]] on literate config.
