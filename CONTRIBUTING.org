@@ -1,0 +1,93 @@
+Contributing guidelines for the tangld project
+--------------------------------------------------------------------------------
+#+TITLE: Contributing to tangld
+#+AUTHOR: Timothy Aldrich
+#+EMAIL: timothy.r.aldrich@gmail.com
+#+INDEX: Projects!Tools
+#+STARTUP: hidestars
+#+FILETAGS: org dev emacs
+
+* Contributing Guidelines
+  Thank you for your interest in tangld.  There are several ways to help:
+** Ideas, questions, suggestions, or fixes
+   Please submit them to the [[https://github.com/aldrichtr/tangld/issues][project's tracker]]
+** Security Issues
+   I take security seriously.  If I've introduced a vulnerability into your
+   system, please [[timothy.r.aldrich@gmail.com][contact me directly]].  I will ensure you are credited with
+   finding and reporting once verified.
+** Code or Documentation
+   #+BEGIN_QUOTE
+   Right now the project is small enough that these are pretty much the same.
+   If it catches on, maybe we'll need to break out documentation into it's own
+   process at that time.
+   #+END_QUOTE
+   I'd appreciate it if we could discuss the change you'd like to see first but
+   that can also happen once the PR is submitted.  Sometimes it's easier to
+   discuss a change when there's code to point to =] . What follows is a summary
+   of the basic GitHub "fork and pull request" process, but as long as your
+   workflow results in a PR, I think we can work together:
+   - Create your own workspace
+     - Fork :: this repository on github
+       just click 'Fork' on this repo
+     - Clone :: the project to your own machine
+       : git clone https://github.com/<your.name>/<your.repo>.git
+     - Remote :: this repository
+       : git remote add upstream https://github.com/aldrichtr/tangld.git
+       : git remote -v
+     - Checkout :: the main (*note* the name is not 'master' for this repo)
+       : git checkout main
+       : git merge upstream/main
+     - Branch :: from =main= with a "good" branch name.  It's not too strict, but a good
+       name:
+       - is ~between 8-16 characters
+       - gives a clue as to the type of addition ('task-', 'feat-', 'fix-')
+       - gives a clue as to the change ('doc-edit', 'parse-elisp-error')
+
+       : git checkout main
+       : git branch <dev branch>
+   - Modify, hack, improve
+     - Make :: any changes you want to the code, etc.
+     - Commit :: changes to your own branch
+       : git add <files>
+       : git commit
+     - Track :: any changes from upstream
+       : git fetch upstream
+       : git checkout main
+       : git merge upstream/main
+       : git rebase <dev branch> main
+     - Clean :: organize, arrange, squash, your commits
+       : git checkout <dev branch>
+       : git rebase -i
+   - Submit your work for review and inclusion
+     - Push :: your work back up to your fork
+       : git push -u origin <dev branch>
+   - Submit :: a pull request so that your changes can be reviewed
+     - On github, go to your development branch, click on 'Pull Request'
+** Ticket & PR triage
+   If you'd like to help me review, organize and schedule tickets and Pull
+   Requests, please contact me [[timothy.r.aldrich@gmail.com][via email]]
+** Project & Repository Management
+   Same here.  If you want to help with developing the Roadmap, timelines, or
+   general project management, please contact me
+   [[timothy.r.aldrich@gmail.com][via email]]
+
+** Code of Conduct
+   I would like to think that we could reduce the code of conduct down to two
+   things:
+   - Community First
+   - Say what you mean, mean what you say, don't say it mean.
+
+   As an open source project, community is the most important asset.  The
+   project will follow the basic philosophy of inclusion and mutual respect.
+
+   - Contributions are for the benefit of the entire community, not the
+     individual.  All actions should be made with the best interests of the
+     community in mind.
+   - Participation is open to anyone who wishes to join.  No criteria other than
+     willingness to contribute are required or expected.
+   - Time, skill and effort provided to the project is completely voluntary.
+     Contributions, regardless of the contributor's employment, are donated for
+     the benefit of the community.
+   - Everyone should feel comfortable as part of the community.  Every effort
+     will be made to keep the project free of discrimination, intolerance, or
+     any other unwelcoming behavior.
