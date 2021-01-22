@@ -68,16 +68,8 @@ Readme file for tangld project repo
    colors... babel lets you /execute/ the source in a process called tangling.
 
 * Usage
-  Please see [[tangld-manual.org][the manual]]
-  - An Emacs package
-  - A org-mode babel library
-  - A convenience wrapper script
-** Emacs package - tangld
-   Once tangld gets to it's first stable version, the intent is to have it
-   available through the standard emacs package system.
+  Please see [[doc/tangld-manual.org][the manual]]
 
-   The package provides functionality similar to a build system such as cmake or
-   meson.
 * Contributing
   First of all, thank you very much for your interest in tangld! Issues, Bugs, and
   Feature Requests are wanted, please submit them [[https://github.com/aldrichtr/tangld/issues][here or github]] . If you'd like to
