@@ -68,7 +68,7 @@ Readme file for tangld project repo
    colors... babel lets you /execute/ the source in a process called tangling.
 
 * Usage
-  Please see [[doc/tangld-manual.org][the manual]]
+  Please see [[file:doc/tangld-manual.org][the manual]]
 
 * Contributing
   First of all, thank you very much for your interest in tangld! Issues, Bugs, and
