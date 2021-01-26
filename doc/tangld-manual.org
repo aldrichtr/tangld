@@ -113,34 +113,124 @@ The tangld manual.  How to use the system
         locations. See [[Target options]] for further details.
       - tangld-update :: Refresh any components from a repository
 * Workflow
-  To set up a new system, we start by installing the Emacs package tangld.
-  There are several options and customizations, and they can be configured using
-  any of the various Emacs customization facilities.  Next, define the root
-  directory for this system's tangld project:
-  #+BEGIN_SRC emacs-lisp
-    (setq tangld-project-root-dir "~/.tangld")
-    (setq tangld-install-type 'stow) ;; options are direct, link, stow, nil
-    (setq tangld-install-root-dir "config") ;; this is where targets will be installed
-  #+END_SRC
-  Next, we need to initialize our project
-  #+BEGIN_SRC emacs-lisp
-  (tangld-init)
-  #+END_SRC
-  This will set up the project directory like so:
-  : M-x tangld-config
-  : ~/.tangld
-  : - build
-  : - config
-  : - lib
-  : - src
-  - build :: the staging area for files as they are tangled.  the tangld-check
-    would test files and settings here before we make changes to the system's
-  - config :: the name is configurable, but this would be the "production" root
-    directory for the final target files, depending on the symlink-manager and
-  - lib :: tangld-lib org-mode files.  Default files are added, user can add
-    their own here.
-  - src :: tangld-source org-mode files.  The user adds their source here.
-* Target options
+** TL;DR
+   #+BEGIN_EXAMPLE
+   M-x tangld-init
+   => New tangld project initialized in '/home/user/.tangld'
+   M-x tangld-config
+   => Build options saved to '/home/user/.tangld/lib/config.org'
+   M-x find-file <ret> '~/.tangld/src/tmux.org'
+   #+PROPERTY: header-args :tangle .tmux.conf
+   ;; weave comments, org elements, and source blocks to taste...
+   M-x save-buffer
+   M-x tangld-build
+   => tmux.org: Tangled 10 code blocks from tmux.org
+   => '~/.tmux.conf' linked to '~/.tangld/dotfiles/.tmux.conf
+   # switch to terminal, reload your configuration
+   $> tmux source-file ~/.tmux.conf
+   #+END_EXAMPLE
+** Detailed walkthrough
+   The entire process is divided into these steps:
+   - init :: Setup a new project.
+   - config :: Gather information that the =build= step will use.
+   - build :: Tangle the source files.
+   Optionally
+   - check :: perform validation checks
+   - install :: Move, copy, or link files from their current location
+*** init
+    - Create the project root :: Either the user specifies a project root
+      directory or '~/.tangld' is created.
+    - Install the org-lib files :: The lib/org directory is created under the
+      root, and the default org files are copied there.
+    - Create the install directory :: Either the user specifies an install root
+      or 'dotfiles' is created in the project root.  This is where the results of
+      tangle will ultimately be placed (although =tangld-build-type= will
+      influence the process)
+    - Create the src directory :: Create a 'src' directory under the root.  This
+      is where the user puts the org files that get tangled.
+    - Create the build directory :: Create a 'build' directory under the root.
+      This is an optional staging area so that any post processing or testing can
+      be done prior to installing into the install directory. (the use of a
+      staging area is influenced by the =tangld-build-type= as well)
+*** config
+    - Store environmental details :: Host, user, directory, build-type, OS,
+      shell
+    - Store tangld options :: language, tangle options, exclusions, overrides,
+      caching
+    - Store build options :: staging area, copy, link, move, symlink manager,
+    - Write config :: all options and details are written to a config.org file
+      that the next phase will use.
+*** build
+    This phase tangles the source files into their target files.  Depending on
+    the options set, build will evaluate each file in the src directory and
+    tangle it to the install directory. It may also propagate the files to
+    another directory, either via linking, copying or moving on a per file basis.
+    There is an option to tangle the files into a staging area (the 'build' dir
+    by default).
+** Options controlling tangld
+   The options used by tangld-init are:
+   #+BEGIN_SRC emacs-lisp
+          ;; project directories are organized under the user's home directory
+          ;; by default they look like:
+          (add-to-list 'tangld-project-dirs
+                       '((root "~/.tangld")
+                         (lib     "lib")
+                         (build   "build")
+                         (source  "src")
+                         (install "dotfiles")
+                         (system  "~"))
+                       )
+
+          ;; if the project directory already exists, don't re-init
+          (setq tangld-inhibit-init-if-exists? t)
+
+          ;; initialize a version control repo at the same time (at the project root)
+          (setq tangld-init-vc-on-init? t)
+   #+END_SRC
+
+   The options used by tangld-config are:
+   #+BEGIN_SRC emacs-lisp
+     ;; Cache settings:
+     ;; Should we make a cache ?
+     (setq tangld-cache-org-babel-library? t)
+     ;; Maybe we don't want the cache on a certain run,
+     ;; Should we use the cache ?
+     (setq tangld-use-cached-library? t)
+     ;; Where do we write the config details
+     (setq tangld-config-file "config.org")
+   #+END_SRC
+
+   The options used by tangld-build are:
+   #+BEGIN_SRC emacs-lisp
+     ;; After tangling the file, how do we install on the system
+     ;; creating symlinks is the default
+     (setq tangld-install-type 'link)
+   #+END_SRC
+   This will set up the project directory like so:
+   : M-x tangld-config
+   : ~/.tangld
+   : - build
+   : - dotfiles
+   : - lib
+   : - src
+   - build :: the staging area for files as they are tangled.  the tangld-check
+     would test files and settings here before we make changes to the system's
+   - config :: the name is configurable, but this would be the "production" root
+     directory for the final target files, depending on the symlink-manager and
+   - lib :: tangld-lib org-mode files.  Default files are added, user can add
+     their own here.
+   - src :: tangld-source org-mode files.  The user adds their source here.
+
+     #+BEGIN_SRC ditaa :file lob-ingest.png
+       +---------+     +--------+   +---------+    +--------+
+       | {d}     |     | {io}   |   | {s}     |    | {d}    |
+       | project | ----|ingest  |-->| library | <--| user's |
+       | org-lib |     |        |   | of      |    | org-src|
+       |         |     +--------+   | babel   |    +--------+
+       +---------+                  +---------+
+     #+END_SRC
+
+* Build options
   Ultimately, the goal is to produce configuration files on your system that
   other programs will read.  These are usually in various files and folders
   below the users home directory (though we can also set other directories to
