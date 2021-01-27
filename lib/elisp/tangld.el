@@ -19,9 +19,17 @@
 
 ;;; Code:
 
-
 (require 'f)
+;; This will help find the other files in the directory during development.
+;; I typically just 'eval-this-buffer' and then run the functions
+;; TODO: I'd like to find the right way to do package dev....
+(add-to-list 'load-path (f-dirname (buffer-file-name)))
 
+(require 'ob-tangle)
+(require 'ob-extended-tangle)
+(require 'ob-load-namespaced-libraries)
+(require 'ob-text-var-expansion)
+(require 'ob-var-table)
 
 (defgroup tangld nil "Literate Config manager")
 
@@ -54,41 +62,39 @@
   :type 'boolean)
 
 (defcustom tangld-init-vc-on-init t
-   "Initialize a version control system when initializing a new tangld project"
-   :group 'tangld
-   :type 'boolean)
+  "Initialize a version control system when initializing a new tangld project"
+  :group 'tangld
+  :type 'boolean)
 
 (defun tangld-init ()
   "Setup a new tangld project"
   (interactive)
-    (let-alist tangld-project-dirs
-      (catch 'do-not-overwrite
-        ;; It should be really hard to overwrite an existing project
-        ;; so, check the inhibit variable AND ask for conformation
-        (if (f-exists? ( format "%s" .root))
-            (if tangld-inhibit-init-if-exists
-                (if (y-or-n-p
-                     (format
-                      "WARNING: this will overwrite your project in %s continue?"
-                      .root))
-                    (f-delete .root t)) ;; they said its ok, delete it
-              (throw 'do-not-overwrite (format "Aborted init in %s" .root))))) ;; bail on init
+  (let-alist tangld-project-dirs
+    (catch 'do-not-overwrite
+      ;; It should be really hard to overwrite an existing project
+      ;; so, check the inhibit variable AND ask for conformation
+      (if (f-exists? ( format "%s" .root))
+          (if tangld-inhibit-init-if-exists
+              (if (y-or-n-p
+                   (format
+                    "WARNING: this will overwrite your project in %s continue?"
+                    .root))
+                  (f-delete .root t)) ;; they said its ok, delete it
+            (throw 'do-not-overwrite (format "Aborted init in %s" .root))))) ;; bail on init
 
-      ;; either it's a new directory or the old one was deleted
-      (message "creating directories in %s" .root)
-      (mapc 'f-mkdir (list
-      .root
-      (f-join .root .lib)
-      (f-join .root .source)
-      (f-join .root .build)
-      (f-join .root .install)))
+    ;; either it's a new directory or the old one was deleted
+    (message "creating directories in %s" .root)
+    (mapc 'f-mkdir (list
+                    .root
+                    (f-join .root .lib)
+                    (f-join .root .source)
+                    (f-join .root .build)
+                    (f-join .root .install)))
 
-      ;; initialize the version control (git init)
-      (if tangld-init-vc-on-init
-          (tangld-init--init-vc .root))
-      (message "initialized new tangld project in %s" .root)))
-
-
+    ;; initialize the version control (git init)
+    (if tangld-init-vc-on-init
+        (tangld-init--init-vc .root))
+    (message "initialized new tangld project in %s" .root)))
 
 (defun tangld-init--init-vc (&optional vc-root-dir)
   "uses magit to initialize the project"
