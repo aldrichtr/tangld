@@ -31,7 +31,32 @@
 (require 'ob-text-var-expansion)
 (require 'ob-var-table)
 
-(defgroup tangld nil "Literate Config manager")
+
+(defconst tangld--load-dir
+  (file-name-directory (or load-file-name buffer-file-name))
+  "Directory that yasnippet was loaded from.")
+
+(defconst tangld--installed-lib-dir
+  (expand-file-name "lib" tangld--load-dir))
+
+(defconst tangld--default-user-lib-dir
+  (expand-file-name "tangld-lib" user-emacs-directory))
+
+(defgroup tangld nil
+  "Literate Config Manager"
+  :prefix "tangld-")
+
+(defcustom tangld-babel-library-dirs (list tangld--default-user-lib-dir)
+  "List of top-level tangld library directories.
+
+Each element, a string or a symbol whose value is a string,
+designates a top-level directory where org-mode files can be found.
+
+Elements appearing earlier in the list override later elements"
+  :group 'tangld
+  :type '(choice (directory :tag "Single directory")
+                 (repeat :tag "List of directories"
+                         (choice (directory) (variable)))))
 
 (defcustom tangld-project-dirs
   '((root    . "~/.tangld")
@@ -58,6 +83,12 @@
 
 (defcustom tangld-inhibit-init-if-exists t
   "Do not overwrite and existing project with tangld-init"
+  :group 'tangld
+  :type 'boolean)
+
+(defcustom tangld-add-project-lib-dir-on-init t
+  "Add the lib directory of the project to the tangld-babel-library-dirs
+during init"
   :group 'tangld
   :type 'boolean)
 
@@ -90,6 +121,10 @@
                     (f-join .root .source)
                     (f-join .root .build)
                     (f-join .root .install)))
+
+    ;; add the lib directory to the list of babel libraries
+    (if tangld-add-project-lib-dir-on-init
+        (add-to-list 'tangld-babel-library-dirs (f.join .root .lib)))
 
     ;; initialize the version control (git init)
     (if tangld-init-vc-on-init
