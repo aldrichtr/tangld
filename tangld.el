@@ -31,6 +31,7 @@
 (require 'ob-text-var-expansion)
 (require 'ob-var-table)
 
+;;;; Constants
 
 (defconst tangld--load-dir
   (file-name-directory (or load-file-name buffer-file-name))
@@ -41,6 +42,8 @@
 
 (defconst tangld--default-user-lib-dir
   (expand-file-name "tangld-lib" user-emacs-directory))
+
+;;;; Global settings
 
 (defgroup tangld nil
   "Literate Config Manager"
@@ -97,6 +100,8 @@ during init"
   :group 'tangld
   :type 'boolean)
 
+;;;; Initialization - tangld-init
+
 (defun tangld-init ()
   "Setup a new tangld project"
   (interactive)
@@ -140,6 +145,8 @@ during init"
         (magit-init vc-root-dir)
       (message "Magit package not found"))))
 
+;;;; Configuration - tangld-config
+
 (defun tangld-config (&optional type)
   "Configure tangld.  Set the source and target directories, Gather system
    information, and store for the build step to use.  If TYPE is specified
@@ -150,6 +157,8 @@ during init"
   ;; write those to a project specific configuration location so that build
   ;; can use them as it's config when run.
   )
+
+;;;; Build - tangld-build
 
 (defun tangld-build ()
   "Tangle org-mode files in the source dir.  By default, build will only tangle
@@ -181,6 +190,8 @@ during init"
   ;; run the post-build hooks if any
   )
 
+;;;; Install - tangld-install
+
 (defun tangld-install ()
   "Organize target directories, files and libraries on this system.  The build
    step tangles org files into their source, the install step moves them to their
@@ -192,10 +203,14 @@ during init"
   ;;   if
   )
 
+;;;; Clean - tangld-clean
+
 (defun tangld-clean ()
   "Remove any files or settings created by the build phase"
   (interactive)
   )
+
+;;;; Check - tangld-check
 
 (defun tangld-check ()
   "Run tests"
