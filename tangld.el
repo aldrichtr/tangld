@@ -4,7 +4,7 @@
 
 ;; Author: Timothy Aldrich <timothy.r.aldrich@gmail.com>
 ;; Version: 0.0.1
-;; Package-Requires: ((org) (notifications) (f) (s))
+;; Package-Requires: ((emacs "25.1")(org "9.1")(cl-lib "0.5"))
 ;; Keywords: tools processes
 ;; URL: https://github.com/aldrichtr/tangld
 
@@ -35,13 +35,15 @@
 
 (defconst tangld--load-dir
   (file-name-directory (or load-file-name buffer-file-name))
-  "Directory that yasnippet was loaded from.")
+  "Directory that tangld was loaded from.")
 
 (defconst tangld--installed-lib-dir
-  (expand-file-name "lib" tangld--load-dir))
+  (expand-file-name "lib" tangld--load-dir)
+  "Directory where stock org library files are stored")
 
 (defconst tangld--default-user-lib-dir
-  (expand-file-name "tangld-lib" user-emacs-directory))
+  (expand-file-name "tangld-lib" user-emacs-directory)
+  "Default directory to look for user org library files")
 
 ;;;; Global settings
 
@@ -136,6 +138,13 @@ skipped.  By default any file that starts with a '-' is skipped"
   :group 'tangld
   :type 'string)
 
+(defcustom tangld-build-source-dir-exclude-regex "^-"
+  "Regular expression used to match org-source directory names that should be
+skipped.  By default any directory that starts with a '-' is skipped"
+  :group 'tangld
+  :type 'string)
+
+
 
 ;;;; Initialization - tangld-init
 
@@ -214,11 +223,12 @@ skipped.  By default any file that starts with a '-' is skipped"
   ;;   - load it now
   ;; - for each file in the src directory
   (let-alist tangld-project-dirs
-    (source-files (tangld-build-files (f-join .root .build)))
-    (dolist source-file 'source-files
-            ((message "Tangling file: %s" source-file)
-             (org-babel-tangle-file source-file)
-    )))
+    (cl-loop for source-file
+             in (tangld-build-files (f-join .root .source))
+             do
+             (progn
+               (message "tangling file : %s" source-file)
+               (org-babel-tangle-file source-file))))
   ;;   - if the mod date matches the db entry
   ;;     and 'force' is not set
   ;;     -skip
@@ -237,10 +247,20 @@ skipped.  By default any file that starts with a '-' is skipped"
 (defun tangld-build-file-filter (source-file)
   "Filtering function applied to files found in source directories
 SOURCE-FILE is a filename and extension"
-  (and
-   (not (string-match 'tangld-build-file-exclude-regex source-file))
-   (string-match 'tangld-build-file-include-regex source-file)
-   ))
+  (message "passing %s to the filter" source-file)
+  (let-alist tangld-project-dirs
+    ;; remove the source-directory part of the path so that we are 'rooted'
+    ;; in source
+    (setq src-path (replace-regexp-in-string (f-join .root .source) "" source-file))
+    ;; grab the filename portion
+    (setq src-file (f-filename source-file))
+    (message "the source root is : %s" src-path)
+    (message "the filename is : %s" src-file)
+    (and
+     (not (string-match tangld-build-source-dir-exclude-regex src-path))
+     (not (string-match tangld-build-file-exclude-regex src-file))
+     (string-match tangld-build-file-include-regex src-file)
+    )))
 
 (defun tangld-build-files (&optional build-dir)
   "Collect all of the org-source files in BUILD-DIR, applying the filters:
