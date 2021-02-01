@@ -84,6 +84,7 @@ Elements appearing earlier in the list override later elements"
   :group 'tangld
   :type 'boolean)
 
+;;;; tangld-init settings
 (defcustom tangld-inhibit-init-if-exists t
   "Do not overwrite and existing project with tangld-init"
   :group 'tangld
@@ -99,6 +100,42 @@ during init"
   "Initialize a version control system when initializing a new tangld project"
   :group 'tangld
   :type 'boolean)
+
+;;;; tangld-build settings
+(defcustom tangld-pre-build-hook nil
+  "Hook run prior to building org-source files.  This hook runs prior to loading
+the library (or cache), and before the list of sources is built. Also see:
+ - `org-babel-pre-tangle-hook'  :: before each file is tangled
+ - `org-babel-post-tangle-hook' :: after each file is tangled
+ - `org-babel-tangle-body-hook' :: over the body of each source block"
+  :group 'tangld
+  :type 'hook)
+
+(defcustom tangld-post-build-hook nil
+  "Hook run after all org-source files have been tangled."
+  :group 'tangld
+  :type 'hook)
+
+(defcustom tangld-build-file-glob-pattern "\\.org"
+  "Regular expression used to gather files to be tangled.  Combine regular
+expressions in `tangld-build-file-glob-pattern' ,
+`tangld-build-file-include-regex', and `tangld-build-file-exclude-regex' to
+provide tangld-build fine-grained control over which files are tangld"
+  :group 'tangld
+  :type 'string)
+
+(defcustom tangld-build-file-include-regex "\\.org$"
+  "Regular expression used to match org-source file names that should be
+tangled.  By default any file that ends in '.org' is included"
+  :group 'tangld
+  :type 'string)
+
+(defcustom tangld-build-file-exclude-regex "^-"
+  "Regular expression used to match  org-source file names that should be
+skipped.  By default any file that starts with a '-' is skipped"
+  :group 'tangld
+  :type 'string)
+
 
 ;;;; Initialization - tangld-init
 
@@ -166,6 +203,7 @@ during init"
   (interactive)
   ;; - read the config for options pertaining to this build
   ;; - run the pre-build hooks if any
+  (run-hooks 'tangld-pre-build-hook)
   ;; - load the library-of-babel.
   ;;   - if the user says the cache can be used and there is one
   ;;     - load the cache file.
@@ -175,6 +213,12 @@ during init"
   ;; - if there is a db of file mod dates
   ;;   - load it now
   ;; - for each file in the src directory
+  (let-alist tangld-project-dirs
+    (source-files (tangld-build-files (f-join .root .build)))
+    (dolist source-file 'source-files
+            ((message "Tangling file: %s" source-file)
+             (org-babel-tangle-file source-file)
+    )))
   ;;   - if the mod date matches the db entry
   ;;     and 'force' is not set
   ;;     -skip
@@ -190,12 +234,31 @@ during init"
   ;; run the post-build hooks if any
   )
 
+(defun tangld-build-file-filter (source-file)
+  "Filtering function applied to files found in source directories
+SOURCE-FILE is a filename and extension"
+  (and
+   (not (string-match 'tangld-build-file-exclude-regex source-file))
+   (string-match 'tangld-build-file-include-regex source-file)
+   ))
+
+(defun tangld-build-files (&optional build-dir)
+  "Collect all of the org-source files in BUILD-DIR, applying the filters:
+ - `tangld-build-file-glob-pattern'  : files matched are added to the list
+ - `tangld-build-file-include-regex' : filenames matched are left in the list
+ - `tangld-build-file-exclude-regex' : filenames matched are removed"
+  (let-alist tangld-project-dirs
+    (or build-dir (setq build-dir (f-join .root .build)))
+    (seq-filter
+     #'tangld-build-file-filter
+     (directory-files-recursively build-dir tangld-build-file-glob-pattern ))))
+
 ;;;; Install - tangld-install
 
 (defun tangld-install ()
   "Organize target directories, files and libraries on this system.  The build
-   step tangles org files into their source, the install step moves them to their
-   target location."
+step tangles org files into their source, the install step moves them to their
+target location."
   (interactive)
   ;; read the config for options pertaining to the install
   ;; for each file in the build directory
