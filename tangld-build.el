@@ -18,6 +18,13 @@
 ;; files on a system.  More details are available in the README.org file.
 
 ;;; Code:
+(require 'ob-tangle)
+(require 'ob-extended-tangle)
+(require 'ob-text-var-expansion)
+(require 'ob-load-namespaced-libraries)
+(require 'ob-var-table)
+
+;;;; Customization settings
 
 (defcustom tangld-pre-build-hook nil
   "Hook run prior to building org-source files.  This hook runs prior to loading
@@ -59,7 +66,7 @@ skipped.  By default any directory that starts with a '-' is skipped"
   :group 'tangld
   :type 'string)
 
-
+;;;; Build function
 
 (defun tangld-build ()
   "Tangle org-mode files in the source dir.  By default, build will only tangle
@@ -69,11 +76,6 @@ skipped.  By default any directory that starts with a '-' is skipped"
   ;; - run the pre-build hooks if any
   (run-hooks 'tangld-pre-build-hook)
   ;; - load the library-of-babel.
-  ;;   - if the user says the cache can be used and there is one
-  ;;     - load the cache file.
-  ;;   - otherwise
-  ;;     - load the library with our org-lib files
-  ;; - if caching is enabled, store our library now
   ;; - if there is a db of file mod dates
   ;;   - load it now
   ;; - for each file in the src directory
@@ -98,7 +100,30 @@ skipped.  By default any directory that starts with a '-' is skipped"
   ;;   - record the mod date in the db
   ;; run the post-build hooks if any
   )
+
+;;;; library files
+(defun tangld-build-load-library ()
+  "Ingest org-mode files into a library of babel for use by other source blocks"
+  (interactive)
+  ;; if the user says the cache can be used and there is one
+  (if (and tangld-build-use-library-cache?
+           ;; load the cache file.
+           (f-exists? tangld-lib-cached-file))
+      ;; otherwise
+      ;; load the library with our org-lib files
+      (org-babel-lob-ingest tangld-build-cached-library)
+    ;; if caching is enabled, store our library now
+    (let-alist tangld-project-dirs
+      (cl-loop for lib-file
+               in (tangld-lib-files tangld-build-lib-dirs)
+               do
+               (progn
+                 (message "loading library : %s" lib-file)
+                 (with-ob-global-lib
+                  (ob-make-lib-from-files)))))))
 
+
+;;;; tangld-build helpers
 (defun tangld-build-file-filter (source-file)
   "Filtering function applied to files found in source directories
 SOURCE-FILE is a filename and extension"
