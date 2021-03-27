@@ -137,7 +137,7 @@ during init"
     (message "initialized new tangld project in %s" .root)))
 
 (defun tangld-init--init-vc (&optional vc-root-dir)
-  "uses magit to initialize the project"
+  "Initialize the project using magit."
   (let-alist tangld-project-dirs
     (or vc-root-dir (setq vc-root-dir .root))
     (message "initializing git repo in %s" vc-root-dir)
