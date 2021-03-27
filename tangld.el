@@ -219,18 +219,26 @@ By default, build will only tangle files that have changed since last run."
   ;;       - stow :: write to install-root.  Call stow with the appropriate options
   ;;       - direct :: write to the system dir/file specified (destructive?)
   ;;   - record the mod date in the db
-  ;; run the post-build hooks if any
-  (let ((source-dir (alist-get 'source tangld)))
-    (dolist (file (cddr (directory-files source-dir)))
-      (when (or force (not (= (file-attribute-modification-time) date)))
-	(cl-case tangled-install-type
-	  (stage)
-	  (tangld-install)
-	  (link)
-	  (stow)
-	  (direct)
-	  (nil)
-	  (t)))))
+  (let-alist tangld-project-dirs
+    (dolist (file (cddr (directory-files .source-dir)))
+      (let ((mod-date (file-attribute-modification-time)))
+	(when (or force (not (= mod-date date)))
+	  (cl-case tangled-install-type
+	    (stage (tangld-write-to-build-root))
+	    (link
+	     (tangld-write-to-install-root file)
+	     (tangld-make-symlink file))
+	    (stow
+	     (tangld-write-to-install-root file)
+	     (tangld-make-symlink-with-stow file))
+	    (direct
+	     (tangled-write-to-file file))
+	    (nil
+	     (tangld-write-to-install-root file))
+	    (t
+	     (error "Unknown link type '%S'" type))))
+	;; Is db an alist?
+	(tangld-update-db file :mod mod-date))))
   
   ;; Run the post-build hooks.
   (run-hooks 'tangld-postbuild-hooks))
