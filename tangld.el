@@ -219,9 +219,9 @@ By default, build will only tangle files that have changed since last run."
 
   ;; - if caching is enabled, store our library now
   ;; store our library
-  (when tangld-cache-p)
   ;; - if there is a db of file mod dates
   ;;   - load it now
+
   (when (file-exists-p tangld-db-file)
     (load-file tangld-db-file))
   ;; - for each file in the src directory
