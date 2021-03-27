@@ -228,7 +228,7 @@ to their target location."
 ;;;; Clean - tangld-clean
 
 (defun tangld-clean ()
-  "Remove any files or settings created by the build phase"
+  "Remove any files or settings created by the build phase."
   (interactive)
   )
 
