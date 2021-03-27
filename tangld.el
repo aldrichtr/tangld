@@ -114,14 +114,14 @@ during init"
     (catch 'do-not-overwrite
       ;; It should be really hard to overwrite an existing project
       ;; so, check the inhibit variable AND ask for conformation
-      (if (f-exists? (format "%s" .root))
-          (if tangld-inhibit-init-if-exists
-              (if (y-or-n-p
-                   (format
-                    "WARNING: this will overwrite your project in %s continue?"
-                    .root))
-                  (f-delete .root t)) ;; they said its ok, delete it
-            (throw 'do-not-overwrite (format "Aborted init in %s" .root))))) ;; bail on init
+      (when (f-exists? (format "%s" .root))
+        (if tangld-inhibit-init-if-exists
+            (if (y-or-n-p
+                 (format
+                  "WARNING: this will overwrite your project in %s continue?"
+                  .root))
+                (f-delete .root t)) ;; they said its ok, delete it
+          (throw 'do-not-overwrite (format "Aborted init in %s" .root)))))
 
     ;; either it's a new directory or the old one was deleted
     (message "creating directories in %s" .root)
