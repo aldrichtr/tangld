@@ -167,8 +167,9 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 ;;;; Build - tangld-build
 
 (defun tangld-build ()
-  "Tangle org-mode files in the source dir.  By default, build will only tangle
-   files that have changed since last run."
+  "Tangle org-mode files in the source dir.
+
+By default, build will only tangle files that have changed since last run."
   (interactive)
   ;; - read the config for options pertaining to this build
   ;; - run the pre-build hooks if any
