@@ -197,15 +197,27 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 By default, build will only tangle files that have changed since last run."
   (interactive)
   ;; - read the config for options pertaining to this build
+  ;; config options
   ;; - run the pre-build hooks if any
+  ;; I'm assuming this is how this is done.
+  (run-hooks 'tangld-prebuild-hooks)
   ;; - load the library-of-babel.
+  (require 'org-babel)
   ;;   - if the user says the cache can be used and there is one
   ;;     - load the cache file.
   ;;   - otherwise
   ;;     - load the library with our org-lib files
+  (if (and (file-exists-p tangld-cache-file) tangld-cache-p)
+      (load tangled-cache-file)
+    (org-babel-load-file))
+
   ;; - if caching is enabled, store our library now
+  ;; store our library
+  (when tangld-cache-p)
   ;; - if there is a db of file mod dates
   ;;   - load it now
+  (when (file-exists-p tangld-db-file)
+    (load-file tangld-db-file))
   ;; - for each file in the src directory
   ;;   - if the mod date matches the db entry
   ;;     and 'force' is not set
@@ -232,7 +244,7 @@ By default, build will only tangle files that have changed since last run."
 	     (tangld-write-to-install-root file)
 	     (tangld-make-symlink-with-stow file))
 	    (direct
-	     (tangled-write-to-file file))
+	     (tangld-write-to-file file))
 	    (nil
 	     (tangld-write-to-install-root file))
 	    (t
@@ -240,7 +252,7 @@ By default, build will only tangle files that have changed since last run."
 	;; Is db an alist?
 	(tangld-update-db file :mod mod-date))))
   
-  ;; Run the post-build hooks.
+  ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Install - tangld-install
