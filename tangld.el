@@ -110,6 +110,15 @@ during init"
   :group 'tangld
   :type boolean)
 
+(defcustom tangld-use-cached-library-p t
+  :group tangld
+  :type 'boolean)
+
+(defcustom tangld-config-file "config.org"
+  "File where config details are written."
+  :group 'tangld
+  :type 'string)
+
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
