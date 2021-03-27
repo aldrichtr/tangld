@@ -137,7 +137,7 @@ during init"
     (message "initialized new tangld project in %s" .root)))
 
 (defun tangld-init--init-vc (&optional vc-root-dir)
-  "uses magit to initialize the project"
+  "Initialize the project using magit."
   (let-alist tangld-project-dirs
     (or vc-root-dir (setq vc-root-dir .root))
     (message "initializing git repo in %s" vc-root-dir)
@@ -148,10 +148,11 @@ during init"
 ;;;; Configuration - tangld-config
 
 (defun tangld-config (&optional type)
-  "Configure tangld.  Set the source and target directories, Gather system
-   information, and store for the build step to use.  If TYPE is specified
-   store as options for a specific build type i.e. OS specific, shell options
-   alternate install directory, etc. "
+  "Configure tangld. 
+
+Set the source and target directories, Gather system information, and store for
+the build step to use. If TYPE is specified store as options for a specific
+build type i.e. OS specific, shell options alternate install directory, etc."
   (interactive)
   ;; The user sets options such as cache use, source and target dirs, etc.
   ;; write those to a project specific configuration location so that build
@@ -161,8 +162,9 @@ during init"
 ;;;; Build - tangld-build
 
 (defun tangld-build ()
-  "Tangle org-mode files in the source dir.  By default, build will only tangle
-   files that have changed since last run."
+  "Tangle org-mode files in the source dir.
+
+By default, build will only tangle files that have changed since last run."
   (interactive)
   ;; - read the config for options pertaining to this build
   ;; - run the pre-build hooks if any
@@ -193,9 +195,10 @@ during init"
 ;;;; Install - tangld-install
 
 (defun tangld-install ()
-  "Organize target directories, files and libraries on this system.  The build
-   step tangles org files into their source, the install step moves them to their
-   target location."
+  "Organize target directories, files and libraries on this system. 
+
+The build step tangles org files into their source, the install step moves them
+to their target location."
   (interactive)
   ;; read the config for options pertaining to the install
   ;; for each file in the build directory
@@ -206,7 +209,7 @@ during init"
 ;;;; Clean - tangld-clean
 
 (defun tangld-clean ()
-  "Remove any files or settings created by the build phase"
+  "Remove any files or settings created by the build phase."
   (interactive)
   )
 
