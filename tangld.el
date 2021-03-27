@@ -109,7 +109,7 @@ during init"
     (catch 'do-not-overwrite
       ;; It should be really hard to overwrite an existing project
       ;; so, check the inhibit variable AND ask for conformation
-      (if (f-exists? ( format "%s" .root))
+      (if (f-exists? (format "%s" .root))
           (if tangld-inhibit-init-if-exists
               (if (y-or-n-p
                    (format
