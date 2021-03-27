@@ -237,7 +237,10 @@ to their target location."
   ;; for each file in the build directory
   ;;   identify the install type for this file
   ;;   if
-  )
+  (let (install-type)
+    (dolist (file (cddr (directory-files)))
+      (org-babel-tangle-file file)))
+  (run-hooks 'tangld-post-install-hook))
 
 ;;;; Clean - tangld-clean
 
