@@ -183,10 +183,17 @@ Set the source and target directories, Gather system information, and store for
 the build step to use. If TYPE is specified store as options for a specific
 build type i.e. OS specific, shell options alternate install directory, etc."
   (interactive)
+  (cl-case type
+    (link)
+    (stow)
+    (direct)
+    (nil)
+    (t (error "Invalid type %S." type)))
   ;; The user sets options such as cache use, source and target dirs, etc.
   ;; write those to a project specific configuration location so that build
   ;; can use them as it's config when run.
-  )
+  (let-alist tangld-project-dirs
+    (message "Build options saved to '%s'" (f-join .root .lib "config.org"))))
 
 ;;;; Build - tangld-build
 
