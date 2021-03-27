@@ -190,21 +190,33 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 ;;;; Build - tangld-build
 
-(defun tangld-build ()
+(defun tangld-build (&optional force)
   "Tangle org-mode files in the source dir.
 
 By default, build will only tangle files that have changed since last run."
   (interactive)
   ;; - read the config for options pertaining to this build
+  ;; config options
   ;; - run the pre-build hooks if any
+  ;; I'm assuming this is how this is done.
+  (run-hooks 'tangld-prebuild-hooks)
   ;; - load the library-of-babel.
+  (require 'org-babel)
   ;;   - if the user says the cache can be used and there is one
   ;;     - load the cache file.
   ;;   - otherwise
   ;;     - load the library with our org-lib files
+  (if (and (file-exists-p tangld-cache-file) tangld-cache-p)
+      (load tangled-cache-file)
+    (org-babel-load-file))
+
   ;; - if caching is enabled, store our library now
+  ;; store our library
+  (when tangld-cache-p)
   ;; - if there is a db of file mod dates
   ;;   - load it now
+  (when (file-exists-p tangld-db-file)
+    (load-file tangld-db-file))
   ;; - for each file in the src directory
   ;;   - if the mod date matches the db entry
   ;;     and 'force' is not set
@@ -218,20 +230,28 @@ By default, build will only tangle files that have changed since last run."
   ;;       - stow :: write to install-root.  Call stow with the appropriate options
   ;;       - direct :: write to the system dir/file specified (destructive?)
   ;;   - record the mod date in the db
-  ;; run the post-build hooks if any
-  (let ((source-dir (alist-get 'source tangld)))
-    (dolist (file (cddr (directory-files source-dir)))
-      (when (or force (not (= (file-attribute-modification-time) date)))
-	(cl-case tangled-install-type
-	  (stage)
-	  (tangld-install)
-	  (link)
-	  (stow)
-	  (direct)
-	  (nil)
-	  (t)))))
+  (let-alist tangld-project-dirs
+    (dolist (file (cddr (directory-files .source-dir)))
+      (let ((mod-date (file-attribute-modification-time)))
+	(when (or force (not (= mod-date date)))
+	  (cl-case tangled-install-type
+	    (stage (tangld-write-to-build-root))
+	    (link
+	     (tangld-write-to-install-root file)
+	     (tangld-make-symlink file))
+	    (stow
+	     (tangld-write-to-install-root file)
+	     (tangld-make-symlink-with-stow file))
+	    (direct
+	     (tangld-write-to-file file))
+	    (nil
+	     (tangld-write-to-install-root file))
+	    (t
+	     (error "Unknown link type '%S'" type))))
+	;; Is db an alist?
+	(tangld-update-db file :mod mod-date))))
   
-  ;; Run the post-build hooks.
+  ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Install - tangld-install
