@@ -198,9 +198,10 @@ during init"
 ;;;; Install - tangld-install
 
 (defun tangld-install ()
-  "Organize target directories, files and libraries on this system.  The build
-   step tangles org files into their source, the install step moves them to their
-   target location."
+  "Organize target directories, files and libraries on this system. 
+
+The build step tangles org files into their source, the install step moves them
+to their target location."
   (interactive)
   ;; read the config for options pertaining to the install
   ;; for each file in the build directory
