@@ -129,6 +129,14 @@ during init"
   :group 'tangld
   :type 'hook)
 
+(defcustom tangld-preinstall-hook nil
+  :group 'tangld
+  :type 'hook)
+
+(defcustom tangld-postinstall-hook nil
+  :group 'tangld
+  :type 'hook)
+
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
