@@ -215,7 +215,6 @@ By default, build will only tangle files that have changed since last run."
   ;; - read the config for options pertaining to this build
   ;; config options
   ;; - run the pre-build hooks if any
-  ;; I'm assuming this is how this is done.
   (run-hooks 'tangld-prebuild-hooks)
   ;; - load the library-of-babel.
   (require 'org-babel)
@@ -254,19 +253,18 @@ By default, build will only tangle files that have changed since last run."
 	  (cl-case tangled-install-type
 	    (stage (tangld-write-to-build-root))
 	    (link
-	     (tangld-write-to-install-root file)
-	     (tangld-make-symlink file))
+	     (message "link - write %s to install-root..." file)
+	     (message "link - make a symlink from %s to %s" from to))
 	    (stow
-	     (tangld-write-to-install-root file)
-	     (tangld-make-symlink-with-stow file))
+	     (message "stow - write %s to install-root..." file)
+	     (message "stow - make symlink from %s to %s with stow" from to))
 	    (direct
-	     (tangld-write-to-file file))
+	     (message "direct - write to system dir/file specified"))
 	    (nil
-	     (tangld-write-to-install-root file))
+	     (message "write to install-root"))
 	    (t
 	     (error "Unknown link type '%S'" type))))
-	;; Is db an alist?
-	(tangld-update-db file :mod mod-date))))
+	(message "Record mod date %S in the db"))))
   
   ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
