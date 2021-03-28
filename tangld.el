@@ -168,7 +168,7 @@ during init"
 
     ;; add the lib directory to the list of babel libraries
     (if tangld-add-project-lib-dir-on-init
-        (add-to-list 'tangld-babel-library-dirs (f.join .root .lib)))
+        (add-to-list 'tangld-babel-library-dirs (f-join .root .lib)))
 
     ;; initialize the version control (git init)
     (if tangld-init-vc-on-init
