@@ -139,6 +139,7 @@ during init"
   :type 'hook
   "Hook run after `tangld-install' is called.")
 
+(defmacro ignore! (&rest _) nil)
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
@@ -254,13 +255,16 @@ By default, build will only tangle files that have changed since last run."
       (let ((mod-date (file-attribute-modification-time)))
 	(when (or force (not (= mod-date date)))
 	  (cl-case tangled-install-type
-	    (stage (tangld-write-to-build-root))
+	    (stage
+	     (message "stage - write to build-root."))
 	    (link
 	     (message "link - write %s to install-root..." file)
-	     (message "link - make a symlink from %s to %s" from to))
+	     (message "link - make a symlink from %s to %s" from to)
+	     (ignore! (f-symlink file to)))
 	    (stow
 	     (message "stow - write %s to install-root..." file)
-	     (message "stow - make symlink from %s to %s with stow" from to))
+	     (message "stow - make symlink from %s to %s with stow" from to)
+	     (ignore! (f-symlink file to)))
 	    (direct
 	     (message "direct - write to system dir/file specified"))
 	    (nil
