@@ -213,11 +213,13 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 By default, build will only tangle files that have changed since last run."
   (interactive)
   ;; - read the config for options pertaining to this build
+  (message "Read config options...")
   ;; config options
   ;; - run the pre-build hooks if any
-  ;; I'm assuming this is how this is done.
+  (message "Run `tangld-prebuild-hooks'.")
   (run-hooks 'tangld-prebuild-hooks)
   ;; - load the library-of-babel.
+  (message "Load library of babel...")
   (require 'org-babel)
   ;;   - if the user says the cache can be used and there is one
   ;;     - load the cache file.
@@ -254,19 +256,18 @@ By default, build will only tangle files that have changed since last run."
 	  (cl-case tangled-install-type
 	    (stage (tangld-write-to-build-root))
 	    (link
-	     (tangld-write-to-install-root file)
-	     (tangld-make-symlink file))
+	     (message "link - write %s to install-root..." file)
+	     (message "link - make a symlink from %s to %s" from to))
 	    (stow
-	     (tangld-write-to-install-root file)
-	     (tangld-make-symlink-with-stow file))
+	     (message "stow - write %s to install-root..." file)
+	     (message "stow - make symlink from %s to %s with stow" from to))
 	    (direct
-	     (tangld-write-to-file file))
+	     (message "direct - write to system dir/file specified"))
 	    (nil
-	     (tangld-write-to-install-root file))
+	     (message "write to install-root"))
 	    (t
 	     (error "Unknown link type '%S'" type))))
-	;; Is db an alist?
-	(tangld-update-db file :mod mod-date))))
+	(message "Record mod date %S in the db"))))
   
   ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
@@ -294,6 +295,8 @@ to their target location."
 (defun tangld-clean ()
   "Remove any files or settings created by the build phase."
   (interactive)
+  (message "Remove the cache")
+  (message "Remove the db")
   )
 
 ;;;; Check - tangld-check
