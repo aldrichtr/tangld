@@ -193,7 +193,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   ;; write those to a project specific configuration location so that build
   ;; can use them as it's config when run.
   (let-alist tangld-project-dirs
-    (message "Build options saved to '%s'" (expand-file-name .root))))
+    (message "Build options saved to '%s'" (f-join .root .lib "config.org"))))
 
 ;;;; Build - tangld-build
 
