@@ -215,7 +215,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   "Tangle org-mode files in the source dir.
 
 By default, build will only tangle files that have changed since last run."
-  (interactive)
+  (interactive "P")
   ;; - read the config for options pertaining to this build
   (message "Read config options...")
   ;; config options
