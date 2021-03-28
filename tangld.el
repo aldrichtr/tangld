@@ -139,6 +139,8 @@ during init"
   :type 'hook
   "Hook run after `tangld-install' is called.")
 
+(defmacro ignore! (&rest _) nil)
+
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
@@ -211,7 +213,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   "Tangle org-mode files in the source dir.
 
 By default, build will only tangle files that have changed since last run."
-  (interactive)
+  (interactive "P")
   ;; - read the config for options pertaining to this build
   (message "Read config options...")
   ;; config options
@@ -220,7 +222,8 @@ By default, build will only tangle files that have changed since last run."
   (run-hooks 'tangld-prebuild-hooks)
   ;; - load the library-of-babel.
   (message "Load library of babel...")
-  (require 'org-babel)
+  ;; Note this is not org babel, these are tangled source blocks used for
+  ;; side-effect and other things.
   ;;   - if the user says the cache can be used and there is one
   ;;     - load the cache file.
   ;;   - otherwise
@@ -250,17 +253,24 @@ By default, build will only tangle files that have changed since last run."
   ;;       - direct :: write to the system dir/file specified (destructive?)
   ;;   - record the mod date in the db
   (let-alist tangld-project-dirs
-    (dolist (file (cddr (directory-files .source-dir)))
+    (unless (cddr (directory-files (f-join .root .source)))
+      (message "No files in source dir."))
+
+    (dolist (file (cddr (directory-files (f-join .root .source))))
       (let ((mod-date (file-attribute-modification-time)))
-	(when (or force (not (= mod-date date)))
+	(message "Date file modified: %S" mod-date)
+	(when t
 	  (cl-case tangled-install-type
-	    (stage (tangld-write-to-build-root))
+	    (stage
+	     (message "stage - write to build-root."))
 	    (link
 	     (message "link - write %s to install-root..." file)
-	     (message "link - make a symlink from %s to %s" from to))
+	     (message "link - make a symlink from %s to %s" from to)
+	     (ignore! (f-symlink file to)))
 	    (stow
 	     (message "stow - write %s to install-root..." file)
-	     (message "stow - make symlink from %s to %s with stow" from to))
+	     (message "stow - make symlink from %s to %s with stow" from to)
+	     (ignore! (f-symlink file to)))
 	    (direct
 	     (message "direct - write to system dir/file specified"))
 	    (nil
