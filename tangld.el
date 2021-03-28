@@ -251,8 +251,12 @@ By default, build will only tangle files that have changed since last run."
   ;;       - direct :: write to the system dir/file specified (destructive?)
   ;;   - record the mod date in the db
   (let-alist tangld-project-dirs
-    (dolist (file (cddr (directory-files .source)))
+    (unless (cddr (directory-files (f-join .root .source)))
+      (message "No files in source dir."))
+
+    (dolist (file (cddr (directory-files (f-join .root .source))))
       (let ((mod-date (file-attribute-modification-time)))
+	(message "Date file modified: %S" mod-date)
 	(when t
 	  (cl-case tangled-install-type
 	    (stage
