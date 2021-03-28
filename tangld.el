@@ -140,6 +140,7 @@ during init"
   "Hook run after `tangld-install' is called.")
 
 (defmacro ignore! (&rest _) nil)
+
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
