@@ -131,11 +131,13 @@ during init"
 
 (defcustom tangld-preinstall-hook nil
   :group 'tangld
-  :type 'hook)
+  :type 'hook
+  "Hook run before `tangld-install' is called.")
 
 (defcustom tangld-postinstall-hook nil
   :group 'tangld
-  :type 'hook)
+  :type 'hook
+  "Hook run after `tangld-install' is called.")
 
 ;;;; Initialization - tangld-init
 
