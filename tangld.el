@@ -221,7 +221,8 @@ By default, build will only tangle files that have changed since last run."
   (run-hooks 'tangld-prebuild-hooks)
   ;; - load the library-of-babel.
   (message "Load library of babel...")
-  (require 'org-babel)
+  ;; Note this is not org babel, these are tangled source blocks used for
+  ;; side-effect and other things.
   ;;   - if the user says the cache can be used and there is one
   ;;     - load the cache file.
   ;;   - otherwise
