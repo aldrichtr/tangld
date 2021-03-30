@@ -239,13 +239,13 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
   ;; - read the config for options pertaining to this build
-  (message "Read config options...")
+  (tangld--message "Read config options...")
   ;; config options
   ;; - run the pre-build hooks if any
-  (message "Run `tangld-prebuild-hooks'.")
+  (tangld--message "Run `tangld-prebuild-hooks'.")
   (run-hooks 'tangld-prebuild-hooks)
   ;; - load the library-of-babel.
-  (message "Load library of babel...")
+  (tangld--message "Load library of babel...")
   ;; Note this is not org babel, these are tangled source blocks used for
   ;; side-effect and other things.
   ;;   - if the user says the cache can be used and there is one
