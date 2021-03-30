@@ -96,11 +96,6 @@ during init"
   :group 'tangld
   :type 'boolean)
 
-(defcustom tangld-cache-p nil
-  "Non-nil if tangled should cache."
-  :group 'tangld
-  :type 'boolean)
-
 (defcustom tangld-cache-org-babel-library-p t
   "Non-nil if should cache."
   :group 'tangld
