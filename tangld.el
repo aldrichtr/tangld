@@ -20,10 +20,6 @@
 ;;; Code:
 
 (require 'f)
-;; This will help find the other files in the directory during development.
-;; I typically just 'eval-this-buffer' and then run the functions
-;; TODO: I'd like to find the right way to do package dev....
-(add-to-list 'load-path (f-dirname (buffer-file-name)))
 
 (require 'ob-tangle)
 (require 'ob-extended-tangle)
