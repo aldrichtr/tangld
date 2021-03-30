@@ -340,8 +340,8 @@ to their target location."
 (defun tangld-clean ()
   "Remove any files or settings created by the build phase."
   (interactive)
-  (message "Remove the cache")
-  (message "Remove the db")
+  (tangld--message "Remove the cache")
+  (tangld--message "Remove the db")
   )
 
 ;;;; Check - tangld-check
