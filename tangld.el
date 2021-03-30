@@ -272,7 +272,7 @@ By default, build will only tangle files that have changed since last run."
     ;; TODO
     )
 
-  (when (tangld--cache-enabled-p)
+  (when (tangld--cache-org-babel-library-p)
     (tangld-message "store library in cache")
     ;; TODO
     )
