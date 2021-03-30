@@ -280,7 +280,7 @@ By default, build will only tangle files that have changed since last run."
       (tangld--message "No files in source dir."))
 
     (dolist (file (directory-files-recursively (f-join .root .source) "."))
-      (let ((mod-date (file-attribute-modification-time))
+      (let ((mod-date (file-attribute-modification-time (file-attributes file)))
 	    (db-entry 'not-implemented))
 	(tangld--message "Date file modified: %S" mod-date)
 	(when (or force t)
