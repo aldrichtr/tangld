@@ -191,12 +191,12 @@ during init"
                     (f-join .root .install)))
 
     ;; add the lib directory to the list of babel libraries
-    (if tangld-add-project-lib-dir-on-init
-        (add-to-list 'tangld-babel-library-dirs (f-join .root .lib)))
+    (when tangld-add-project-lib-dir-on-init
+      (add-to-list 'tangld-babel-library-dirs (f-join .root .lib)))
 
     ;; initialize the version control (git init)
-    (if tangld-init-vc-on-init
-        (tangld-init--init-vc .root))
+    (when tangld-init-vc-on-init
+      (tangld-init--init-vc .root))
     (message "initialized new tangld project in %s" .root)))
 
 (defun tangld-init--init-vc (&optional vc-root-dir)
