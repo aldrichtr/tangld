@@ -139,7 +139,29 @@ during init"
   :type 'hook
   "Hook run after `tangld-install' is called.")
 
-(defmacro ignore! (&rest _) nil)
+(defcustom tangld-verbose-p nil
+  :group 'tangld
+  :type 'boolean
+  "Whether tangled should display many messages.")
+
+;;;; Helpers
+
+;; These helpers are to help me develop this project quickly.
+
+(defmacro tangld--ignore (&rest _)
+  "Do nothing."
+  nil)
+
+(defun tangld--message (format-string &rest args)
+  "Display message if `tangld-verbose-p' is non-nil."
+  (when tangld-verbose-p (message message args)))
+
+(defun tangld--tangle-file ()
+  "Wrapper around `org-babel-tangle'."
+  (let ((org-confirm-babel-evaluate nil)
+	(message-log-max nil)
+	(inhibit-message t))
+    (org-babel-tangle-file (expand-file-name file .source))))
 
 ;;;; Initialization - tangld-init
 
@@ -256,30 +278,32 @@ By default, build will only tangle files that have changed since last run."
   ;;   - record the mod date in the db
   (let-alist tangld-project-dirs
     (unless (cddr (directory-files (f-join .root .source)))
-      (message "No files in source dir."))
+      (tangld-message "No files in source dir."))
 
     (dolist (file (cddr (directory-files (f-join .root .source))))
-      (let ((mod-date (file-attribute-modification-time)))
-	(message "Date file modified: %S" mod-date)
-	(when t
+      (let ((mod-date (file-attribute-modification-time))
+	    (db-entry 'not-implemented))
+	(tangld-message "Date file modified: %S" mod-date)
+	(when (or force t)
 	  (cl-case tangled-install-type
 	    (stage
-	     (message "stage - write to build-root."))
+	     (tangld-message "stage - write to build-root."))
 	    (link
-	     (message "link - write %s to install-root..." file)
-	     (message "link - make a symlink from %s to %s" from to)
-	     (ignore! (f-symlink file to)))
+	     (tangld-message "link - write %s to install-root..." file)
+	     (tangld-message "link - make a symlink from %s to %s" from to)
+	     (tangld-ignore (f-symlink file to)))
 	    (stow
-	     (message "stow - write %s to install-root..." file)
-	     (message "stow - make symlink from %s to %s with stow" from to)
-	     (ignore! (f-symlink file to)))
+	     (tangld-message "stow - write %s to install-root..." file)
+	     (tangld-message "stow - make symlink from %s to %s with stow" from to)
+	     (tangld-ignore! (f-symlink file to)))
 	    (direct
-	     (message "direct - write to system dir/file specified"))
+	     (tangld-message "direct - write to system dir/file specified")
+	     (tangld-tangle-file file))
 	    (nil
-	     (message "write to install-root"))
+	     (tangld-message "write to install-root"))
 	    (t
 	     (error "Unknown link type '%S'" type))))
-	(message "Record mod date %S in the db"))))
+	(tangld-message "Record mod date %S in the db"))))
   
   ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
