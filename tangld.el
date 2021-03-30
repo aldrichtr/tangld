@@ -280,32 +280,31 @@ By default, build will only tangle files that have changed since last run."
   ;;       - direct :: write to the system dir/file specified (destructive?)
   ;;   - record the mod date in the db
   (let-alist tangld-project-dirs
-    (unless (cddr (directory-files (f-join .root .source)))
-      (tangld--message "No files in source dir."))
-
-    (dolist (file (directory-files-recursively (f-join .root .source) "."))
-      (let ((mod-date (file-attribute-modification-time (file-attributes file)))
-	    (prev-mod-date (tangld--db-entry file)))
-	(when (or force (not (equal mod-date prev-mod-date)))
-	  (cl-case tangled-install-type
-	    (stage
-	     (tangld--message "stage - write to build-root."))
-	    (link
-	     (tangld--message "link - write %s to install-root..." file)
-	     (tangld--message "link - make a symlink from %s to %s" from to)
-	     (tangld--ignore (f-symlink file to)))
-	    (stow
-	     (tangld--message "stow - write %s to install-root..." file)
-	     (tangld--message "stow - make symlink from %s to %s with stow" from to)
-	     (tangld--ignore (f-symlink file to)))
-	    (direct
-	     (tangld--message "direct - write to system dir/file specified")
-	     (tangld--ignore (tangld--tangle-file file)))
-	    (nil
-	     (tangld--message "write to install-root"))
-	    (t
-	     (error "Unknown link type '%S'" type))))
-	(tangld-message "Record mod date %S in the db"))))
+    (let ((files (directory-files-recursively (f-join .root .source) ".")))
+      (unless files (tangld--message "Nothing todo, no files."))
+      (dolist (file files)
+	(let ((mod-date (file-attribute-modification-time (file-attributes file)))
+	      (prev-mod-date (tangld--db-entry file)))
+	  (when (or force (not (equal mod-date prev-mod-date)))
+	    (cl-case tangled-install-type
+	      (stage
+	       (tangld--message "stage - write to build-root."))
+	      (link
+	       (tangld--message "link - write %s to install-root..." file)
+	       (tangld--message "link - make a symlink from %s to %s" from to)
+	       (tangld--ignore (f-symlink file to)))
+	      (stow
+	       (tangld--message "stow - write %s to install-root..." file)
+	       (tangld--message "stow - make symlink from %s to %s with stow" from to)
+	       (tangld--ignore (f-symlink file to)))
+	      (direct
+	       (tangld--message "direct - write to system dir/file specified")
+	       (tangld--ignore (tangld--tangle-file file)))
+	      (nil
+	       (tangld--message "write to install-root"))
+	      (t
+	       (error "Unknown link type '%S'" type))))
+	  (tangld-message "Record mod date %S in the db")))))
   
   ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
