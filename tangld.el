@@ -297,7 +297,7 @@ By default, build will only tangle files that have changed since last run."
 	     (tangld--ignore (f-symlink file to)))
 	    (direct
 	     (tangld--message "direct - write to system dir/file specified")
-	     (tangld--tangle-file file))
+	     (tangld--ignore (tangld--tangle-file file)))
 	    (nil
 	     (tangld--message "write to install-root"))
 	    (t
