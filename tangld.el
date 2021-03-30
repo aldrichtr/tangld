@@ -97,12 +97,12 @@ during init"
   :type 'boolean)
 
 (defcustom tangld-cache-org-babel-library-p t
-  "Non-nil if `tangld' should create a cache."
+  "Non-nil means `tangld' should create a cache."
   :group 'tangld
   :type boolean)
 
 (defcustom tangld-use-cached-library-p t
-  "Non-nil if `tangld' should use the cache."
+  "Non-nil means use the cache if it exists."
   :group tangld
   :type 'boolean)
 
