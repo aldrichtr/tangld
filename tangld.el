@@ -294,7 +294,7 @@ By default, build will only tangle files that have changed since last run."
 	    (stow
 	     (tangld--message "stow - write %s to install-root..." file)
 	     (tangld--message "stow - make symlink from %s to %s with stow" from to)
-	     (tangld--ignore! (f-symlink file to)))
+	     (tangld--ignore (f-symlink file to)))
 	    (direct
 	     (tangld--message "direct - write to system dir/file specified")
 	     (tangld--tangle-file file))
