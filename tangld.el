@@ -140,6 +140,12 @@ during init"
 
 ;; These helpers are to help me develop this project quickly.
 
+(defvar tangld-db-file (let-alist tangld-project-dirs (f-join .root .build "db"))
+  "File where modification dates are kept.")
+
+(defvar tangld-cache-file  (let-alist tangld-project-dirs (f-join .root .build "cache"))
+  "File where the library of babel will be cached.")
+
 (defmacro tangld--ignore (&rest _)
   "Do nothing."
   nil)
@@ -323,9 +329,9 @@ to their target location."
   "Remove any files or settings created by the build phase."
   (interactive)
   (tangld--message "Remove the cache")
-  (tangld--ignore (f-delete))
+  (when (f-exists-p tangld-cache-file) (f-delete tangld-cache-file))
   (tangld--message "Remove the db")
-  (tangld--ignore (f-delete)))
+  (when (f-exists-p tangld-db-file) (f-delete tangld-db-file)))
 
 ;;;; Check - tangld-check
 
