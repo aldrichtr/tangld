@@ -159,6 +159,10 @@ during init"
 	(inhibit-message t))
     (org-babel-tangle-file (expand-file-name file .source))))
 
+(defun tangld--db-entry (file)
+  "Return last recorded time a file as modified or nil if there is none."
+  nil)
+
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
@@ -281,9 +285,8 @@ By default, build will only tangle files that have changed since last run."
 
     (dolist (file (directory-files-recursively (f-join .root .source) "."))
       (let ((mod-date (file-attribute-modification-time (file-attributes file)))
-	    (db-entry 'not-implemented))
-	(tangld--message "Date file modified: %S" mod-date)
-	(when (or force t)
+	    (prev-mod-date (tangld--db-entry file)))
+	(when (or force (not (equal mod-date prev-mod-date)))
 	  (cl-case tangled-install-type
 	    (stage
 	     (tangld--message "stage - write to build-root."))
