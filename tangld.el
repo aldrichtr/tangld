@@ -152,8 +152,8 @@ during init"
   "Display message if `tangld-verbose-p' is non-nil."
   (when tangld-verbose-p (message message args)))
 
-(defun tangld--tangle-file ()
-  "Wrapper around `org-babel-tangle'."
+(defun tangld--tangle-file (file)
+  "Tangle FILE without any messages or confirmation."
   (let ((org-confirm-babel-evaluate nil)
 	(message-log-max nil)
 	(inhibit-message t))
