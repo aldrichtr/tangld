@@ -91,8 +91,8 @@ during init"
   :group 'tangld
   :type 'boolean)
 
-(defcustom tangld-init-vc-on-init t
-  "Initialize a version control system when initializing a new tangld project"
+(defcustom tangld-init-vc-on-init-p t
+  "Non-nil if a version control system should be initialized when starting a new tangld project."
   :group 'tangld
   :type 'boolean)
 
