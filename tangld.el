@@ -337,14 +337,12 @@ to their target location."
   "Remove any files or settings created by the build phase."
   (interactive)
   (tangld--message "Remove the cache")
-  (tangld--message "Remove the db")
-  )
+  (tangld--message "Remove the db"))
 
 ;;;; Check - tangld-check
 
 (defun tangld-check ()
   "Run tests"
-  (interactive)
-  )
+  (interactive))
 
 ;;; tangld.el ends here
