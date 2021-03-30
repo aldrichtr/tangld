@@ -266,17 +266,12 @@ By default, build will only tangle files that have changed since last run."
   ;;     - load the cache file.
   ;;   - otherwise
   ;;     - load the library with our org-lib files
-  (if (and (file-exists-p tangld-cache-file) tangld-cache-p)
-      (load tangled-cache-file)
-    (org-babel-load-file))
 
   ;; - if caching is enabled, store our library now
   ;; store our library
   ;; - if there is a db of file mod dates
   ;;   - load it now
 
-  (when (file-exists-p tangld-db-file)
-    (load-file tangld-db-file))
   ;; - for each file in the src directory
   ;;   - if the mod date matches the db entry
   ;;     and 'force' is not set
