@@ -163,6 +163,10 @@ during init"
   "Return last recorded time a file as modified or nil if there is none."
   nil)
 
+(defun tangld--db-record-entry-date (file date)
+  (message "Record %S as date when %s was modified.")
+  nil)
+
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
@@ -304,7 +308,7 @@ By default, build will only tangle files that have changed since last run."
 	       (tangld--message "write to install-root"))
 	      (t
 	       (error "Unknown link type '%S'" type))))
-	  (tangld-message "Record mod date %S in the db")))))
+	  (tangld--db-record-entry-date file new-mod-date)))))
   
   ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
