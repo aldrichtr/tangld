@@ -182,7 +182,7 @@ during init"
           (throw 'do-not-overwrite (format "Aborted init in %s" .root)))))
 
     ;; either it's a new directory or the old one was deleted
-    (message "creating directories in %s" .root)
+    (tangld--message "creating directories in %s" .root)
     (mapc 'f-mkdir (list
                     .root
                     (f-join .root .lib)
@@ -197,13 +197,13 @@ during init"
     ;; initialize the version control (git init)
     (when tangld-init-vc-on-init
       (tangld-init--init-vc .root))
-    (message "initialized new tangld project in %s" .root)))
+    (tangld--message "initialized new tangld project in %s" .root)))
 
 (defun tangld-init--init-vc (&optional vc-root-dir)
   "Initialize the project using magit."
   (let-alist tangld-project-dirs
     (or vc-root-dir (setq vc-root-dir .root))
-    (message "initializing git repo in %s" vc-root-dir)
+    (tangld--message "initializing git repo in %s" vc-root-dir)
     (if (featurep 'magit)
         (magit-init vc-root-dir)
       (message "Magit package not found"))))
@@ -226,10 +226,24 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   ;; The user sets options such as cache use, source and target dirs, etc.
   ;; write those to a project specific configuration location so that build
   ;; can use them as it's config when run.
+
+  ;; environmental details
+  ;; (list system-type system-name user-full-name)
+  (tangld--message "environment details: %s %s %s" system-type system-name user-full-name)
+
+  ;; tangld options
+  (tangld--message "tangled-options: %s %s %s" "uh" "don't" "know?")
+  ;; language, tangle options, exclusions, overrides,
+
+  ;; build-options
+  ;; staging area, copy, link, move, symlink manager
+  (tangld--message "staging area: %s, " "don't know")
+
+  ;; write-config
   (let-alist tangld-project-dirs
     (let ((config-file (f-join .root .lib tangld-config-file)))
-      (ignore! (f-write config-file))
-      (message "Build options saved to '%s'" config-file))))
+      (tangld--ignore (f-write config-file))
+      (tangld--message "Build options saved to '%s'" config-file))))
 
 ;;;; Build - tangld-build
 
@@ -278,29 +292,29 @@ By default, build will only tangle files that have changed since last run."
   ;;   - record the mod date in the db
   (let-alist tangld-project-dirs
     (unless (cddr (directory-files (f-join .root .source)))
-      (tangld-message "No files in source dir."))
+      (tangld--message "No files in source dir."))
 
     (dolist (file (cddr (directory-files (f-join .root .source))))
       (let ((mod-date (file-attribute-modification-time))
 	    (db-entry 'not-implemented))
-	(tangld-message "Date file modified: %S" mod-date)
+	(tangld--message "Date file modified: %S" mod-date)
 	(when (or force t)
 	  (cl-case tangled-install-type
 	    (stage
-	     (tangld-message "stage - write to build-root."))
+	     (tangld--message "stage - write to build-root."))
 	    (link
-	     (tangld-message "link - write %s to install-root..." file)
-	     (tangld-message "link - make a symlink from %s to %s" from to)
-	     (tangld-ignore (f-symlink file to)))
+	     (tangld--message "link - write %s to install-root..." file)
+	     (tangld--message "link - make a symlink from %s to %s" from to)
+	     (tangld--ignore (f-symlink file to)))
 	    (stow
-	     (tangld-message "stow - write %s to install-root..." file)
-	     (tangld-message "stow - make symlink from %s to %s with stow" from to)
-	     (tangld-ignore! (f-symlink file to)))
+	     (tangld--message "stow - write %s to install-root..." file)
+	     (tangld--message "stow - make symlink from %s to %s with stow" from to)
+	     (tangld--ignore! (f-symlink file to)))
 	    (direct
-	     (tangld-message "direct - write to system dir/file specified")
-	     (tangld-tangle-file file))
+	     (tangld--message "direct - write to system dir/file specified")
+	     (tangld--tangle-file file))
 	    (nil
-	     (tangld-message "write to install-root"))
+	     (tangld--message "write to install-root"))
 	    (t
 	     (error "Unknown link type '%S'" type))))
 	(tangld-message "Record mod date %S in the db"))))
