@@ -323,7 +323,9 @@ to their target location."
   "Remove any files or settings created by the build phase."
   (interactive)
   (tangld--message "Remove the cache")
-  (tangld--message "Remove the db"))
+  (tangld--ignore (f-delete))
+  (tangld--message "Remove the db")
+  (tangld--ignore (f-delete)))
 
 ;;;; Check - tangld-check
 
