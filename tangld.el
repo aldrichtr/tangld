@@ -279,7 +279,7 @@ By default, build will only tangle files that have changed since last run."
     (unless (cddr (directory-files (f-join .root .source)))
       (tangld--message "No files in source dir."))
 
-    (dolist (file (cddr (directory-files (f-join .root .source))))
+    (dolist (file (directory-files-recursively (f-join .root .source) "."))
       (let ((mod-date (file-attribute-modification-time))
 	    (db-entry 'not-implemented))
 	(tangld--message "Date file modified: %S" mod-date)
