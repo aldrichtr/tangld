@@ -282,7 +282,7 @@ By default, build will only tangle files that have changed since last run."
 	(let ((new-mod-date (file-attribute-modification-time (file-attributes file)))
 	      (old-mod-date (tangld--db-entry file)))
 	  (when (or force (not (equal new-mod-date old-mod-date)))
-	    (cl-case tangled-install-type
+	    (cl-case tangld-install-type
 	      (stage
 	       (tangld--message "stage - write to build-root."))
 	      (link
