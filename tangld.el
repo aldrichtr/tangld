@@ -270,19 +270,6 @@ By default, build will only tangle files that have changed since last run."
   ;; - if there is a db of file mod dates
   ;;   - load it now
 
-  ;; - for each file in the src directory
-  ;;   - if the mod date matches the db entry
-  ;;     and 'force' is not set
-  ;;     -skip
-  ;;   - otherwise
-  ;;     - consult tangld-install-type setting
-  ;;       - stage :: write to build-root.
-  ;;         tangld-install will ignore 'stage' but will honor anything else
-  ;;       - nil :: write to install-root.
-  ;;       - link :: write to install-root.  link system dir/file to it.
-  ;;       - stow :: write to install-root.  Call stow with the appropriate options
-  ;;       - direct :: write to the system dir/file specified (destructive?)
-  ;;   - record the mod date in the db
   (let-alist tangld-project-dirs
     (let ((files (directory-files-recursively (f-join .root .source) ".")))
       (unless files (tangld--message "Nothing todo, no files."))
