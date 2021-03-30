@@ -311,10 +311,10 @@ to their target location."
   ;; read the config for options pertaining to the install
   ;; for each file in the build directory
   ;;   identify the install type for this file
-  ;;   if
-  (let (install-type)
-    (dolist (file (cddr (directory-files)))
-      (org-babel-tangle-file file)))
+  (tangld--ignore
+   (let ((files))
+     (dolist (file files)
+       (f-move from to))))
   (run-hooks 'tangld-post-install-hook))
 
 ;;;; Clean - tangld-clean
