@@ -283,9 +283,9 @@ By default, build will only tangle files that have changed since last run."
     (let ((files (directory-files-recursively (f-join .root .source) ".")))
       (unless files (tangld--message "Nothing todo, no files."))
       (dolist (file files)
-	(let ((mod-date (file-attribute-modification-time (file-attributes file)))
-	      (prev-mod-date (tangld--db-entry file)))
-	  (when (or force (not (equal mod-date prev-mod-date)))
+	(let ((new-mod-date (file-attribute-modification-time (file-attributes file)))
+	      (old-mod-date (tangld--db-entry file)))
+	  (when (or force (not (equal new-mod-date old-mod-date)))
 	    (cl-case tangled-install-type
 	      (stage
 	       (tangld--message "stage - write to build-root."))
