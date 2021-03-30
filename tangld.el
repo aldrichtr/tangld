@@ -201,7 +201,7 @@ during init"
     (or vc-root-dir (setq vc-root-dir .root))
     (tangld--message "initializing git repo in %s" vc-root-dir)
     (if (featurep 'magit)
-        (magit-init vc-root-dir)
+	(magit-call-git "init" (magit-convert-filename-for-git (expand-file-name vc-root-dir)))
       (message "Magit package not found"))))
 
 ;;;; Configuration - tangld-config
