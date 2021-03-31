@@ -170,6 +170,14 @@ during init"
   (message "Record %S as date when %s was modified.")
   nil)
 
+(defun tangld--expanded-project-dir-paths ()
+  "Return `tangld-project-dirs' with values all expanded."
+  (let ((expanded)
+	(root (alist-get 'root tangld-project-dirs)))
+    (dolist (it tangld-project-dirs)
+      (let ((name (car it)) (val (cdr it)))
+	(push (cons (car it) (expand-file-name it root)) expanded)))))
+
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
@@ -282,8 +290,8 @@ By default, build will only tangle files that have changed since last run."
     (message "load db file")
     (load-file tangld-db-file))
   
-  (let-alist tangld-project-dirs
-    (let ((files (directory-files-recursively (f-join .root .source) ".")))
+  (let-alist (tangld--expanded-project-dirs)
+    (let ((files (directory-files-recursively .source ".")))
       (unless files (tangld--message "Nothing todo, no files."))
       (dolist (file files)
 	(let ((new-mod-date (file-attribute-modification-time (file-attributes file)))
@@ -291,20 +299,23 @@ By default, build will only tangle files that have changed since last run."
 	  (when (or force (not (equal new-mod-date old-mod-date)))
 	    (cl-case tangld-install-type
 	      (stage
-	       (tangld--message "stage - write to build-root."))
+	       (tangld--message "stage - write to build-root.")
+	       (tangld--tangle-file file .build))
 	      (link
 	       (tangld--message "link - write %s to install-root..." file)
+	       (tangld--tangle-file file .install)
 	       (tangld--message "link - make a symlink from %s to %s" from to)
-	       (tangld--ignore (f-symlink file to)))
+	       (f-symlink file (f-relative file "~/")))
 	      (stow
 	       (tangld--message "stow - write %s to install-root..." file)
-	       (tangld--message "stow - make symlink from %s to %s with stow" from to)
-	       (tangld--ignore (f-symlink file to)))
+	       (tangld--tangle-file file .install)
+	       (tangld--message "stow - make symlink from %s to %s with stow"))
 	      (direct
 	       (tangld--message "direct - write to system dir/file specified")
-	       (tangld--ignore (tangld--tangle-file file)))
+	       (tangld--tangle-file file))
 	      (nil
-	       (tangld--message "write to install-root"))
+	       (tangld--message "write %s to install-root" file)
+	       (tangld--tangle-file .install))
 	      (t
 	       (error "Unknown link type '%S'" type))))
 	  (tangld--db-record-entry-date file new-mod-date)))))
