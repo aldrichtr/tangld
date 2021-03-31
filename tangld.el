@@ -163,7 +163,8 @@ during init"
 
 (defun tangld--db-entry (file)
   "Return last recorded time a file as modified or nil if there is none."
-  nil)
+  ;; Until we determine what this file is going to contain.
+  '(0 0 0 0))
 
 (defun tangld--db-record-entry-date (file date)
   (message "Record %S as date when %s was modified.")
