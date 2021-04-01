@@ -173,11 +173,12 @@ during init"
 
 (defun tangld--expanded-project-dir-paths ()
   "Return `tangld-project-dirs' with values all expanded."
-  (let ((expanded)
+  (let ((expanded nil)
 	(root (alist-get 'root tangld-project-dirs)))
     (dolist (it tangld-project-dirs)
       (let ((name (car it)) (val (cdr it)))
-	(push (cons (car it) (expand-file-name it root)) expanded)))))
+	(push (cons name (expand-file-name val root)) expanded)))
+    expanded))
 
 ;;;; Initialization - tangld-init
 
