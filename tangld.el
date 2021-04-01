@@ -103,7 +103,7 @@ during init"
 
 (defcustom tangld-use-cached-library-p t
   "Non-nil means use the cache if it exists."
-  :group tangld
+  :group 'tangld
   :type 'boolean)
 
 (defcustom tangld-config-file "config.org"
