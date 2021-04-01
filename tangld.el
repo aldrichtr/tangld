@@ -358,6 +358,13 @@ to their target location."
 
 (defun tangld-check ()
   "Run tests"
-  (interactive))
+  (interactive)
+  ;; The tangld interactive functions we want to test are full of side-effects
+  ;; like creating files, and directories. It easier and safer to test these
+  ;; commands if they'd only return values instead of creating/deleting files and
+  ;; directories. Therefore, I use advices to.
+
+  ;; This should probably be done.
+  )
 
 ;;; tangld.el ends here
