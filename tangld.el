@@ -155,7 +155,7 @@ during init"
   (when tangld-verbose-p (message message args)))
 
 (defun tangld--tangle-file (file target-dir)
-  "Tangle FILE without any messages or confirmation."
+  "Tangle FILE to TARGET-DIR without any messages or confirmation."
   (let ((org-confirm-babel-evaluate nil)
 	(message-log-max nil)
 	(inhibit-message t)
