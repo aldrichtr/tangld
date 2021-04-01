@@ -154,7 +154,7 @@ during init"
   "Display message if `tangld-verbose-p' is non-nil."
   (when tangld-verbose-p (message message args)))
 
-(defun tangld--tangle-file (file target-file)
+(defun tangld--tangle-file (file target-dir)
   "Tangle FILE without any messages or confirmation."
   (let ((org-confirm-babel-evaluate nil)
 	(message-log-max nil)
