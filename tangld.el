@@ -186,18 +186,14 @@ during init"
 (defun tangld-init ()
   "Setup a new tangld project"
   (interactive)
-  (let-alist tangld-project-dirs
-    (catch 'do-not-overwrite
-      ;; It should be really hard to overwrite an existing project
-      ;; so, check the inhibit variable AND ask for conformation
-      (when (f-exists? (format "%s" .root))
-        (if tangld-inhibit-init-if-exists
-            (if (y-or-n-p
-                 (format
-                  "WARNING: this will overwrite your project in %s continue?"
-                  .root))
-                (f-delete .root t)) ;; they said its ok, delete it
-          (throw 'do-not-overwrite (format "Aborted init in %s" .root)))))
+  (let-alist (tangld--expanded-project-dir-paths tangld-project-dirs)
+    (cond ((not (f-exists-p .root)) nil)
+	  (tangld-inhibit-init-if-exists
+	   (error (format "Aborted init in %s" .root)))
+	  ((y-or-n-p (format "WARNING: this will overwrite your project in %s continue?" .root))
+	   (f-delete .root t))
+	  (t
+	   (tangld--message "overwriting %S" .root)))
 
     ;; either it's a new directory or the old one was deleted
     (tangld--message "creating directories in %s" .root)
