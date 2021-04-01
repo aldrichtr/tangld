@@ -154,12 +154,12 @@ during init"
   "Display message if `tangld-verbose-p' is non-nil."
   (when tangld-verbose-p (message message args)))
 
-(defun tangld--tangle-file (file)
+(defun tangld--tangle-file (file target-file)
   "Tangle FILE without any messages or confirmation."
   (let ((org-confirm-babel-evaluate nil)
 	(message-log-max nil)
 	(inhibit-message t))
-    (org-babel-tangle-file (expand-file-name file .source))))
+    (org-babel-tangle-file (expand-file-name file .source) target-file)))
 
 (defun tangld--db-entry (file)
   "Return last recorded time a file as modified or nil if there is none."
