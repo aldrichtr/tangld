@@ -158,8 +158,9 @@ during init"
   "Tangle FILE without any messages or confirmation."
   (let ((org-confirm-babel-evaluate nil)
 	(message-log-max nil)
-	(inhibit-message t))
-    (org-babel-tangle-file (expand-file-name file .source) target-file)))
+	(inhibit-message t)
+	(target (expand-file-name (f-base file) target-dir)))
+    (org-babel-tangle-file file target)))
 
 (defun tangld--db-entry (file)
   "Return last recorded time a file as modified or nil if there is none."
