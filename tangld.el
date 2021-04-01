@@ -197,16 +197,11 @@ during init"
 
     ;; either it's a new directory or the old one was deleted
     (tangld--message "creating directories in %s" .root)
-    (mapc 'f-mkdir (list
-                    .root
-                    (f-join .root .lib)
-                    (f-join .root .source)
-                    (f-join .root .build)
-                    (f-join .root .install)))
+    (mapc #'f-mkdir (mapcar #'cdr (tangld--expanded-project-dir-paths tangld-project-dirs)))
 
     ;; add the lib directory to the list of babel libraries
     (when tangld-add-project-lib-dir-on-init
-      (add-to-list 'tangld-babel-library-dirs (f-join .root .lib)))
+      (add-to-list 'tangld-babel-library-dirs .lib))
 
     ;; initialize the version control (git init)
     (when tangld-init-vc-on-init
