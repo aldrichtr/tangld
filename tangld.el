@@ -171,6 +171,7 @@ during init"
   (message "Record %S as date when %s was modified.")
   nil)
 
+;; It is far more useful to have access to the full paths than the components.
 (defun tangld--expanded-project-dir-paths ()
   "Return `tangld-project-dirs' with values all expanded."
   (let ((expanded nil)
