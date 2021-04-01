@@ -295,34 +295,26 @@ By default, build will only tangle files that have changed since last run."
     (let ((files (directory-files-recursively .source ".")))
       (unless files (tangld--message "Nothing todo, no files."))
       (dolist (file files)
-	(let ((new-mod-date (file-attribute-modification-time (file-attributes file)))
-	      (old-mod-date (tangld--db-entry file)))
-	  (when (or force (not (equal new-mod-date old-mod-date)))
-	    (cl-case tangld-install-type
-	      (stage
-	       (tangld--message "stage - write to build-root.")
-	       (tangld--tangle-file file .build))
-	      (link
-	       (tangld--message "link - write %s to install-root..." file)
-	       (tangld--tangle-file file .install)
-	       (tangld--message "link - make a symlink from %s to %s" from to)
-	       (f-symlink (f-join .install (f-base file))
-			  (f-relative it "~/")))
-	      (stow
-	       (tangld--message "stow - write %s to install-root..." file)
-	       (tangld--tangle-file file .install)
-	       (tangld--message "stow - make symlink from %s to %s with stow")
-	       ;; TODO: look up stow commands to do this.
-	       )
-	      (direct
-	       (tangld--message "direct - write to system dir/file specified")
-	       (tangld--tangle-file file))
-	      (nil
-	       (tangld--message "write %s to install-root" file)
-	       (tangld--tangle-file .install))
-	      (t
-	       (error "Unknown link type '%S'" type))))
-	  (tangld--db-record-entry-date file new-mod-date)))))
+	(when (or force)
+	  (cl-case tangld-install-type
+	    (stage
+	     (tangld--async-tangle-file file .build))
+	    (link
+	     (tangld--async-tangle-file file .install)
+	     (f-symlink target ()))
+	    (stow
+	     (tangld--async-tangle-file file .install)
+	     ;; TODO: look up stow commands to do this.
+	     )
+	    (direct
+	     (tangld--message "direct - write to system dir/file specified")
+	     (tangld--tangle-file file (f-relative it (f-full "~/"))))
+	    (nil
+	     (tangld--message "write %s to install-root" file)
+	     (tangld--tangle-file .install))
+	    (t
+	     (error "Unknown link type '%S'" type))))
+	(tangld--db-record-entry-date file new-mod-date))))
   
   ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
