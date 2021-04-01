@@ -122,19 +122,19 @@ during init"
   :type 'hook)
 
 (defcustom tangld-preinstall-hook nil
+  "Hook run before `tangld-install' is called."
   :group 'tangld
-  :type 'hook
-  "Hook run before `tangld-install' is called.")
+  :type 'hook)
 
 (defcustom tangld-postinstall-hook nil
+  "Hook run after `tangld-install' is called."
   :group 'tangld
-  :type 'hook
-  "Hook run after `tangld-install' is called.")
+  :type 'hook)
 
 (defcustom tangld-verbose-p nil
+  "Whether tangled should display many messages."
   :group 'tangld
-  :type 'boolean
-  "Whether tangled should display many messages.")
+  :type 'boolean)
 
 ;;;; Helpers
 
