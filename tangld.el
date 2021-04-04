@@ -165,7 +165,7 @@ during init"
 		    (list (ignore-errors (org-babel-tangle-file ,file ,target))
 			  ,file
 			  ,target)))
-	       (-lambda (result)
+	       (lambda (result)
 		 (cl-destructuring-bind (outcome file target) result
 		   (message "%s in tangling %s to %s" (if outcome "Succeded" "Failed") file target)))))
 
