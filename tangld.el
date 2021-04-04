@@ -271,7 +271,7 @@ By default, build will only tangle files that have changed since last run."
   "Tangle files to install root dir."
   (let ((install-root))
     (tangld--async-tangle-file file target-file)
-    ()))
+    (f-symlink )))
 
 (defun tangld--link-type-stow-build (file))
 
