@@ -288,7 +288,7 @@ By default, build will only tangle files that have changed since last run."
   (let-alist (tangld--expanded-project-dirs)
     (let ((files (directory-files-recursively .source ".")))
       (unless files (tangld--message "Nothing todo, no files."))
-      (dolist (file files) (tangld--apply-build file force))))
+      (dolist (file files) (tangld--apply-build tangld-install-type file force))))
   
   (run-hooks 'tangld-postbuild-hooks))
 
