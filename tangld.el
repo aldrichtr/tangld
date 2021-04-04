@@ -247,9 +247,8 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
   (run-hooks 'tangld-prebuild-hooks)
-  (let ((files (directory-files-recursively .source "."))
-	(target-file nil))
-    (dolist (file files) (tangld--link-type-build file)))
+  (mapc #'tangld--link-type-build file
+	(directory-files-recursively .source "."))
   (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Link type build functins
