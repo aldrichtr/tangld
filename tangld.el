@@ -274,7 +274,8 @@ By default, build will only tangle files that have changed since last run."
     (f-symlink )))
 
 (defun tangld--link-type-stow-build (file)
-  "")
+  "Invoke stow to."
+  ())
 
 ;; (defun tangld--link-type-direct-build (file))
 
