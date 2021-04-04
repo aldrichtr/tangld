@@ -255,7 +255,6 @@ By default, build will only tangle files that have changed since last run."
 	(dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
 	(files (directory-files-recursively .source "."))
 	(target-file nil))
-    (unless files (tangld--message "Nothing todo, no files."))
     (dolist (file files)
       (setq target-file (or (funcall tangld--target-fn)))
       (cond ((not (f-ext-p file org))
