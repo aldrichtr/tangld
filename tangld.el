@@ -256,7 +256,7 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld--link-type-build (file)
   (let ((build-fn (intern (format "tangld--link-type-%s-build"))))
-    (funcall file)))
+    (funcall build-fn file)))
 
 (defun tangld--link-type-direct-build (file)
   "Tangle files into the build directory."
