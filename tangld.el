@@ -262,6 +262,9 @@ By default, build will only tangle files that have changed since last run."
 ;;;; Link type build functins
 
 (defun tangld--link-type-direct-build (file))
+(defun tangld--link-type-link-build (file))
+(defun tangld--link-type-stow-build (file))
+;; (defun tangld--link-type-direct-build (file))
 
 ;;;; Install - tangld-install
 
