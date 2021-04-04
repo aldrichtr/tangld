@@ -250,9 +250,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
-
   (run-hooks 'tangld-prebuild-hooks)
-
   (let ((source-dir (alist-get 'source tangld-project-dirs))
 	(dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
 	(files (directory-files-recursively .source "."))
@@ -264,7 +262,6 @@ By default, build will only tangle files that have changed since last run."
 	     (f-symlink file target-dir))
 	    ((or force (not (file-exists-p target)) (file-newer-than-file-p file target-file))
 	     (tangld--async-tangle-file file .dotfiles)))))
-  
   (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Install - tangld-install
