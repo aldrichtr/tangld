@@ -252,7 +252,7 @@ By default, build will only tangle files that have changed since last run."
 	(files (directory-files-recursively .source "."))
 	(target-file nil))
     (dolist (file files)
-      (setq target-file (or (funcall tangld--target-fn)))
+      (setq target-file (or target-fn target))
       (cond ((not (f-ext-p file org))
 	     (f-symlink file target-dir))
 	    ((or force (not (file-exists-p target)) (file-newer-than-file-p file target-file))
