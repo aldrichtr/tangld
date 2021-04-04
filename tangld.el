@@ -160,8 +160,7 @@ during init"
 		  (require 'org)
 		  (require 'ob-tangle)
 		  (let ((org-babel-confirm-evaluate nil)
-			(gc-cons-threshold most-positive-fixnum)
-			(org-babel-default-header-args '((:tangle yes))))
+			(gc-cons-threshold most-positive-fixnum))
 		    (list (ignore-errors (org-babel-tangle-file ,file ,target))
 			  ,file
 			  ,target)))
