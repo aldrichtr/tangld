@@ -246,7 +246,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 ;;;; Build - tangld-build
 
 (defun tangld-build (&optional force)
-  "Tangle org-mode files in the source dir.
+  "Tangle org-mode files from the source dir to the dotfiles dir.
 
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
