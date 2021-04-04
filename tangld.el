@@ -259,7 +259,7 @@ By default, build will only tangle files that have changed since last run."
 	(target-file nil))
     (unless files (tangld--message "Nothing todo, no files."))
     (dolist (file files)
-      (setq target-file (or ()))
+      (setq target-file (or (funcall tangld--target-)))
       (cond ((not (f-ext-p file org))
 	     (f-symlink file target-dir))
 	    ((or force (not (file-exists-p target)) (file-newer-than-file-p file target-file))
