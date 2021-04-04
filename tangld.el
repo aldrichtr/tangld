@@ -193,6 +193,7 @@ during init"
 (defun tangld-init ()
   "Setup a new tangld project"
   (interactive)
+
   (let-alist (tangld--expanded-project-dir-paths tangld-project-dirs)
     (cond ((not (f-exists-p .root)) nil)
 	  (tangld-inhibit-init-if-exists
