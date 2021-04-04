@@ -283,7 +283,7 @@ By default, build will only tangle files that have changed since last run."
 ;;;; Clean - tangld-clean
 
 (defun tangld-clean ()
-  "Remove any symlinks "
+  "Remove any symlinks corresponding to files in dotfiles-dir."
   (interactive)
   (let ((dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
 	(system-dir (alist-get 'system tangld-project-dirs))
