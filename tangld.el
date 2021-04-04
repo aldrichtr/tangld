@@ -249,29 +249,6 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 ;;;; Build - tangld-build
 
-(defun tangld--apply-build-maybe (type file &optional force)
-  (funcall (intern ) file force))
-
-(defun tangld--stage-build-maybe (file &optional force)
-  "Apply"
-  ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
-  (tangld--async-tangle-file file .build force))
-
-(defun tangld--direct-build-maybe (file &optional force)
-  "Apply"
-  ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
-  (tangld--async-tangle-file file .build force))
-
-(defun tangld--stow-build-maybe (file &optional force)
-  "Apply"
-  ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
-  (tangld--async-tangle-file file .build force))
-
-(defun tangld--default-build-maybe (file &optional force)
-  "Apply"
-  ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
-  (tangld--async-tangle-file file .build force))
-
 (defun tangld-build (&optional force)
   "Tangle org-mode files in the source dir.
 
@@ -281,28 +258,27 @@ By default, build will only tangle files that have changed since last run."
   (run-hooks 'tangld-prebuild-hooks)
 
   (let-alist (tangld--expanded-project-dirs)
-    (let ((files (directory-files-recursively .source ".")))
+    (let ((files (directory-files-recursively .source "."))
+	  (target-dir .dotfiles))
       (unless files (tangld--message "Nothing todo, no files."))
-      (dolist (file files) (tangld--apply-build tangld-install-type file force))))
+      (dolist (file files)
+	(cond ((not (f-ext-p file org))
+	       ())
+	      ((file-exists-p )
+	       (tangld--async-tangle-file file .dotfiles))))))
   
   (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Install - tangld-install
 
 (defun tangld-install ()
-  "Organize target directories, files and libraries on this system. 
-
-The build step tangles org files into their source, the install step moves them
-to their target location."
+  "Symlink files in dotfiles directory to system directory. "
   (interactive)
   (run-hooks 'tangld-pre-install-hook)
-  ;; read the config for options pertaining to the install
-  ;; for each file in the build directory
-  ;;   identify the install type for this file
-  (tangld--ignore
-   (let ((files))
-     (dolist (file files)
-       (f-move from to))))
+  (let* ((dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
+	 (files (directory-files-recursively dotfiles-dir ".")))
+    (dolist (file files)
+      (f-symlink)))
   (run-hooks 'tangld-post-install-hook))
 
 ;;;; Clean - tangld-clean
