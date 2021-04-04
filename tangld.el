@@ -295,7 +295,7 @@ By default, build will only tangle files that have changed since last run."
     (let ((files (directory-files-recursively .source ".")))
       (unless files (tangld--message "Nothing todo, no files."))
       (dolist (file files)
-	(when (or force)
+	(when (or force (file-newer-than-file-p target file))
 	  (cl-case tangld-install-type
 	    (stage
 	     (tangld--async-tangle-file file .build))
@@ -307,10 +307,8 @@ By default, build will only tangle files that have changed since last run."
 	     ;; TODO: look up stow commands to do this.
 	     )
 	    (direct
-	     (tangld--message "direct - write to system dir/file specified")
 	     (tangld--tangle-file file (f-relative it (f-full "~/"))))
 	    (nil
-	     (tangld--message "write %s to install-root" file)
 	     (tangld--tangle-file .install))
 	    (t
 	     (error "Unknown link type '%S'" type))))
