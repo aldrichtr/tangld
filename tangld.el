@@ -298,23 +298,6 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld-check ()
   "Run tests"
-  (interactive)
-  ;; The tangld interactive functions we want to test are full of side-effects
-  ;; like creating files, and directories. It easier and safer to test these
-  ;; commands if they'd only return values instead of creating/deleting files and
-  ;; directories. Therefore, I use advices to.
-
-  ;; This should probably be done.
-  ;; (let* ((fake-file-names (list "foo.el" "bar/flop.org" "zoo/lion/teeth.org" "cry.org"))
-  ;; 	 (result nil)
-  ;; 	 (path ""))
-  ;;   (tangld--let-advice ((directory-files-recursively `(lambda () ,fake-file-names))
-  ;; 		   (f-symlink (lambda () (push))))
-  ;;     )
-  ;;   (unwind-protect
-  ;; 	(progn (advice-add #'directory-files-recursively :override `(lambda () ,fake-file-names))
-  ;; 	       (advice-add #'f-symlink (lambda (&rest args))))
-  ;;     (advice-remove #'directory-files-recursively :override )))
-  )
+  (interactive))
 
 ;;; tangld.el ends here
