@@ -301,7 +301,7 @@ By default, build will only tangle files that have changed since last run."
 	     (tangld--async-tangle-file file .build))
 	    (link
 	     (tangld--async-tangle-file file .install)
-	     (f-symlink target ()))
+	     (f-symlink file target))
 	    (stow
 	     (tangld--async-tangle-file file .install)
 	     ;; TODO: look up stow commands to do this.
