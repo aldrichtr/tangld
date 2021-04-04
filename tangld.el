@@ -267,7 +267,7 @@ By default, build will only tangle files that have changed since last run."
 ;;;; Install - tangld-install
 
 (defun tangld-install ()
-  "Symlink files in dotfiles directory to system directory. "
+  "Symlink files in dotfiles directory to system directory."
   (interactive)
   (run-hooks 'tangld-pre-install-hook)
   (let* ((dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
