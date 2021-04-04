@@ -251,7 +251,7 @@ By default, build will only tangle files that have changed since last run."
 	(dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
 	(files (directory-files-recursively .source "."))
 	(target-file nil))
-    (dolist (file files)))
+    (dolist (file files) (tangld--link-type-build file)))
   (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Link type build functins
