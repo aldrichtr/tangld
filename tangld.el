@@ -279,6 +279,7 @@ By default, build will only tangle files that have changed since last run."
 	 (relative-path nil)
 	 (target-path nil))
     (dolist (file files)
+      (setq target-path (f-expand relative-path system-dir))
       (f-symlink file target-path)))
   (run-hooks 'tangld-post-install-hook))
 
