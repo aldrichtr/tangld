@@ -282,6 +282,7 @@ By default, build will only tangle files that have changed since last run."
   (interactive)
   (run-hooks 'tangld-pre-install-hook)
   (let* ((files (directory-files-recursively dotfiles-dir ".")))
+    (mapc #'tangld--link-type-install files)
     (dolist (file files) (tangld--link-type-install file)))
   (run-hooks 'tangld-post-install-hook))
 
