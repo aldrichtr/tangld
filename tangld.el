@@ -269,28 +269,6 @@ By default, build will only tangle files that have changed since last run."
   (tangld--message "Run `tangld-prebuild-hooks'.")
   (run-hooks 'tangld-prebuild-hooks)
 
-  ;; - load the library-of-babel.
-  ;;   - if the user says the cache can be used and there is one
-  ;;     - load the cache file.
-  ;;   - otherwise
-  ;;     - load the library with our org-lib files
-  (tangld--message "Load library of babel...")
-  (if (and tangld-use-cached-library-p (file-exists-p tangld-cache-file))
-      (progn (tangld--message "loading cache file...")
-	     (load-file tangld-cache-file))
-    (tangld--message "loading org-lib files...")
-    ;; TODO
-    )
-
-  (when (tangld-cache-org-babel-library-p)
-    (tangld-message "store library in cache")
-    ;; TODO
-    )
-
-  (when (file-exists-p tangld-db-file)
-    (message "load db file")
-    (load-file tangld-db-file))
-  
   (let-alist (tangld--expanded-project-dirs)
     (let ((files (directory-files-recursively .source ".")))
       (unless files (tangld--message "Nothing todo, no files."))
