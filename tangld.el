@@ -263,7 +263,8 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld--link-type-direct-build (file)
   (let-alist tangld-project-dirs
-    (tangld--async-tangle-file file )))
+    (tangld--async-tangle-file file )
+    ()))
 
 (defun tangld--link-type-link-build (file))
 (defun tangld--link-type-stow-build (file))
