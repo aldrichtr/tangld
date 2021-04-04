@@ -154,13 +154,20 @@ during init"
   "Display message if `tangld-verbose-p' is non-nil."
   (when tangld-verbose-p (message message args)))
 
-(defun tangld--tangle-file (file target-dir)
-  "Tangle FILE to TARGET-DIR without any messages or confirmation."
-  (let ((org-confirm-babel-evaluate nil)
-	(message-log-max nil)
-	(inhibit-message t)
-	(target (expand-file-name (f-base file) target-dir)))
-    (org-babel-tangle-file file target)))
+(defun tangld--async-tangle (source target)
+  "Asynchronously tangle FILE to TARGET."
+  (async-start `(lambda ()
+		  (require 'org)
+		  (require 'ob-tangle)
+		  (let ((org-babel-confirm-evaluate nil)
+			(gc-cons-threshold most-positive-fixnum)
+			(org-babel-default-header-args ',org-babel-default-header-args))
+		    (list (ignore-errors (org-babel-tangle-file ,source ,target))
+			  ,source
+			  ,target)))
+	       (-lambda (result)
+		 (cl-destructuring-bind (outcome source target) result
+		   (message "%s in tangling %s to %s" (if outcome "Succeded" "Failed") source target)))))
 
 (defun tangld--db-entry (file)
   "Return last recorded time a file as modified or nil if there is none."
