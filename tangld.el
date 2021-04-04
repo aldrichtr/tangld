@@ -146,10 +146,6 @@ during init"
 (defvar tangld-cache-file  (let-alist tangld-project-dirs (f-join .root .build "cache"))
   "File where the library of babel will be cached.")
 
-(defmacro tangld--ignore (&rest _)
-  "Do nothing."
-  nil)
-
 (defun tangld--message (format-string &rest args)
   "Display message if `tangld-verbose-p' is non-nil."
   (when tangld-verbose-p (message message args)))
