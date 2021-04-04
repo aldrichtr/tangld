@@ -286,10 +286,11 @@ By default, build will only tangle files that have changed since last run."
   "Remove any files symlinked to the system directory."
   (interactive)
   (let ((dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
+	(system-dir (alist-get 'system tangld-project-dirs))
 	(relative-path nil))
     (dolist (file files)
       (setq relative-path (f-relative file dotfiles-dir))
-      (setq target-path ()))))
+      (setq target-path (f-expand relative-path system-dir)))))
 
 ;;;; Check - tangld-check
 
