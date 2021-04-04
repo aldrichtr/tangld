@@ -267,7 +267,8 @@ By default, build will only tangle files that have changed since last run."
     (tangld--async-tangle-file file target-file)
     ()))
 
-(defun tangld--link-type-link-build (file))
+(defun tangld--link-type-link-build (file)
+  "Tangle files")
 
 (defun tangld--link-type-stow-build (file))
 
