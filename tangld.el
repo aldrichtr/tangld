@@ -258,7 +258,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 ;;;; Build - tangld-build
 
-(defun tangld--apply-build-maybe (file &optional force)
+(defun tangld--apply-build-maybe (type file &optional force)
   (funcall (intern ) file force))
 
 (defun tangld--stage-build-maybe (file &optional force)
