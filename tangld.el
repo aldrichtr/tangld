@@ -290,7 +290,9 @@ By default, build will only tangle files that have changed since last run."
 	(relative-path nil))
     (dolist (file files)
       (setq relative-path (f-relative file dotfiles-dir))
-      (setq target-path (f-expand relative-path system-dir)))))
+      (setq target-path (f-expand relative-path system-dir))
+      (when (f-symlink-p target-path)
+	(f-delete target-path)))))
 
 ;;;; Check - tangld-check
 
