@@ -274,10 +274,13 @@ By default, build will only tangle files that have changed since last run."
   (interactive)
   (run-hooks 'tangld-pre-install-hook)
   (let* ((dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
+	 (system-dir (alist-get 'system tangld-project-dirs))
 	 (files (directory-files-recursively dotfiles-dir "."))
 	 (relative-path nil)
 	 (target-path nil))
     (dolist (file files)
+      (setq relative-path (f-relative file dotfiles-dir))
+      (setq target-path (f-expand relative-path system-dir))
       (f-symlink file target-path)))
   (run-hooks 'tangld-post-install-hook))
 
