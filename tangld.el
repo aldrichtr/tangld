@@ -193,6 +193,7 @@ during init"
 (defun tangld-init ()
   "Setup a new tangld project"
   (interactive)
+
   (let-alist (tangld--expanded-project-dir-paths tangld-project-dirs)
     (cond ((not (f-exists-p .root)) nil)
 	  (tangld-inhibit-init-if-exists
@@ -257,36 +258,41 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 ;;;; Build - tangld-build
 
+(defun tangld--apply-build-maybe (file &optional force)
+  (funcall (intern ) file force))
+
+(defun tangld--stage-build-maybe (file &optional force)
+  "Apply"
+  ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
+  (tangld--async-tangle-file file .build force))
+
+(defun tangld--direct-build-maybe (file &optional force)
+  "Apply"
+  ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
+  (tangld--async-tangle-file file .build force))
+
+(defun tangld--stow-build-maybe (file &optional force)
+  "Apply"
+  ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
+  (tangld--async-tangle-file file .build force))
+
+(defun tangld--default-build-maybe (file &optional force)
+  "Apply"
+  ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
+  (tangld--async-tangle-file file .build force))
+
 (defun tangld-build (&optional force)
   "Tangle org-mode files in the source dir.
 
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
+
   (run-hooks 'tangld-prebuild-hooks)
 
   (let-alist (tangld--expanded-project-dirs)
     (let ((files (directory-files-recursively .source ".")))
       (unless files (tangld--message "Nothing todo, no files."))
-      (dolist (file files)
-	(when (or force
-		  (not (f-exists-p target))
-		  (file-newer-than-file-p target file))
-	  (cl-case tangld-install-type
-	    (stage
-	     (tangld--async-tangle-file file .build))
-	    (link
-	     (tangld--async-tangle-file file .install)
-	     (f-symlink file target))
-	    (stow
-	     (tangld--async-tangle-file file .install)
-	     ;; TODO: look up stow commands to do this.
-	     )
-	    (direct
-	     (tangld--async-tangle-file file (f-relative it (f-full "~/"))))
-	    (nil
-	     (tangld--async-tangle-file .install))
-	    (t
-	     (error "Unknown link type '%S'" type)))))))
+      (dolist (file files) (tangld--apply-build file force))))
   
   (run-hooks 'tangld-postbuild-hooks))
 
