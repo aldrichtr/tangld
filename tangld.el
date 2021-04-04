@@ -255,7 +255,8 @@ By default, build will only tangle files that have changed since last run."
 
   (let ((source-dir (alist-get 'source tangld-project-dirs))
 	(dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
-	(files (directory-files-recursively .source ".")))
+	(files (directory-files-recursively .source "."))
+	(do))
     (unless files (tangld--message "Nothing todo, no files."))
     (dolist (file files)
       (cond ((not (f-ext-p file org))
