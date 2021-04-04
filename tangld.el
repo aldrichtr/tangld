@@ -287,7 +287,7 @@ By default, build will only tangle files that have changed since last run."
 ;;;; Clean - tangld-clean
 
 (defun tangld-clean ()
-  "Remove any files or settings created by the build phase."
+  "Remove any files symlinked to the system directory."
   (interactive)
   (dolist (file files) (tangld--apply-clean file)))
 
