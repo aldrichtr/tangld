@@ -247,9 +247,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
   (run-hooks 'tangld-prebuild-hooks)
-  (let ((source-dir (alist-get 'source tangld-project-dirs))
-	(dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
-	(files (directory-files-recursively .source "."))
+  (let ((files (directory-files-recursively .source "."))
 	(target-file nil))
     (dolist (file files) (tangld--link-type-build file)))
   (run-hooks 'tangld-postbuild-hooks))
