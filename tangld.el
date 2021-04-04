@@ -262,18 +262,22 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   (funcall (intern ) file force))
 
 (defun tangld--stage-build-maybe (file &optional force)
+  "Apply"
   ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
   (tangld--async-tangle-file file .build force))
 
 (defun tangld--direct-build-maybe (file &optional force)
+  "Apply"
   ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
   (tangld--async-tangle-file file .build force))
 
 (defun tangld--stow-build-maybe (file &optional force)
+  "Apply"
   ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
   (tangld--async-tangle-file file .build force))
 
 (defun tangld--default-build-maybe (file &optional force)
+  "Apply"
   ;; (not (f-exists-p target)) (file-newer-than-file-p target file)
   (tangld--async-tangle-file file .build force))
 
