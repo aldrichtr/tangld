@@ -261,7 +261,7 @@ By default, build will only tangle files that have changed since last run."
     (dolist (file files)
       (cond ((not (f-ext-p file org))
 	     (f-symlink file target-dir))
-	    ((or (file-exists-p target))
+	    ((or force (not (file-exists-p target)) (file-newer-than-file-p file target-file))
 	     (tangld--async-tangle-file file .dotfiles)))))
   
   (run-hooks 'tangld-postbuild-hooks))
