@@ -257,15 +257,15 @@ By default, build will only tangle files that have changed since last run."
 
   (run-hooks 'tangld-prebuild-hooks)
 
-  (let-alist (tangld--expanded-project-dirs)
-    (let ((files (directory-files-recursively .source "."))
-	  (target-dir .dotfiles))
-      (unless files (tangld--message "Nothing todo, no files."))
-      (dolist (file files)
-	(cond ((not (f-ext-p file org))
-	       ())
-	      ((file-exists-p )
-	       (tangld--async-tangle-file file .dotfiles))))))
+  (let ((source-dir (alist-get 'source tangld-project-dirs))
+	(dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
+	(files (directory-files-recursively .source ".")))
+    (unless files (tangld--message "Nothing todo, no files."))
+    (dolist (file files)
+      (cond ((not (f-ext-p file org))
+	     (f-symlink file target-dir))
+	    ((file-exists-p )
+	     (tangld--async-tangle-file file .dotfiles)))))
   
   (run-hooks 'tangld-postbuild-hooks))
 
@@ -276,9 +276,11 @@ By default, build will only tangle files that have changed since last run."
   (interactive)
   (run-hooks 'tangld-pre-install-hook)
   (let* ((dotfiles-dir (alist-get 'dotfiles tangld-project-dirs))
-	 (files (directory-files-recursively dotfiles-dir ".")))
+	 (files (directory-files-recursively dotfiles-dir "."))
+	 (relative-path nil)
+	 (target-path nil))
     (dolist (file files)
-      (f-symlink)))
+      (f-symlink file target-path)))
   (run-hooks 'tangld-post-install-hook))
 
 ;;;; Clean - tangld-clean
