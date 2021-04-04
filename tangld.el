@@ -262,10 +262,6 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
-  ;; - read the config for options pertaining to this build
-  (tangld--message "Read config options...")
-  ;; config options
-  ;; - run the pre-build hooks if any
   (tangld--message "Run `tangld-prebuild-hooks'.")
   (run-hooks 'tangld-prebuild-hooks)
 
@@ -289,8 +285,7 @@ By default, build will only tangle files that have changed since last run."
 	    (nil
 	     (tangld--async-tangle-file .install))
 	    (t
-	     (error "Unknown link type '%S'" type))))
-	(tangld--db-record-entry-date file new-mod-date))))
+	     (error "Unknown link type '%S'" type)))))))
   
   ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
