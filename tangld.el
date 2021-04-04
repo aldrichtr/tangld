@@ -319,9 +319,7 @@ to their target location."
 (defun tangld-clean ()
   "Remove any files or settings created by the build phase."
   (interactive)
-  (dolist (file files)
-    ())
-  )
+  (dolist (file files) (tangld--apply-clean file)))
 
 ;;;; Check - tangld-check
 
