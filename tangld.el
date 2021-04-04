@@ -307,9 +307,9 @@ By default, build will only tangle files that have changed since last run."
 	     ;; TODO: look up stow commands to do this.
 	     )
 	    (direct
-	     (tangld--tangle-file file (f-relative it (f-full "~/"))))
+	     (tangld--async-tangle-file file (f-relative it (f-full "~/"))))
 	    (nil
-	     (tangld--tangle-file .install))
+	     (tangld--async-tangle-file .install))
 	    (t
 	     (error "Unknown link type '%S'" type))))
 	(tangld--db-record-entry-date file new-mod-date))))
