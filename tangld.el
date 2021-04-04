@@ -258,7 +258,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 ;;;; Build - tangld-build
 
-(defun tangld--apply-build-maybe (file &optional force)
+(defun tangld--apply-build-maybe (type file &optional force)
   (funcall (intern ) file force))
 
 (defun tangld--stage-build-maybe (file &optional force)
@@ -292,7 +292,7 @@ By default, build will only tangle files that have changed since last run."
   (let-alist (tangld--expanded-project-dirs)
     (let ((files (directory-files-recursively .source ".")))
       (unless files (tangld--message "Nothing todo, no files."))
-      (dolist (file files) (tangld--apply-build file force))))
+      (dolist (file files) (tangld--apply-build tangld-install-type file force))))
   
   (run-hooks 'tangld-postbuild-hooks))
 
