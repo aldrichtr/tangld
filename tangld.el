@@ -179,11 +179,6 @@ during init"
 	(push (cons name (expand-file-name val root)) expanded)))
     expanded))
 
-(defmacro tangld--let* (vars &rest body)
-  (declare (indent defun))
-  (let-alist (tangld--expanded-project-dir-paths)
-    (let* ,@vars ,@body)))
-
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
