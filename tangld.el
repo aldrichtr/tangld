@@ -166,7 +166,8 @@ during init"
 		   (message "%s in tangling %s to %s" (if outcome "Succeded" "Failed") file target)))))
 
 (defun tangld--tangle (file project-dir &optional force)
-  "Tangle FILE into PROJECT-DIR."
+  "Tangle FILE into PROJECT-DIR.
+Only tangles if target file either does not exist or is older than FILE."
   (let* ((pdir (alist-get project-dir tangld--project-dirs))
 	 (target (f-expand (f-relative file (f-parent file)) pdir)))
     (when (or force (not (f-exists-p target)) (file-newer-than-file-p file target))
