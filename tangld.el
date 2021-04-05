@@ -167,7 +167,7 @@ during init"
 		 (cl-destructuring-bind (outcome file target) result
 		   (message "%s in tangling %s to %s" (if outcome "Succeded" "Failed") file target)))))
 
-(defun tangld--tangle (file target-dir &optional force)
+(defun tangld--tangle (file project-dir &optional force)
   "Do what I mean."
   (let ((target))
     (when (or force (not (f-exists-p target)) (file-newer-than-file-p file target))
