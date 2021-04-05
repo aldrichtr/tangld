@@ -154,7 +154,7 @@ during init"
 ;; just symlinked to the target directory by default.
 ;; They can either provide their own build function or create their own link type.
 
-(defun tangld-default-build-fn (file source-dir target-dir &optional)
+(defun tangld-default-build-fn (file source-dir target-dir)
   "Function that controls what happens to files when they are built."
   (cond ((file-ext-p file "org")
 	 (tangld--tangle file target-dir))
