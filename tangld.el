@@ -180,7 +180,6 @@ during init"
 ;; Tangling is really slow. Doing so with multiple files that are likely to be
 ;; big will take too much time and it is unacceptable to ask the user to wait.
 ;; Instead, we tangle asynchronously.
-
 (defun tangld--async-tangle-file (file target)
   "Asynchronously tangle FILE to TARGET."
   (async-start `(lambda ()
