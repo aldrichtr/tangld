@@ -250,7 +250,6 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 (defun tangld--link-type-direct-build (file)
   "Tangle files into the build directory."
   (let ((build-dir (alist-get 'build tangld-project-dirs)))
-    (tangld--message "")
     (tangld--async-tangle-file file build-dir)))
 
 (defun tangld--link-type-link-build (file)
