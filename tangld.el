@@ -288,9 +288,7 @@ By default, build will only tangle files that have changed since last run."
   "TODO"
   (message "Not yet implemented."))
 
-(defun tangld--link-type-default-install (file)
-  "TODO"
-  (message "Not yet implemented."))
+(defun tangld--link-type-default-install (_) nil)
 
 (defun tangld-install ()
   "Symlink files in dotfiles directory to system directory."
