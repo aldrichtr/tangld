@@ -140,12 +140,6 @@ during init"
 
 ;; These helpers are to help me develop this project quickly.
 
-(defvar tangld-db-file (let-alist tangld-project-dirs (f-join .root .build "db"))
-  "File where modification dates are kept.")
-
-(defvar tangld-cache-file  (let-alist tangld-project-dirs (f-join .root .build "cache"))
-  "File where the library of babel will be cached.")
-
 (defun tangld--message (format-string &rest args)
   "Display message if `tangld-verbose-p' is non-nil."
   (when tangld-verbose-p (message message args)))
