@@ -138,6 +138,7 @@ during init"
   :type 'boolean)
 
 (defcustom tangld-install-type 'link
+  ""
   "")
 
 ;;;; Helpers
