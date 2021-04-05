@@ -259,7 +259,8 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 (defun tangld--link-type-build (file)
   "Apply appropriate build action based on `tangld-install-type'."
-  (let ((build-fn (intern (format "tangld--link-type-%s-build"))))
+  (let* ((tangld-install-type (or tangld-install-type 'default))
+	 (build-fn (intern (format "tangld--link-type-%s-build" tangld-install-type))))
     (funcall build-fn file)))
 
 (defun tangld--link-type-direct-build (file &optional force)
