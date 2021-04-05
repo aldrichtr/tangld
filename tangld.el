@@ -311,7 +311,7 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld--link-type-stow-install (file)
   "Use stow to symlink file."
-  (message "Not yet implemented."))
+  (tangld--message "Not yet implemented."))
 
 (defun tangld--link-type-default-install (_) nil)
 
