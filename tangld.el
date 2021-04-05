@@ -292,7 +292,8 @@ By default, build will only tangle files that have changed since last run."
   (tangld--let* ((target (f-expand (f-relative file .build) .system)))
     (unless (f-exists-p (f-parent target))
       (mkdir (f-parent target) t))
-    (f-move file target)))
+    (f-move file target)
+    (tangld--message "mode %s -> %s")))
 
 (defun tangld--link-type-link-install (file)
   "Symlink file to system-dir."
