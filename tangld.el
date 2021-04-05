@@ -150,7 +150,7 @@ during init"
   "Display message if `tangld-verbose-p' is non-nil."
   (when tangld-verbose-p (message message args)))
 
-(defun tangld--async-tangle (file target)
+(defun tangld--async-tangle-file (file target)
   "Asynchronously tangle FILE to TARGET."
   (async-start `(lambda ()
 		  (require 'org)
