@@ -264,6 +264,9 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   "Invoke stow to manage symlinks."
   (message "Not yet implemented."))
 
+(defun ::link-type-default-build (file)
+  "")
+
 (defun tangld-build (&optional force)
   "Tangle org-mode files from the source dir to the dotfiles dir.
 
