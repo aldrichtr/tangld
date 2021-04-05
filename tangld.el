@@ -277,8 +277,6 @@ By default, build will only tangle files that have changed since last run."
   "Invoke stow to manage symlinks."
   (message "Does nothing."))
 
-;; (defun tangld--link-type-direct-build (file))
-
 ;;;; Install - tangld-install
 
 (defun tangld-install ()
