@@ -319,7 +319,7 @@ By default, build will only tangle files that have changed since last run."
   "Symlink files in dotfiles directory to system directory."
   (interactive)
   (run-hooks 'tangld-pre-install-hook)
-  (mapc #'tangld--link-type-install (directory-files-recursively dotfiles-dir "."))
+  (mapc #'tangld--link-type-install (directory-files-recursively (alist-get 'install tangld-project-dirs) "."))
   (run-hooks 'tangld-post-install-hook))
 
 ;;;; Clean - tangld-clean
