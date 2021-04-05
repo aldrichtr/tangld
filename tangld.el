@@ -185,10 +185,10 @@ during init"
 	(push (cons name (expand-file-name val root)) expanded)))
     expanded))
 
-(defmacro tangld--with-project-dirs (&rest body)
+(defmacro tangld--let* (vars &rest body)
   (declare (indent defun))
   (let-alist (tangld--expanded-project-dir-paths)
-    ,@body))
+    (let* ,@vars ,@body)))
 
 ;;;; Initialization - tangld-init
 
@@ -288,9 +288,10 @@ By default, build will only tangle files that have changed since last run."
 (defun tangld--link-type-install (file))
 
 (defun tangld--link-type-direct-install (file)
-  ""
-  (tangld--with-project-dirs
-    (f-move file .system)))
+  (tangld--let* ((target (f-expand (f-relative file .build) .system)))
+    (unless (f-exists-p (f-parent target))
+      (mkdir (f-parent target) t))
+    (f-move file target)))
 
 (defun tangld--link-type-link-install (file)
   "Move file to."
