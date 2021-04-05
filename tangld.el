@@ -284,7 +284,7 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld--link-type-direct-install (file)
   ""
-  (let (())
+  (let-alist (tangld--expand)
     (f-move file target)))
 
 (defun tangld--link-type-link-install (file)
