@@ -280,15 +280,15 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 	 (build-fn (intern (format "tangld--link-type-%s-build" tangld-install-type))))
     (funcall build-fn file)))
 
-(defun tangld--link-type-direct-build (file &optional force)
+(defun tangld--link-type-direct-build (file)
   "Tangle file to the build directory."
   (funcall tangld--build-fn file source-dir target-dir))
 
-(defun tangld--link-type-link-build (file &optional force)
+(defun tangld--link-type-link-build (file)
   "Tangle file to install-root-dir."
   (funcall tangld--build-fn file source-dir target-dir))
 
-(defun tangld--link-type-stow-build (file &optional force)
+(defun tangld--link-type-stow-build (file)
   "Tangle file to build directory."
   (funcall tangld--build-fn file source-dir target-dir))
 
