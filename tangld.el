@@ -168,6 +168,7 @@ during init"
 		   (message "%s in tangling %s to %s" (if outcome "Succeded" "Failed") file target)))))
 
 (defun tangld--tangle (file target-dir &optional force)
+  "Do what I mean."
   (let ((target))
     (when (or force (not (f-exists-p target)) (file-newer-than-file-p file target))
       (tangld--message "tangling %s -> %s")
