@@ -298,7 +298,9 @@ By default, build will only tangle files that have changed since last run."
 (defun tangld--link-type-link-install (file)
   "Symlink file to system-dir."
   (tangld--let* ((target (f-expand (f-relative file .build) .system)))
-    (f-symlink file target)))
+    (unless (f-symlink-p file)
+      (f-symlink file target)
+      (tangld--message "mode %s -> %s" (f-abbrev file) (f-abbrev target)))))
 
 (defun tangld--link-type-stow-install (file)
   "Use stow to symlink file."
