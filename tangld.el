@@ -149,8 +149,8 @@ during init"
 
 ;; These helpers are to help me develop this project quickly.
 
-(defun tangld-rule-fn (file)
-  "Function that controls."
+(defun tangld-default-build-fn (file source-dir target-dir)
+  "Function that controls what happens to files when they are built.."
   (cond ((file-ext-p file "org"))
 	(t ())))
 
