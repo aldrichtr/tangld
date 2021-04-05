@@ -282,21 +282,15 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 (defun tangld--link-type-direct-build (file &optional force)
   "Tangle file to the build directory."
-  (funcall tangld--build-fn file source-dir target-dir)
-  ;; (tangld--tangle file (tangld--target-file file 'direct) force)
-  )
+  (funcall tangld--build-fn file source-dir target-dir))
 
 (defun tangld--link-type-link-build (file &optional force)
   "Tangle file to install-root-dir."
-  (funcall tangld--build-fn file source-dir target-dir)
-  ;; (tangld--tangle file (tangld--target-file file 'link) force)
-  )
+  (funcall tangld--build-fn file source-dir target-dir))
 
 (defun tangld--link-type-stow-build (file &optional force)
   "Tangle file to build directory."
-  (funcall tangld--build-fn file source-dir target-dir)
-  ;; (tangld--tangle-file file (tangld--target-file file 'stow) force)
-  )
+  (funcall tangld--build-fn file source-dir target-dir))
 
 (defalias 'tangld--link-type-default-build 'tangld--link-type-link-build)
 
