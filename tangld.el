@@ -142,6 +142,9 @@ during init"
   :group 'tangld
   :type 'symbol)
 
+(defcustom tangld-tangle-rule-fn #'ignore
+  "Function that specifies the rules for tangling files.")
+
 ;;;; Helpers
 
 ;; These helpers are to help me develop this project quickly.
