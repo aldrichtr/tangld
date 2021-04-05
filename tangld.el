@@ -296,7 +296,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 (defun tangld--link-type-direct-build (file)
   "Tangle file to the build directory."
-  (tangld--let* tangld-project-dirs
+  (let-alist tangld-project-dirs
     (funcall tangld--build-fn file .source .build)))
 
 (defun tangld--link-type-link-build (file)
