@@ -215,45 +215,34 @@ during init"
 ;;;; Configuration - tangld-config
 
 (defun tangld-config (&optional type)
-          "Configure tangld. 
+              "Configure tangld. 
 
 Set the source and target directories, Gather system information, and store for
 the build step to use. If TYPE is specified store as options for a specific
 build type i.e. OS specific, shell options alternate install directory, etc."
-          (interactive)
-          ;; The user sets options such as cache use, source and target dirs, etc.
-          ;; write those to a project specific configuration location so that build
-          ;; can use them as it's config when run.
+              (interactive)
+              ;; The user sets options such as cache use, source and target dirs, etc.
+              ;; write those to a project specific configuration location so that build
+              ;; can use them as it's config when run.
 
-          ;; environmental details
-          ;; (list system-type system-name user-full-name)
-          (tangld--message "environment details: %s %s %s" system-type system-name user-full-name)
+              ;; environmental details
+              ;; (list system-type system-name user-full-name)
+              (tangld--message "environment details: %s %s %s" system-type system-name user-full-name)
 
-          ;; tangld options
-          (tangld--message "tangled-options: %s %s %s" "uh" "don't" "know?")
-          ;; language, tangle options, exclusions, overrides,
+              ;; tangld options
+              (tangld--message "tangled-options: %s %s %s" "uh" "don't" "know?")
+              ;; language, tangle options, exclusions, overrides,
 
-          ;; write-config
-          (let-alist tangld-project-dirs
+              ;; write-config
+              (let-alist tangld-project-dirs
     (let ((config-file (f-join .root .lib tangld-config-file)))
       (tangld--ignore (f-write config-file))
       (tangld--message "Build options saved to '%s'" config-file))))
 
 ;;;; Build - tangld-build
 
-(defun tangld-build (&optional force)
-  "Tangle org-mode files from the source dir to the dotfiles dir.
-
-By default, build will only tangle files that have changed since last run."
-  (interactive "P")
-  (run-hooks 'tangld-prebuild-hooks)
-  (mapc #'tangld--link-type-build (directory-files-recursively .source "."))
-  (run-hooks 'tangld-postbuild-hooks))
-
-;;;; Link type build functins
-
 (defun tangld--link-type-build (file)
-  (let ((build-fn (intern (format "tangld--link-type-%s-build"))))
+      (let ((build-fn (intern (format "tangld--link-type-%s-build"))))
     (funcall build-fn file)))
 
 (defun tangld--link-type-direct-build (file)
@@ -274,8 +263,17 @@ By default, build will only tangle files that have changed since last run."
     (f-symlink source target)))
 
 (defun tangld--link-type-stow-build (file)
-              "Invoke stow to manage symlinks."
-              (message "Not yet implemented."))
+                    "Invoke stow to manage symlinks."
+                    (message "Not yet implemented."))
+
+(defun tangld-build (&optional force)
+  "Tangle org-mode files from the source dir to the dotfiles dir.
+
+By default, build will only tangle files that have changed since last run."
+  (interactive "P")
+  (run-hooks 'tangld-prebuild-hooks)
+  (mapc #'tangld--link-type-build (directory-files-recursively .source "."))
+  (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Install - tangld-install
 
