@@ -148,7 +148,7 @@ during init"
   :type 'boolean)
 
 (defcustom tangld-tangld-build-fn #'tangld--default-build-fn
-  "Function that specifies the rules for tangling files.")
+  "Function that specifies how a file will be built.")
 
 ;;;; Helpers
 
