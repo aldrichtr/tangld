@@ -154,10 +154,14 @@ during init"
 
 ;; These helpers are to help me develop this project quickly.
 
-;; The reason for this function is that I expect some files not to be org files.
-;; Then, the question becomes what do we do with those files? Right now, they're
-;; just symlinked to the target directory by default.
-;; They can either provide their own build function or create their own link type.
+;; The reason for this function is that I expect some files in the source dir
+;; not to be org files. Then, the question becomes what do we do with those
+;; files? We can't tangle them, of course. Right now, they're just symlinked to
+;; the target directory by default.
+
+;; Another thing is that users may not want a 1-to-1 mapping to from the source
+;; directory to their files. For examples some may prefer to keep
+
 (defun tangld-default-build-fn (file source-dir target-dir)
   "Function that controls what happens to files when they are built."
   (cond ((file-ext-p file "org")
