@@ -296,7 +296,7 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld--link-type-link-install (file)
   "Symlink FILE to system-dir."
-  (tangld--let* ((target (f-expand (f-relative file .build) .system)))
+  (let ((target (tangld--target-file file 'link)))
     (unless (f-symlink-p file)
       (f-symlink file target)
       (tangld--message "symlink %s -> %s" (f-abbrev file) (f-abbrev target)))))
