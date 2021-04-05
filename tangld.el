@@ -177,6 +177,9 @@ during init"
   "Display message if `tangld-verbose-p' is non-nil."
   (when tangld-verbose-p (message (format "[tangld] %s" (format format-string args)))))
 
+;; Tangling is really slow. Doing so with multiple files that are likely to be
+;; big will take too much time and it is unacceptable to ask the user to wait.
+
 (defun tangld--async-tangle-file (file target)
   "Asynchronously tangle FILE to TARGET."
   (async-start `(lambda ()
