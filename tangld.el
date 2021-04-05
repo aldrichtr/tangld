@@ -185,6 +185,11 @@ during init"
 	(push (cons name (expand-file-name val root)) expanded)))
     expanded))
 
+(defmacro tangld--with-project-dirs (&rest body)
+  (declare (indent defun))
+  (let-alist (tangld--expanded-project-dir-paths)
+    ,@body))
+
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
@@ -215,7 +220,7 @@ during init"
 
 (defun tangld-init--init-vc (&optional vc-root-dir)
   "Initialize the project using magit."
-  (let-alist tangld-project-dirs
+  (tangld--with-project-dirs
     (or vc-root-dir (setq vc-root-dir .root))
     (tangld--message "initializing git repo in %s" vc-root-dir)
     (if (featurep 'magit)
@@ -284,8 +289,8 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld--link-type-direct-install (file)
   ""
-  (let-alist (tangld--expand)
-    (f-move file target)))
+  (tangld--with-project-dirs
+    (f-move file .system)))
 
 (defun tangld--link-type-link-install (file)
   "Move file to."
