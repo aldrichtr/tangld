@@ -253,7 +253,8 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 ;; Targets correspond to the.
 
 (defun tangld--target-file (file link-type)
-  "Return the tangle target of link-type based on FILE.")
+  "Return the tangle target of link-type based on FILE."
+  )
 
 ;;;; Build - tangld-build
 
