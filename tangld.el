@@ -306,7 +306,9 @@ By default, build will only tangle files that have changed since last run."
   "Remove file created by direct.")
 
 (defun tangld--link-type-link-clean (file)
-  "Remove file created by clean link type.")
+  "Remove file created by clean link type."
+  (when (f-symlink )
+    (f-delete file)))
 
 (defun tangld--link-type-stow-clean (file)
   "Remove file created by direct.")
