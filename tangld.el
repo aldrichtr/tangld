@@ -290,6 +290,7 @@ By default, build will only tangle files that have changed since last run."
 ;;;; Install - tangld-install
 
 (defun tangld--link-type-install (file)
+  "Install"
   (let (())
     (funcall install-fn file)))
 
