@@ -292,7 +292,7 @@ By default, build will only tangle files that have changed since last run."
 (defun tangld-clean ()
   "Remove any symlinks corresponding to files in dotfiles-dir."
   (interactive)
-  (mapc #'tangld--link-type-clean))
+  (mapc #'tangld--link-type-clean (directory-files-recursively source-dir ".")))
 
 ;;;; Check - tangld-check
 
