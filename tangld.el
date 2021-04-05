@@ -175,9 +175,9 @@ That is, when the target file either does not exist or is older than the source 
   "Return the tangle target of link-type based on FILE."
   (f-expand (f-relative file source-dir) target-dir))
 
-(defun tangld-default-build-fn (file source target)
+(defun tangld-default-build-fn (file source-dir target-dir)
   "Build FILE from SOURCE to TARGET."
-  (let ((target-file))
+  (let ((target (f-expand (f-relative file source-dir) target-dir)))
     (cond ((file-ext-p file "org")
 	   (tangld--tangle file target tangld--lazy-tangle-p))
 	  (t
