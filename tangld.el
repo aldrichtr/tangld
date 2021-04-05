@@ -147,7 +147,7 @@ during init"
   :group 'tangld
   :type 'boolean)
 
-(defcustom tangld-tangld-rule-fn #'ignore
+(defcustom tangld-tangld-build-fn #'tangld--default-build-fn
   "Function that specifies the rules for tangling files.")
 
 ;;;; Helpers
