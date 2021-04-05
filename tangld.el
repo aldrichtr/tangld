@@ -242,7 +242,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 ;;;; Build - tangld-build
 
 (defun tangld--link-type-build (file)
-      (let ((build-fn (intern (format "tangld--link-type-%s-build"))))
+  (let ((build-fn (intern (format "tangld--link-type-%s-build"))))
     (funcall build-fn file)))
 
 (defun tangld--link-type-direct-build (file)
@@ -254,8 +254,8 @@ build type i.e. OS specific, shell options alternate install directory, etc."
     (tangld--async-tangle-file source target)))
 
 (defun tangld--link-type-link-build (file)
-      "Tangle files to install-root-dir."
-      (let ((install-root (alist-get 'install tangld-project-dirs))
+  "Tangle files to install-root-dir."
+  (let ((install-root (alist-get 'install tangld-project-dirs))
 	(system-dir (alist-get 'system tangld-project-dirs))
 	(target ())
 	(source file))
@@ -263,8 +263,8 @@ build type i.e. OS specific, shell options alternate install directory, etc."
     (f-symlink source target)))
 
 (defun tangld--link-type-stow-build (file)
-                    "Invoke stow to manage symlinks."
-                    (message "Not yet implemented."))
+  "Invoke stow to manage symlinks."
+  (message "Not yet implemented."))
 
 (defun tangld-build (&optional force)
   "Tangle org-mode files from the source dir to the dotfiles dir.
