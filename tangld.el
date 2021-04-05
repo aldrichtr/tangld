@@ -265,7 +265,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   (message "Not yet implemented."))
 
 (defun ::link-type-default-build (file)
-  ""
+  "Tangle file to install-root."
   (let ((install-root (alist-get 'install tangld--project-dirs)))
     (tangld--async-tangle-file file install-root)))
 
