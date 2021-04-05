@@ -290,7 +290,7 @@ By default, build will only tangle files that have changed since last run."
 (defun tangld--link-type-install (file)
   "Apply appropriate install action based on `tangld-install-type'."
   (let* ((tangld-install-type (or tangld-install-type 'default))
-	 (install-fn ()))
+	 (install-fn (intern (format "tangld--link-type-%s-install" tangld-install-type))))
     (funcall install-fn file)))
 
 (defun tangld--link-type-direct-install (file)
