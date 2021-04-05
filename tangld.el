@@ -177,11 +177,10 @@ That is, when the target file either does not exist or is older than the source 
 
 (defun tangld-default-build-fn (file source target)
   "Build FILE from SOURCE to TARGET."
-  (let ((target (tangld--target-file file source target)))
-    (cond ((file-ext-p file "org")
-	   (tangld--tangle file target tangld--lazy-tangle-p))
-	  (t
-	   (f-symlink file target)))))
+  (cond ((file-ext-p file "org")
+	 (tangld--tangle file target tangld--lazy-tangle-p))
+	(t
+	 (f-symlink file target))))
 
 (defun tangld--message (format-string &rest args)
   "Display message if `tangld-verbose-p' is non-nil."
