@@ -170,8 +170,8 @@ during init"
 ;; Right now the default tangles if it's an org file (has the extension ".org")
 ;; or symlinks it otherwise.
 
-(defun tangld-default-build-fn (file source-dir target-dir)
-  "Function that controls what happens to files when they are built."
+(defun tangld-default-build-fn (file source target)
+  "Build FILE from SOURCE"
   (cond ((file-ext-p file "org")
 	 (tangld--tangle file target-dir))
 	(t
