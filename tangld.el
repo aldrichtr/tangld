@@ -253,6 +253,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 ;;;; Build - tangld-build
 
 (defun tangld--link-type-build (file)
+  "Apply appropriate action based on `tangld-link-type'."
   (let ((build-fn (intern (format "tangld--link-type-%s-build"))))
     (funcall build-fn file)))
 
