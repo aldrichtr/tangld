@@ -292,14 +292,14 @@ By default, build will only tangle files that have changed since last run."
     (unless (f-exists-p (f-parent target))
       (mkdir (f-parent target) t))
     (f-move file target)
-    (tangld--message "mode %s -> %s" (f-abbrev file) (f-abbrev target))))
+    (tangld--message "move %s -> %s" (f-abbrev file) (f-abbrev target))))
 
 (defun tangld--link-type-link-install (file)
   "Symlink FILE to system-dir."
   (tangld--let* ((target (f-expand (f-relative file .build) .system)))
     (unless (f-symlink-p file)
       (f-symlink file target)
-      (tangld--message "mode %s -> %s" (f-abbrev file) (f-abbrev target)))))
+      (tangld--message "symlink %s -> %s" (f-abbrev file) (f-abbrev target)))))
 
 (defun tangld--link-type-stow-install (file)
   "Use stow to symlink file."
