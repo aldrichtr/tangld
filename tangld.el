@@ -152,6 +152,8 @@ during init"
 
 (defun tangld--async-tangle-file (file target)
   "Asynchronously tangle FILE to TARGET."
+  (when (f-dir-p target)
+    (setq target))
   (async-start `(lambda ()
 		  (require 'org)
 		  (require 'ob-tangle)
