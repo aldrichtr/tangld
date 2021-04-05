@@ -218,6 +218,10 @@ FORCE is enabled, tangle no matter what."
 	(push (cons name (expand-file-name val root)) expanded)))
     expanded))
 
+(defun tangld--target-file (file source-dir target-dir)
+  "Return the tangle target of link-type based on FILE."
+  (f-expand (f-relative file source-dir) target-dir))
+
 ;;;; Initialization - tangld-init
 
 (defun tangld-init ()
@@ -281,14 +285,6 @@ build type i.e. OS specific, shell options alternate install directory, etc."
     (let ((config-file (f-join .root .lib tangld-config-file)))
       (tangld--ignore (f-write config-file))
       (tangld--message "Build options saved to '%s'" config-file))))
-
-;;;; Targets
-
-;; Targets correspond to the.
-
-(defun tangld--target-file (file source-dir target-dir)
-  "Return the tangle target of link-type based on FILE."
-  (f-expand (f-relative file source-dir) target-dir))
 
 ;;;; Build - tangld-build
 
