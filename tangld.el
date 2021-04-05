@@ -160,7 +160,7 @@ during init"
 ;; the target directory by default.
 
 ;; Another thing is that users may not want a 1-to-1 mapping to from the source
-;; directory to their files. For examples some may prefer to keep
+;; directory to their files.
 
 (defun tangld-default-build-fn (file source-dir target-dir)
   "Function that controls what happens to files when they are built."
