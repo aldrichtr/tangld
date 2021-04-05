@@ -142,6 +142,11 @@ during init"
   :group 'tangld
   :type 'symbol)
 
+(defcustom tangld-lazy-tangle t
+  "Only tangle when necessary."
+  :group 'tangld
+  :type 'boolean)
+
 (defcustom tangld-tangld-rule-fn #'ignore
   "Function that specifies the rules for tangling files.")
 
