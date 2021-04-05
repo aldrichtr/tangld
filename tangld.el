@@ -149,6 +149,8 @@ during init"
 
 ;; These helpers are to help me develop this project quickly.
 
+;; The reason for this function is that I expect some files not to be org files.
+;; So we need to give the user a way to determine how those files will be built.
 (defun tangld-default-build-fn (file source-dir target-dir)
   "Function that controls what happens to files when they are built."
   (cond ((file-ext-p file "org")
