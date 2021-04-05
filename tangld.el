@@ -283,7 +283,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
   (run-hooks 'tangld-prebuild-hooks)
-  (mapc #'tangld--link-type-build (directory-files-recursively .source "."))
+  (mapc #'tangld--link-type-build (directory-files-recursively (alist-get 'source tangld-project-dirs) "."))
   (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Install - tangld-install
