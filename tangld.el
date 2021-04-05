@@ -274,14 +274,16 @@ By default, build will only tangle files that have changed since last run."
     (f-symlink source target)))
 
 (defun tangld--link-type-stow-build (file)
-    "Invoke stow to manage symlinks."
-    (message "Not yet implemented."))
+              "Invoke stow to manage symlinks."
+              (message "Not yet implemented."))
 
 ;;;; Install - tangld-install
 
+(defun tangld--link-type-install (file))
+
 (defun tangld--link-type-direct-install (file)
-    ""
-    (f-move source target))
+        ""
+        (f-move source target))
 
 (defun tangld--link-type-link-install (file)
   ""
