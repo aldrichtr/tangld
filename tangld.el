@@ -142,7 +142,7 @@ during init"
   :group 'tangld
   :type 'symbol)
 
-(defcustom tangld-lazy-tangle t
+(defcustom tangld-lazy-tangle-p t
   "Only tangle when necessary."
   :group 'tangld
   :type 'boolean)
