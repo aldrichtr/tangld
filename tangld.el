@@ -268,7 +268,8 @@ By default, build will only tangle files that have changed since last run."
 (defun tangld--link-type-link-build (file)
   "Tangle files to install-root-dir."
   (let ((install-root (alist-get 'install tangld-project-dirs))
-	(target nil)
+	(system-dir (alist-get 'system tangld-project-dirs))
+	(target ())
 	(source file))
     (tangld--async-tangle-file source target)
     (f-symlink source target)))
