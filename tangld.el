@@ -249,18 +249,15 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 (defun tangld--link-type-direct-build (file)
   "Tangle file to the build directory."
-  (let ((build-dir (alist-get 'build tangld-project-dirs)))
-    (tangld--async-tangle-file file build-dir)))
+  (tangld--tangle file 'build))
 
 (defun tangld--link-type-link-build (file)
   "Tangle file to install-root-dir."
-  (let ((install-root (alist-get 'install tangld-project-dirs)))
-    (tangld--async-tangle-file file install-root)))
+  (tangld--tangle file 'install))
 
 (defun tangld--link-type-stow-build (file)
   "Tangle file to build directory."
-  (let ((build-dir (alist-get 'build tangld-project-dirs)))
-    (tangld--async-tangle-file file build-dir)))
+  (tangld--tangle-file file 'build))
 
 (defalias 'tangld--link-type-default-build 'tangld--link-type-link-build)
 
