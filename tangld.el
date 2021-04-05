@@ -167,6 +167,8 @@ during init"
 		 (cl-destructuring-bind (outcome file target) result
 		   (message "%s in tangling %s to %s" (if outcome "Succeded" "Failed") file target)))))
 
+(defun tangld--tangle (file target &optional force))
+
 ;; It is far more useful to have access to the full paths than the components.
 (defun tangld--expanded-project-dir-paths ()
   "Return `tangld-project-dirs' with values all expanded."
