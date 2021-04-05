@@ -260,8 +260,7 @@ By default, build will only tangle files that have changed since last run."
   "Tangle files into the build directory."
   (let (())
     (tangld--async-tangle-file file target-file)
-    (f-move )
-    ()))
+    (f-move source target)))
 
 (defun tangld--link-type-link-build (file)
   "Tangle files to install-root-dir."
