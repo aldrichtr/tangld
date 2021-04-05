@@ -149,7 +149,13 @@ during init"
 
 ;; These helpers are to help me develop this project quickly.
 
-(defun tangld-)
+(defun tangld-rule-fn (file)
+  "Function."
+  (cond ((file-ext-p file "org")
+	 )
+	(t
+	 
+	 )))
 
 (defun tangld--message (format-string &rest args)
   "Display message if `tangld-verbose-p' is non-nil."
