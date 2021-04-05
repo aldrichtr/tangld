@@ -288,6 +288,7 @@ By default, build will only tangle files that have changed since last run."
 (defun tangld--link-type-install (file))
 
 (defun tangld--link-type-direct-install (file)
+  "Move FILE from build-dir to system-dir."
   (tangld--let* ((target (f-expand (f-relative file .build) .system)))
     (unless (f-exists-p (f-parent target))
       (mkdir (f-parent target) t))
