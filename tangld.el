@@ -280,7 +280,7 @@ By default, build will only tangle files that have changed since last run."
     (f-move file target)))
 
 (defun tangld--link-type-link-install (file)
-  ""
+  "Move file to."
   (let (())
     (f-symlink file target)))
 
