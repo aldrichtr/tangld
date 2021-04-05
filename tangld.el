@@ -170,7 +170,8 @@ during init"
 (defun tangld--tangle (file target-dir &optional force)
   (let ()
     (when (or force (not (f-exists-p target)) (file-newer-than-file-p file target))
-      ())))
+      (tangld--message "tangling %s -> %s")
+      (tangld--async-tangle-file file target))))
 
 ;; It is far more useful to have access to the full paths than the components.
 (defun tangld--expanded-project-dir-paths ()
