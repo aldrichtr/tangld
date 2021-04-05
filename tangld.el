@@ -280,7 +280,8 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld--link-type-link-install (file)
   ""
-  (f-symlink source target))
+  (let (())
+    (f-symlink file target)))
 
 (defun tangld--link-type-stow-install (file)
   ""
