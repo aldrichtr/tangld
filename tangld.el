@@ -287,7 +287,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 (defun tangld--link-type-link-build (file)
   "Tangle file to install-root-dir."
-  (funcall tangld--build-fn file .source .install))
+  (let-alist (funcall tangld--build-fn file .source .install)))
 
 (defun tangld--link-type-stow-build (file)
   "Tangle file to build directory."
