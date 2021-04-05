@@ -142,12 +142,14 @@ during init"
   :group 'tangld
   :type 'symbol)
 
-(defcustom tangld-tangle-rule-fn #'ignore
+(defcustom tangld-tangld-rule-fn #'ignore
   "Function that specifies the rules for tangling files.")
 
 ;;;; Helpers
 
 ;; These helpers are to help me develop this project quickly.
+
+(defun tangld-)
 
 (defun tangld--message (format-string &rest args)
   "Display message if `tangld-verbose-p' is non-nil."
