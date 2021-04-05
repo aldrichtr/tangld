@@ -199,7 +199,7 @@ during init"
 		 (cl-destructuring-bind (outcome file target) result
 		   (message "%s in tangling %s to %s" (if outcome "Succeded" "Failed") file target)))))
 
-(defun tangld--tangle (file project-dir &optional force)
+(defun tangld--tangle (file target &optional force)
   "Tangle FILE into PROJECT-DIR.
 Only tangles if target file either does not exist or is older than FILE. If
 FORCE is enabled, tangle no matter what."
