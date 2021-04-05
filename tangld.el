@@ -151,7 +151,8 @@ during init"
 
 (defun tangld-default-build-fn (file source-dir target-dir)
   "Function that controls what happens to files when they are built."
-  (cond ((file-ext-p file "org"))
+  (cond ((file-ext-p file "org")
+	 (tangld--tangle file ))
 	(t ())))
 
 (defun tangld--message (format-string &rest args)
