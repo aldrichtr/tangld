@@ -164,7 +164,8 @@ during init"
 ;; mapped to build/.config/emacs. So it is important that users are able to
 ;; customize the build process.
 
-;; Right now the default is the simple.
+;; Right now the default tangles if it's an org file (has the extension ".org")
+;; or symlinks it otherwise.
 
 (defun tangld-default-build-fn (file source-dir target-dir)
   "Function that controls what happens to files when they are built."
