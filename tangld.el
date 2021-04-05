@@ -260,11 +260,11 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 (defun tangld--link-type-link-build (file &optional force)
   "Tangle file to install-root-dir."
-  (tangld--tangle file 'install force))
+  (tangld--tangle file (tangld--target-file file 'link) force))
 
 (defun tangld--link-type-stow-build (file &optional force)
   "Tangle file to build directory."
-  (tangld--tangle-file file 'build force))
+  (tangld--tangle-file file (tangld--target-file file 'stow) force))
 
 (defalias 'tangld--link-type-default-build 'tangld--link-type-link-build)
 
