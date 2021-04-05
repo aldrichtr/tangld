@@ -171,6 +171,10 @@ That is, when the target file either does not exist or is older than the source 
 ;; Right now the default tangles if it's an org file (has the extension ".org")
 ;; or symlinks it otherwise.
 
+(defun tangld--target-file (file source-dir target-dir)
+  "Return the tangle target of link-type based on FILE."
+  (f-expand (f-relative file source-dir) target-dir))
+
 (defun tangld-default-build-fn (file source target)
   "Build FILE from SOURCE to TARGET."
   (cond ((file-ext-p file "org")
@@ -217,10 +221,6 @@ FORCE is enabled, tangle no matter what."
       (let ((name (car it)) (val (cdr it)))
 	(push (cons name (expand-file-name val root)) expanded)))
     expanded))
-
-(defun tangld--target-file (file source-dir target-dir)
-  "Return the tangle target of link-type based on FILE."
-  (f-expand (f-relative file source-dir) target-dir))
 
 ;;;; Initialization - tangld-init
 
