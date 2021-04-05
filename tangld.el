@@ -274,34 +274,34 @@ By default, build will only tangle files that have changed since last run."
     (f-symlink source target)))
 
 (defun tangld--link-type-stow-build (file)
-  "Invoke stow to manage symlinks."
-  (message "Not yet implemented."))
+    "Invoke stow to manage symlinks."
+    (message "Not yet implemented."))
 
 ;;;; Install - tangld-install
 
-(defun tangld-install ()
-            "Symlink files in dotfiles directory to system directory."
-            (interactive)
-            (run-hooks 'tangld-pre-install-hook)
-            (mapc #'tangld--link-type-install (directory-files-recursively dotfiles-dir "."))
-            (run-hooks 'tangld-post-install-hook))
-
 (defun tangld--link-type-direct-install (file)
-  ""
-  (f-move source target))
+    ""
+    (f-move source target))
 
 (defun tangld--link-type-link-install (file)
   ""
   (f-move source target))
 
 (defun tangld--link-type-stow-install (file)
-                          ""
-                          (f-move source target))
+                                ""
+                                (f-move source target))
+
+(defun tangld-install ()
+  "Symlink files in dotfiles directory to system directory."
+  (interactive)
+  (run-hooks 'tangld-pre-install-hook)
+  (mapc #'tangld--link-type-install (directory-files-recursively dotfiles-dir "."))
+  (run-hooks 'tangld-post-install-hook))
 
 ;;;; Clean - tangld-clean
 
 (defun tangld--link-type-clean (file)
-  (funcall () file))
+      (funcall () file))
 
 (defun tangld--link-type-direct-clean (file)
   "Remove file created by direct.")
