@@ -248,7 +248,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
     (funcall build-fn file)))
 
 (defun tangld--link-type-direct-build (file)
-  "Tangle files into the build directory."
+  "Tangle file to the build directory."
   (let ((build-dir (alist-get 'build tangld-project-dirs)))
     (tangld--async-tangle-file file build-dir)))
 
@@ -258,7 +258,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
     (tangld--async-tangle-file file install-root)))
 
 (defun tangld--link-type-stow-build (file)
-  "Invoke stow to manage symlinks."
+  "Tangle file to build directory."
   (let ((build-dir (alist-get 'build tangld-project-dirs)))
     (tangld--async-tangle-file file build-dir)))
 
