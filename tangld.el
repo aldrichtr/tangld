@@ -327,7 +327,7 @@ By default, build will only tangle files that have changed since last run."
 (defun tangld--link-type-clean (file)
   "Apply appropriate clean action to FILE based on `tangld-install-type'."
   (let* ((tangld-install-type (or tangld-install-type 'default))
-	 (clean-fn (intern (format "tangld--link-type-%s-install" tangld-install-type))))
+	 (clean-fn (intern (format "tangld--link-type-%s-clean" tangld-install-type))))
     (funcall clean-fn file)))
 
 (defun tangld--link-type-direct-clean (file)
