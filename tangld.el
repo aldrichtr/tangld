@@ -148,7 +148,7 @@ during init"
 
 (defun tangld--message (format-string &rest args)
   "Display message if `tangld-verbose-p' is non-nil."
-  (when tangld-verbose-p (message message args)))
+  (when tangld-verbose-p (message (format "[tangld] %s" (format format-string args)))))
 
 (defun tangld--async-tangle-file (file target)
   "Asynchronously tangle FILE to TARGET."
