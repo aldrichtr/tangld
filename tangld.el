@@ -289,6 +289,9 @@ By default, build will only tangle files that have changed since last run."
 
 ;;;; Clean - tangld-clean
 
+(defun tangld--link-type-direct-cleean (file)
+  "Remove file created by direct.")
+
 (defun tangld-clean ()
   "Remove any symlinks corresponding to files in dotfiles-dir."
   (interactive)
