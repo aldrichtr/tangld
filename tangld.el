@@ -154,7 +154,7 @@ during init"
   (cond ((file-ext-p file "org")
 	 (tangld--tangle file target-dir))
 	(t
-	 (f-symlink ))))
+	 (f-symlink))))
 
 (defun tangld--message (format-string &rest args)
   "Display message if `tangld-verbose-p' is non-nil."
