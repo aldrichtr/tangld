@@ -287,12 +287,15 @@ By default, build will only tangle files that have changed since last run."
             (run-hooks 'tangld-post-install-hook))
 
 (defun tangld--link-type-direct-install (file)
-          (f-move source target))
-
-(defun tangld--link-type-link-install (file)
+  ""
   (f-move source target))
 
 (defun tangld--link-type-link-install (file)
+  ""
+  (f-move source target))
+
+(defun tangld--link-type-link-install (file)
+  ""
   (f-move source target))
 
 ;;;; Clean - tangld-clean
