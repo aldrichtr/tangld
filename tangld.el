@@ -260,8 +260,7 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 (defun tangld--link-type-stow-build (file)
   "Invoke stow to manage symlinks."
   (let ((build-dir (alist-get 'build tangld-project-dirs)))
-    (tangld--async-tangle-file file build-dir))
-  (message "Not yet implemented."))
+    (tangld--async-tangle-file file build-dir)))
 
 (defalias 'tangld--link-type-default-build 'tangld--link-type-link-build)
 
