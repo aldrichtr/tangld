@@ -137,6 +137,9 @@ during init"
   :group 'tangld
   :type 'boolean)
 
+(defcustom tangld-install-type 'link
+  "")
+
 ;;;; Helpers
 
 ;; These helpers are to help me develop this project quickly.
