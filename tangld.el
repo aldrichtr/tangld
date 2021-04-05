@@ -262,12 +262,11 @@ By default, build will only tangle files that have changed since last run."
 	(source file)
 	(build-dir (alist-get 'build tangld-project-dirs))
 	(system-dir (alist-get 'system tangld-project-dirs)))
-    (tangld--async-tangle-file source target)
-    (f-move source target)))
+    (tangld--async-tangle-file source target)))
 
 (defun tangld--link-type-link-build (file)
-  "Tangle files to install-root-dir."
-  (let ((install-root (alist-get 'install tangld-project-dirs))
+      "Tangle files to install-root-dir."
+      (let ((install-root (alist-get 'install tangld-project-dirs))
 	(system-dir (alist-get 'system tangld-project-dirs))
 	(target ())
 	(source file))
@@ -281,11 +280,13 @@ By default, build will only tangle files that have changed since last run."
 ;;;; Install - tangld-install
 
 (defun tangld-install ()
-  "Symlink files in dotfiles directory to system directory."
-  (interactive)
-  (run-hooks 'tangld-pre-install-hook)
-  (mapc #'tangld--link-type-install (directory-files-recursively dotfiles-dir "."))
-  (run-hooks 'tangld-post-install-hook))
+            "Symlink files in dotfiles directory to system directory."
+            (interactive)
+            (run-hooks 'tangld-pre-install-hook)
+            (mapc #'tangld--link-type-install (directory-files-recursively dotfiles-dir "."))
+            (run-hooks 'tangld-post-install-hook))
+
+(defun tangld--install-type-)
 
 ;;;; Clean - tangld-clean
 
