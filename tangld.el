@@ -161,7 +161,8 @@ during init"
 
 ;; Another thing is that users may not want a 1-to-1 mapping to from the source
 ;; directory to their files. For example, I want files in src/emacs/ to be
-;; mapped to build/.config/emacs.
+;; mapped to build/.config/emacs. So it is important that users are able to
+;; customize the build process.
 
 (defun tangld-default-build-fn (file source-dir target-dir)
   "Function that controls what happens to files when they are built."
