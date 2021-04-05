@@ -164,6 +164,9 @@ during init"
 ;; mapped to build/.config/emacs. So it is important that users are able to
 ;; customize the build process.
 
+;; Ideally, all the complicated stuff should go into th build process and the
+;; install process should be simple.
+
 ;; Right now the default tangles if it's an org file (has the extension ".org")
 ;; or symlinks it otherwise.
 
