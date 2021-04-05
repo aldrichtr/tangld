@@ -280,16 +280,16 @@ By default, build will only tangle files that have changed since last run."
 (defun tangld--link-type-install (file))
 
 (defun tangld--link-type-direct-install (file)
-        ""
-        (f-move source target))
+  ""
+  (f-move source target))
 
 (defun tangld--link-type-link-install (file)
   ""
   (f-move source target))
 
 (defun tangld--link-type-stow-install (file)
-                                ""
-                                (f-move source target))
+  ""
+  (f-move source target))
 
 (defun tangld-install ()
   "Symlink files in dotfiles directory to system directory."
