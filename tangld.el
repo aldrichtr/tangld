@@ -169,7 +169,8 @@ during init"
 
 (defun tangld--tangle (file project-dir &optional force)
   "Tangle FILE into PROJECT-DIR."
-  (let ((target (f-relative file (f-parent file))))
+  (let ((target (f-expand (f-relative file (f-parent file))
+			  (alist-get project-dir tangld--project-dirs))))
     (when (or force (not (f-exists-p target)) (file-newer-than-file-p file target))
       (tangld--message "tangling %s -> %s")
       (tangld--async-tangle-file file target))))
