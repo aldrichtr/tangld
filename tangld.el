@@ -224,29 +224,36 @@ during init"
 ;;;; Configuration - tangld-config
 
 (defun tangld-config (&optional type)
-  "Configure tangld. 
+                                                                                          "Configure tangld. 
 
 Set the source and target directories, Gather system information, and store for
 the build step to use. If TYPE is specified store as options for a specific
 build type i.e. OS specific, shell options alternate install directory, etc."
-  (interactive)
-  ;; The user sets options such as cache use, source and target dirs, etc.
-  ;; write those to a project specific configuration location so that build
-  ;; can use them as it's config when run.
+                                                                                          (interactive)
+                                                                                          ;; The user sets options such as cache use, source and target dirs, etc.
+                                                                                          ;; write those to a project specific configuration location so that build
+                                                                                          ;; can use them as it's config when run.
 
-  ;; environmental details
-  ;; (list system-type system-name user-full-name)
-  (tangld--message "environment details: %s %s %s" system-type system-name user-full-name)
+                                                                                          ;; environmental details
+                                                                                          ;; (list system-type system-name user-full-name)
+                                                                                          (tangld--message "environment details: %s %s %s" system-type system-name user-full-name)
 
-  ;; tangld options
-  (tangld--message "tangled-options: %s %s %s" "uh" "don't" "know?")
-  ;; language, tangle options, exclusions, overrides,
+                                                                                          ;; tangld options
+                                                                                          (tangld--message "tangled-options: %s %s %s" "uh" "don't" "know?")
+                                                                                          ;; language, tangle options, exclusions, overrides,
 
-  ;; write-config
-  (let-alist tangld-project-dirs
+                                                                                          ;; write-config
+                                                                                          (let-alist tangld-project-dirs
     (let ((config-file (f-join .root .lib tangld-config-file)))
       (tangld--ignore (f-write config-file))
       (tangld--message "Build options saved to '%s'" config-file))))
+
+;;;; Targets
+
+;; Targets correspond to the.
+
+(defun tangld--target-file (file link-type)
+  "Return the tangle target of link-type based on FILE.")
 
 ;;;; Build - tangld-build
 
