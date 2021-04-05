@@ -289,14 +289,9 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld--link-type-install (file)
   "Apply appropriate install action based on `tangld-install-type'."
-  (let* ((tangld-install-type (or tangld-install-type 'default)))
-    (funcall ))
-  (if (null tangld-install-type)
-      (tangld--link-type-default-install)
-    (let (())
-      (funcall install-fn file))
-    )
-  )
+  (let* ((tangld-install-type (or tangld-install-type 'default))
+	 (install-fn ()))
+    (funcall install-fn file)))
 
 (defun tangld--link-type-direct-install (file)
   "Move FILE from build-dir to system-dir."
