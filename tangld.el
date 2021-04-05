@@ -256,11 +256,9 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 (defun tangld--link-type-link-build (file)
   "Tangle files to install-root-dir."
   (let ((install-root (alist-get 'install tangld-project-dirs))
-	(system-dir (alist-get 'system tangld-project-dirs))
 	(target ())
 	(source file))
-    (tangld--async-tangle-file source target)
-    (f-symlink source target)))
+    (tangld--async-tangle-file source target)))
 
 (defun tangld--link-type-stow-build (file)
   "Invoke stow to manage symlinks."
