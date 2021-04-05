@@ -265,7 +265,9 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   (message "Not yet implemented."))
 
 (defun ::link-type-default-build (file)
-  "")
+  ""
+  (let ((install-root (alist-get 'install tangld--project-dirs)))
+    (tangld--async-tangle-file file install-root)))
 
 (defun tangld-build (&optional force)
   "Tangle org-mode files from the source dir to the dotfiles dir.
