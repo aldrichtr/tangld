@@ -318,17 +318,17 @@ By default, build will only tangle files that have changed since last run."
     (funcall clean-fn file)))
 
 (defun tangld--link-type-direct-clean (file)
-  "Remove file created by direct."
+  "Remove FILE created by direct."
   (f-delete file (tangld--target-file file 'direct)))
 
 (defun tangld--link-type-link-clean (file)
-  "Remove file created by clean link type."
+  "Remove FILE created by clean link type."
   (let ((target (tangld--target-file file 'link)))
     (when (f-symlink-p target)
       (f-delete target))))
 
 (defun tangld--link-type-stow-clean (file)
-  "Remove file created by direct.")
+  "Remove FILE created by direct.")
 
 (defun tangld-clean ()
   "Remove any symlinks corresponding to files in dotfiles-dir."
