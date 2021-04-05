@@ -139,7 +139,8 @@ during init"
 
 (defcustom tangld-install-type 'link
   ""
-  "")
+  :group 'tangld
+  :type 'symbol)
 
 ;;;; Helpers
 
