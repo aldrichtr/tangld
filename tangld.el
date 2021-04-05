@@ -20,6 +20,7 @@
 ;;; Code:
 
 (require 'f)
+(require 'async)
 
 (require 'ob-tangle)
 (require 'ob-extended-tangle)
