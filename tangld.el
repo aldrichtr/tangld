@@ -173,7 +173,7 @@ during init"
 (defun tangld-default-build-fn (file source target)
   "Build FILE from SOURCE to TARGET."
   (cond ((file-ext-p file "org")
-	 (tangld-- file target-dir))
+	 (tangld--tangle file ))
 	(t
 	 (f-symlink file target))))
 
