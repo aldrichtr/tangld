@@ -262,7 +262,8 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   "Invoke stow to manage symlinks."
   (message "Not yet implemented."))
 
-(defalias 'tangld--link-type-link-build 'tangld--link-type-link-build)
+(defalias 'tangld--link-type-default-build 'tangld--link-type-link-build)
+
 (defun ::link-type-default-build (file)
   "Tangle file to install-root."
   (let ((install-root (alist-get 'install tangld--project-dirs)))
