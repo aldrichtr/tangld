@@ -258,7 +258,8 @@ By default, build will only tangle files that have changed since last run."
 
 (defun tangld--link-type-direct-build (file)
   "Tangle files into the build directory."
-  (let ((target))
+  (let ((target)
+	(system-dir (alist-get 'system tangld-project-dirs)))
     (tangld--async-tangle-file file target-file)
     (f-move source target)))
 
