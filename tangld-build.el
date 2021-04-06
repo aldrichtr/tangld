@@ -27,6 +27,9 @@
   :group 'tangld
   :type 'hook)
 
+(defcustom tangld-file-target-fn #'tangld--map-target-fn
+  "Function that map")
+
 (defcustom tangld-build-fn #'tangld--default-build-fn
   "Function that specifies how a file will be built.
 The function takes one argument, the file to build."
