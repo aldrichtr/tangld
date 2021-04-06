@@ -28,7 +28,9 @@
   :type 'hook)
 
 (defcustom tangld-build-fn #'tangld--default-build-fn
-  "Function that specifies how a file will be built."
+  "Function that specifies how a file will be built.
+This function takes three arguments, the file, the source directory and the
+target directory."
   :group 'tangld)
 
 (defun tangld-default-build-fn (file source-dir target-dir)
@@ -38,26 +40,6 @@
 	   (tangld--tangle file target tangld--lazy-tangle-p))
 	  (t
 	   (f-symlink file target)))))
-
-(defun tangld--link-type-build (file)
-  "Apply appropriate build action based on `tangld-install-type'."
-  (let* ((tangld-install-type (or tangld-install-type 'default))
-	 (build-fn (intern (format "tangld--link-type-%s-build" tangld-install-type))))
-    (funcall build-fn file)))
-
-(defun tangld--link-type-direct-build (file)
-  "Tangle file to the build directory."
-  (funcall tangld-build-fn file 'source 'build))
-
-(defun tangld--link-type-link-build (file)
-  "Tangle file to install-root-dir."
-  (funcall tangld--build-fn file 'source 'install))
-
-(defun tangld--link-type-stow-build (file)
-  "Tangle file to build directory."
-  (funcall tangld-build-fn file 'source 'build))
-
-(defalias 'tangld--link-type-default-build 'tangld--link-type-link-build)
 
 ;;;###autoload
 (defun tangld-build (&optional force)
@@ -69,7 +51,7 @@ By default, build will only tangle files that have changed since last run."
   (let ((tangld--lazy-tangle force)
 	(source-dir (alist-get 'source tangld-project-dirs))
 	(files (directory-files-recursively source-dir ".")))
-    (mapc #'tangld--link-type-build files))
+    ())
   (run-hooks 'tangld-post-build-hooks))
 
 (provide 'tangld-build)
