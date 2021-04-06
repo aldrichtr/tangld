@@ -26,6 +26,12 @@ been successful.")
 (defcustom tangld-tangle-result-fn #'tangld--tangle-result
   "Function that outputs a result based on tangling.")
 
+(defcustom tangld-lazy-tangle-p t
+  "Only tangle when necessary.
+That is, when the target file either does not exist or is older than the source file."
+  :group 'tangld
+  :type 'boolean)
+
 (defun tangld-tangle-fn (file target)
   "Return a lambda tha tangles FILE to TARGET."
   `(lambda ()
