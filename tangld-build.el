@@ -1,12 +1,21 @@
-;;; tangld-build.el
+;;; tangld.el --- literate config development environment -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2021 Timothy Aldrich
 
 ;; Author: Timothy Aldrich <timothy.r.aldrich@gmail.com>
 ;; Version: 0.0.1
-;; Package-Requires: ((org) (notifications) (f) (s) (async))
+;; Package-Requires: ((org) (notifications) (f) (s))
 ;; Keywords: tools processes
 ;; URL: https://github.com/aldrichtr/tangld
+
+;;; Commentary:
+;; A Literate Programming Environment for configuration files and scripts
+
+;; tangld is an Emacs package that provides 'dotfiles management' features
+;; using Literate Programming paradigms.  Using org-mode files with source
+;; blocks and the tangle functionality, Emacs can be used as an IDE to
+;; document, build, and install configuration files, scripts and other
+;; files on a system.  More details are available in the README.org file.
 
 (defcustom tangld-prebuild-hook nil
   "Hook run before `tangld-build' is called."
@@ -22,7 +31,14 @@
   "Function that specifies how a file will be built."
   :group 'tangld)
 
-;; Internal Functions
+(defun tangld-default-build-fn (file source-dir target-dir)
+  "Build FILE from SOURCE to TARGET."
+  (let-alist nil
+    ;; ((target (f-expand (f-relative file source-dir) target-dir)))
+    (cond ((file-ext-p file "org")
+	   (tangld--tangle file target tangld--lazy-tangle-p))
+	  (t
+	   (f-symlink file target)))))
 
 (defun tangld--link-type-build (file)
   "Apply appropriate build action based on `tangld-install-type'."
@@ -44,8 +60,6 @@
 
 (defalias 'tangld--link-type-default-build 'tangld--link-type-link-build)
 
-;;; Main Function
-
 ;;;###autoload
 (defun tangld-build (&optional force)
   "Tangle org-mode files from the source dir to the dotfiles dir.
@@ -53,7 +67,9 @@
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
   (run-hooks 'tangld-prebuild-hooks)
-  (tangld--let* ((tangld--lazy-tangle force))
-    (mapc #'tangld--link-type-build (directory-files-recursively .source "."))))
+  (let ((tangld--lazy-tangle force)
+	(source-dir (alist-get 'source tangld-project-dirs))
+	(files (directory-files-recursively source-dir ".")))
+    (mapc #'tangld--link-type-build files)))
 
 (provide 'tangld-build)
