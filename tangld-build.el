@@ -49,7 +49,7 @@ The function takes two arguments, file and the path of the file to be built."
 (defun tangld--default-build-fn (file target)
   "Build FILE into the build directory."
   (cond ((file-ext-p file "org")
-	 (tangld--tangle file target tangld-lazy-tangle-p))
+	 (funcall tangld-tangle-fn file target tangld-lazy-tangle-p))
 	(t
 	 (f-symlink file target))))
 
