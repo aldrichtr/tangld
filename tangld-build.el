@@ -29,17 +29,15 @@
 
 (defcustom tangld-build-fn #'tangld--default-build-fn
   "Function that specifies how a file will be built.
-This function takes three arguments, the file, the source directory and the
-target directory."
+This function target directory."
   :group 'tangld)
 
-(defun tangld-default-build-fn (file source-dir target-dir)
-  "Build FILE from SOURCE to TARGET."
-  (let-alist nil
-    (cond ((file-ext-p file "org")
-	   (tangld--tangle file target tangld--lazy-tangle-p))
-	  (t
-	   (f-symlink file target)))))
+(defun tangld-default-build-fn (file)
+  "Build FILE."
+  (cond ((file-ext-p file "org")
+	 (tangld--tangle file target tangld--lazy-tangle-p))
+	(t
+	 (f-symlink file target))))
 
 ;;;###autoload
 (defun tangld-build (&optional force)
@@ -50,8 +48,7 @@ By default, build will only tangle files that have changed since last run."
   (run-hooks 'tangld-pre-build-hooks)
   (let ((tangld--lazy-tangle force)
 	(source-dir (alist-get 'source tangld-project-dirs))
-	(files (directory-files-recursively source-dir ".")))
-    ())
+	(files (directory-files-recursively source-dir "."))))
   (run-hooks 'tangld-post-build-hooks))
 
 (provide 'tangld-build)
