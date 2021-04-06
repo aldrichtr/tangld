@@ -60,9 +60,8 @@ The function takes two arguments, file and the path of the file to be built."
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
   (run-hooks 'tangld-pre-build-hook)
-  (let* ((tangld-lazy-tangle-p force)
-	 (source-dir (alist-get 'source tangld-project-dirs))
-	 (files (directory-files-recursively source-dir ".")))
+  (tangld--let* ((tangld-lazy-tangle-p force)
+		 (files (directory-files-recursively .sourcee ".")))
     (dolist (file files)
       (funcall tangld-build-fn file (funcall tangld-build-target-fn file))))
   (run-hooks 'tangld-post-build-hook))
