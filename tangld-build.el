@@ -34,7 +34,7 @@
   :group 'tangld
   :type 'symbol)
 
-(defcustom tangld-build-fn #'tangld--default-build-fn
+(defcustom tangld-build-fn #'tangld--build-fn
   "Function that specifies how a file will be built.
 The function takes two arguments, file and the path of the file to be built."
   :group 'tangld
@@ -45,7 +45,7 @@ The function takes two arguments, file and the path of the file to be built."
   (tangld--with-dirs
    (f-expand (f-relative file .source) .build)))
 
-(defun tangld--default-build-fn (file target)
+(defun tangld--build-fn (file target)
   "Build FILE into the build directory."
   (cond ((f-ext-p file "org")
 	 (funcall tangld-tangle-fn file target tangld-lazy-tangle-p))
