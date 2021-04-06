@@ -27,7 +27,7 @@
   :group 'tangld
   :type 'hook)
 
-(defcustom tangld-file-target-fn #'tangld--file-target-fn
+(defcustom tangld-build-target-fn #'tangld--target-fn
   "Function that returns where a built file should go.")
 
 (defcustom tangld-build-fn #'tangld--default-build-fn
@@ -36,7 +36,7 @@ The function takes two arguments, file and the path of the file to be built."
   :group 'tangld
   :type 'symbol)
 
-(defun tangld--file-target-fn (file)
+(defun tangld--target-fn (file)
   "Map file to build target."
   (let ((source-dir (alist-get 'source tangld-project-dirs))
 	(build-dir (alist-get 'build tagnld-project-dirs)))
@@ -60,7 +60,7 @@ By default, build will only tangle files that have changed since last run."
 	(source-dir (alist-get 'source tangld-project-dirs))
 	(files (directory-files-recursively source-dir ".")))
     (dolist (file files)
-      (funcall tangld-build-fn file (funcall tangld-file-target-fn file))))
+      (funcall tangld-build-fn file (funcall tangld-build-target-fn file))))
   (run-hooks 'tangld-post-build-hook))
 
 (provide 'tangld-build)
