@@ -38,7 +38,9 @@ The function takes one argument, the file to build."
 
 (defun tangld--file-target-fn (file)
   "Map file to build target."
-  ())
+  (let (()
+	())
+    (f-expand (f-relative file source-dir) )))
 
 (defun tangld--default-build-fn (file target)
   "Build FILE into the build directory."
