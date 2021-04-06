@@ -151,26 +151,6 @@ That is, when the target file either does not exist or is older than the source 
 (defcustom tangld-tangld-build-fn #'tangld--default-build-fn
   "Function that specifies how a file will be built.")
 
-;;;; Helpers
-
-;; These helpers are to help me develop this project quickly.
-
-;; The reason for this function is that I expect some files in the source dir
-;; not to be org files. Then, the question becomes what do we do with those
-;; files? We can't tangle them, of course. Right now, they're just symlinked to
-;; the target directory by default.
-
-;; Another thing is that users may not want a 1-to-1 mapping to from the source
-;; directory to their files. For example, I want files in src/emacs/ to be
-;; mapped to build/.config/emacs. So it is important that users are able to
-;; customize the build process.
-
-;; Ideally, all the complicated stuff should go into th build process and the
-;; install process should be simple.
-
-;; Right now the default tangles if it's an org file (has the extension ".org")
-;; or symlinks it otherwise.
-
 (defun tangld--target-file (file source-dir target-dir)
   "Return the tangle target of link-type based on FILE."
   (f-expand (f-relative file source-dir) target-dir))
