@@ -17,8 +17,6 @@
 ;; document, build, and install configuration files, scripts and other
 ;; files on a system.  More details are available in the README.org file.
 
-;;; Code:
-
 (require 'f)
 (require 'async)
 
