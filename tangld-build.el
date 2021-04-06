@@ -28,7 +28,9 @@
   :type 'hook)
 
 (defcustom tangld-build-target-fn #'tangld--target-fn
-  "Function that returns where a built file should go.")
+  "Function that returns where a built file should go."
+  :group 'tangld
+  :type 'symbol)
 
 (defcustom tangld-build-fn #'tangld--default-build-fn
   "Function that specifies how a file will be built.

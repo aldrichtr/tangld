@@ -27,18 +27,17 @@
   :group 'tangld
   :type 'hook)
 
-;; (defcustom tangld-install-type 'link
-;;   "How to install dotfiles on to the system."
-;;   :group 'tangld
-;;   :type 'symbol
-;;   :set #'tangld--update-install-fn)
+(defcustom tangld-install-type 'link
+  "How to install dotfiles on to the system."
+  :group 'tangld
+  :type 'symbol
+  :set #'tangld--update-install-fn)
 
 (defcustom tangld-install-fn #'tangld--install-link
   "Function used to install file to."
   :group 'tangld
   :type 'symbol
-  ;; :set #'tangld--update-install-type
-  )
+  :set #'tangld--update-install-type)
 
 (defun tangld--install (file)
   "Apply appropriate install action based on `tangld-install-type'."
