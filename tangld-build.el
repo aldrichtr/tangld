@@ -60,7 +60,7 @@ By default, build will only tangle files that have changed since last run."
   (interactive "P")
   (run-hooks 'tangld-pre-build-hook)
   (tangld--let* ((tangld-lazy-tangle-p force)
-		 (files (directory-files-recursively .sourcee ".")))
+		 (files (directory-files-recursively .source ".")))
     (dolist (file files)
       (funcall tangld-build-fn file (funcall tangld-build-target-fn file))))
   (run-hooks 'tangld-post-build-hook))
