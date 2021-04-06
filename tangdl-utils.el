@@ -66,7 +66,7 @@ FORCE is enabled, tangle no matter what."
 
 (defun tangld--message (format-string &rest args)
   "Display message if `tangld-verbose-p' is non-nil."
-  (when tangld-verbose-p (message (format "[tangld] %s" (format format-string args)))))
+  (when tangld-verbose-p (message "[tangld] %s" (format format-string args))))
 
 (defun tangld--expanded-project-dir-paths ()
   "Return `tangld-project-dirs' with values all expanded."
