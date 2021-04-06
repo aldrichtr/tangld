@@ -33,7 +33,7 @@ This function target directory."
   :group 'tangld)
 
 (defun tangld-default-build-fn (file)
-  "Build FILE."
+  "Build FILE into the build directory."
   (cond ((file-ext-p file "org")
 	 (tangld--tangle file target tangld--lazy-tangle-p))
 	(t
