@@ -44,10 +44,6 @@
     (tangld--message "creating directories in %s" .root)
     (mapc #'f-mkdir (mapcar #'cdr (tangld--expanded-project-dir-paths tangld-project-dirs)))
 
-    ;; add the lib directory to the list of babel libraries
-    (when tangld-add-project-lib-dir-on-init
-      (add-to-list 'tangld-babel-library-dirs .lib))
-
     ;; initialize the version control (git init)
     (when tangld-init-vc-on-init
       (tangld-init-vc .root))
