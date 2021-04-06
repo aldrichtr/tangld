@@ -43,3 +43,5 @@
     (when tangld-init-vc-on-init
       (tangld-init--init-vc .root))
     (tangld--message "initialized new tangld project in %s" .root)))
+
+(provide 'tangld-init)
