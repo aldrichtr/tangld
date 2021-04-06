@@ -38,3 +38,4 @@
   (mapc #'tangld--link-type-clean
 	(directory-files-recursively (alist-get 'source tangld-project-dirs) ".")))
 
+(provide 'tangld-clean)
