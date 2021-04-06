@@ -34,8 +34,8 @@ This function target directory."
 
 (defun tangld-default-build-fn (file)
   "Build FILE into the build directory."
-  (let (()
-	()
+  (let ((source-dir (alist-get 'source tangld-project-dirs))
+	(build-dir (alist-get 'build tangld-project-dirs))
 	(target-file (f-expand (f-relative file source) build-dir)))
     (cond ((file-ext-p file "org")
 	   (tangld--tangle file target-file tangld-lazy-tangle-p))
