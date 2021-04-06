@@ -1,4 +1,12 @@
-;;;; Install - tangld-install
+;;; tangld-install.el
+;;
+;; Copyright (C) 2021 Timothy Aldrich
+
+;; Author: Timothy Aldrich <timothy.r.aldrich@gmail.com>
+;; Version: 0.0.1
+;; Package-Requires: ((org) (notifications) (f) (s) (async))
+;; Keywords: tools processes
+;; URL: https://github.com/aldrichtr/tangld
 
 (defcustom tangld-preinstall-hook nil
   "Hook run before `tangld-install' is called."
@@ -45,3 +53,5 @@
   (mapc #'tangld--link-type-install
 	(directory-files-recursively (alist-get 'install tangld-project-dirs) "."))
   (run-hooks 'tangld-post-install-hook))
+
+(provide 'tangld-install)

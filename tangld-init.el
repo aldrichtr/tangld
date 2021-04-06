@@ -1,3 +1,13 @@
+;;; tangld-init.el
+;;
+;; Copyright (C) 2021 Timothy Aldrich
+
+;; Author: Timothy Aldrich <timothy.r.aldrich@gmail.com>
+;; Version: 0.0.1
+;; Package-Requires: ((org) (notifications) (f) (s) (async))
+;; Keywords: tools processes
+;; URL: https://github.com/aldrichtr/tangld
+
 (defun tangld-init--init-vc (&optional vc-root-dir)
   "Initialize the project using magit."
   (tangld--with-project-dirs

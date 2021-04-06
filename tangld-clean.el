@@ -1,3 +1,13 @@
+;;; tangld-install.el
+;;
+;; Copyright (C) 2021 Timothy Aldrich
+
+;; Author: Timothy Aldrich <timothy.r.aldrich@gmail.com>
+;; Version: 0.0.1
+;; Package-Requires: ((org) (notifications) (f) (s) (async))
+;; Keywords: tools processes
+;; URL: https://github.com/aldrichtr/tangld
+
 (defun tangld--link-type-clean (file)
   "Apply appropriate clean action to FILE based on `tangld-install-type'."
   (let* ((tangld-install-type (or tangld-install-type 'default))

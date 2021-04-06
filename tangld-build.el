@@ -8,9 +8,6 @@
 ;; Keywords: tools processes
 ;; URL: https://github.com/aldrichtr/tangld
 
-(require 'tangld-helpers)
-(require 'tangld)
-
 (defcustom tangld-prebuild-hook nil
   "Hook run before `tangld-build' is called."
   :group 'tangld
@@ -21,7 +18,7 @@
   :group 'tangld
   :type 'hook)
 
-(defcustom tangld-tangld-build-fn #'tangld--default-build-fn
+(defcustom tangld-build-fn #'tangld--default-build-fn
   "Function that specifies how a file will be built."
   :group 'tangld)
 
@@ -58,3 +55,5 @@ By default, build will only tangle files that have changed since last run."
   (run-hooks 'tangld-prebuild-hooks)
   (tangld--let* ((tangld--lazy-tangle force))
     (mapc #'tangld--link-type-build (directory-files-recursively .source "."))))
+
+(provide 'tangld-build)
