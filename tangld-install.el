@@ -1,12 +1,21 @@
-;;; tangld-install.el
+;;; tangld.el --- literate config development environment -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2021 Timothy Aldrich
 
 ;; Author: Timothy Aldrich <timothy.r.aldrich@gmail.com>
 ;; Version: 0.0.1
-;; Package-Requires: ((org) (notifications) (f) (s) (async))
+;; Package-Requires: ((org) (notifications) (f) (s))
 ;; Keywords: tools processes
 ;; URL: https://github.com/aldrichtr/tangld
+
+;;; Commentary:
+;; A Literate Programming Environment for configuration files and scripts
+
+;; tangld is an Emacs package that provides 'dotfiles management' features
+;; using Literate Programming paradigms.  Using org-mode files with source
+;; blocks and the tangle functionality, Emacs can be used as an IDE to
+;; document, build, and install configuration files, scripts and other
+;; files on a system.  More details are available in the README.org file.
 
 (defcustom tangld-preinstall-hook nil
   "Hook run before `tangld-install' is called."
