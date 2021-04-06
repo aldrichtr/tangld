@@ -82,6 +82,7 @@ Elements appearing earlier in the list override later elements"
   "Do not overwrite and existing project with tangld-init"
   :group 'tangld
   :type 'boolean)
+
 (defcustom tangld-init-vc-on-init-p t
   "Non-nil means a version control system is initialized when starting a new tangld project."
   :group 'tangld
