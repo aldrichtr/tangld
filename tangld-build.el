@@ -47,7 +47,7 @@ The function takes two arguments, file and the path of the file to be built."
 
 (defun tangld--default-build-fn (file target)
   "Build FILE into the build directory."
-  (cond ((file-ext-p file "org")
+  (cond ((f-ext-p file "org")
 	 (funcall tangld-tangle-fn file target tangld-lazy-tangle-p))
 	(t
 	 (f-symlink file target))))
@@ -62,9 +62,7 @@ By default, build will only tangle files that have changed since last run."
   (tangld--let* ((tangld-lazy-tangle-p force)
 		 (files (directory-files-recursively .source ".")))
     (dolist (file files)
-      (message "%s" (funcall tangld-build-target-fn file))
-      ;; (funcall tangld-build-fn file (funcall tangld-build-target-fn file))
-      ))
+      (funcall tangld-build-fn file (funcall tangld-build-target-fn file))))
   (run-hooks 'tangld-post-build-hook))
 
 (provide 'tangld-build)
