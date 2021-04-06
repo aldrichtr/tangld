@@ -65,7 +65,7 @@
   :type 'boolean)
 
 (defcustom tangld-install-type 'link
-  ""
+  "How to."
   :group 'tangld
   :type 'symbol)
 
