@@ -8,8 +8,6 @@
 ;; Keywords: tools processes
 ;; URL: https://github.com/aldrichtr/tangld
 
-;; Specifies.
-
 (require 'tangld-helpers)
 (require 'tangld)
 

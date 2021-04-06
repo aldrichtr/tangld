@@ -1,3 +1,13 @@
+(defun tangld-init--init-vc (&optional vc-root-dir)
+  "Initialize the project using magit."
+  (tangld--with-project-dirs
+   (or vc-root-dir (setq vc-root-dir .root))
+   (tangld--message "initializing git repo in %s" vc-root-dir)
+   (if (featurep 'magit)
+       (magit-call-git "init" (magit-convert-filename-for-git (expand-file-name vc-root-dir)))
+     (message "Magit package not found"))))
+
+;;;###autoload
 (defun tangld-init ()
   "Setup a new tangld project"
   (interactive)
@@ -23,13 +33,3 @@
     (when tangld-init-vc-on-init
       (tangld-init--init-vc .root))
     (tangld--message "initialized new tangld project in %s" .root)))
-
-(defun tangld-init--init-vc (&optional vc-root-dir)
-  "Initialize the project using magit."
-  (tangld--with-project-dirs
-   (or vc-root-dir (setq vc-root-dir .root))
-   (tangld--message "initializing git repo in %s" vc-root-dir)
-   (if (featurep 'magit)
-       (magit-call-git "init" (magit-convert-filename-for-git (expand-file-name vc-root-dir)))
-     (message "Magit package not found"))))
-

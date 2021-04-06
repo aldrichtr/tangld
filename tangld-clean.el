@@ -21,8 +21,10 @@
 (defun tangld--link-type-default-clean (_)
   (tangld--message "Does nothing."))
 
+;;;###autoload
 (defun tangld-clean ()
   "Remove any symlinks corresponding to files in dotfiles-dir."
   (interactive)
-  (mapc #'tangld--link-type-clean (directory-files-recursively (alist-get 'source tangld-project-dirs) ".")))
+  (mapc #'tangld--link-type-clean
+	(directory-files-recursively (alist-get 'source tangld-project-dirs) ".")))
 
