@@ -64,10 +64,4 @@
   :group 'tangld
   :type 'boolean)
 
-(defcustom tangld-lazy-tangle-p t
-  "Only tangle when necessary.
-That is, when the target file either does not exist or is older than the source file."
-  :group 'tangld
-  :type 'boolean)
-
 (provide 'tangld)
