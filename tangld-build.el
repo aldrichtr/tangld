@@ -27,7 +27,7 @@
   :group 'tangld
   :type 'hook)
 
-(defcustom tangld-file-target-fn #'tangld--map-target-fn
+(defcustom tangld-file-target-fn #'tangld--file-target-fn
   "Function that returns the file path.")
 
 (defcustom tangld-build-fn #'tangld--default-build-fn
