@@ -17,27 +17,27 @@
 ;; document, build, and install configuration files, scripts and other
 ;; files on a system.  More details are available in the README.org file.
 
-(defun tangld--link-type-clean (file)
+(defun tangld--clean (file)
   "Apply appropriate clean action to FILE based on `tangld-install-type'."
   (let* ((tangld-install-type (or tangld-install-type 'default))
 	 (clean-fn (intern (format "tangld--link-type-%s-clean" tangld-install-type))))
     (funcall clean-fn file)))
 
-(defun tangld--link-type-direct-clean (file)
+(defun tangld--clean-direct (file)
   "Remove FILE created by direct."
   (f-delete file (tangld--target-file file 'direct)))
 
-(defun tangld--link-type-link-clean (file)
+(defun tangld--clean-link (file)
   "Remove symlink created by clean link type."
-  (let ((target (tangld--target-file file 'link)))
+  (let ((target (tangld--target-file file 'build 'system)))
     (when (f-symlink-p target)
       (f-delete target))))
 
-(defun tangld--link-type-stow-clean (file)
+(defun tangld--clean-stow (file)
   "Remove FILE created by direct link type."
   (tangld--message "Not yet implemented."))
 
-(defun tangld--link-type-default-clean (_)
+(defun tangld--clean-default (_)
   (tangld--message "Does nothing."))
 
 ;;;###autoload
