@@ -32,7 +32,7 @@
   :group 'tangld
   :type 'symbol)
 
-(defun tangld--link-type-install (file)
+(defun tangld--install (file)
   "Apply appropriate install action based on `tangld-install-type'."
   (let* ((tangld-install-type (or tangld-install-type 'default))
 	 (install-fn (intern (format "tangld--link-type-%s-install" tangld-install-type))))
@@ -62,10 +62,9 @@
   "Symlink files in dotfiles directory to system directory."
   (interactive)
   (run-hooks 'tangld-pre-install-hook)
-  (let ((build-dir)
-	(files))
-    (dolist (file files)
-      (tangld--link-type-install file)))
+  (let ((build-dir (alist-get 'build tangld-project-dirs))
+	(files (directory-files-recursively build-dir ".")))
+    (mapc #'tangld--install files))
   (run-hooks 'tangld-post-install-hook))
 
 (provide 'tangld-install)
