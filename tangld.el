@@ -27,6 +27,7 @@
 (require 'ob-load-namespaced-libraries)
 (require 'ob-text-var-expansion)
 (require 'ob-var-table)
+(require 'tangld-init)
 (require 'tangld-build)
 
 ;;;; Constants
