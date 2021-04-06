@@ -37,7 +37,8 @@ The function takes one argument, the file to build."
   :type 'symbol)
 
 (defun tangld--file-target-fn (file)
-  "Map file to ")
+  "Map file to build target."
+  ())
 
 (defun tangld--default-build-fn (file target)
   "Build FILE into the build directory."
