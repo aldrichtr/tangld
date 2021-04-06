@@ -28,8 +28,7 @@
   :type 'hook)
 
 (defcustom tangld-build-fn #'tangld--default-build-fn
-  "Function that specifies how a file will be built.
-This function target directory."
+  "Function that specifies how a file will be built."
   :group 'tangld)
 
 (defun tangld--default-build-fn (file)
