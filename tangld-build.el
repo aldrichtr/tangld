@@ -32,7 +32,7 @@
 This function target directory."
   :group 'tangld)
 
-(defun tangld-default-build-fn (file)
+(defun tangld--default-build-fn (file)
   "Build FILE into the build directory."
   (let ((source-dir (alist-get 'source tangld-project-dirs))
 	(build-dir (alist-get 'build tangld-project-dirs))
