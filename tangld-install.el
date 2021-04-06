@@ -17,18 +17,18 @@
 ;; document, build, and install configuration files, scripts and other
 ;; files on a system.  More details are available in the README.org file.
 
-(defcustom tangld-preinstall-hook nil
+(defcustom tangld-pre-install-hook nil
   "Hook run before `tangld-install' is called."
   :group 'tangld
   :type 'hook)
 
-(defcustom tangld-postinstall-hook nil
+(defcustom tangld-post-install-hook nil
   "Hook run after `tangld-install' is called."
   :group 'tangld
   :type 'hook)
 
 (defcustom tangld-install-type 'link
-  "How to install on."
+  "How to install dotfiles on to the system."
   :group 'tangld
   :type 'symbol)
 
@@ -38,22 +38,20 @@
 	 (install-fn (intern (format "tangld--link-type-%s-install" tangld-install-type))))
     (funcall install-fn file)))
 
-(defun tangld--link-type-direct-install (file)
+(defun tangld--install-direct (file)
   "Move FILE from build-dir to system-dir."
-  (let ((target (tangld--target-file file 'direct)))
-    (unless (f-exists-p (f-parent target))
-      (mkdir (f-parent target) t))
-    (f-move file target)
-    (tangld--message "move %s -> %s" (f-abbrev file) (f-abbrev target))))
+  (unless (f-exists-p (f-parent target))
+    (mkdir (f-parent target) t))
+  (f-move file target)
+  (tangld--message "move %s -> %s" (f-abbrev file) (f-abbrev target)))
 
-(defun tangld--link-type-link-install (file)
+(defun tangld--install-link (file)
   "Symlink FILE to system-dir."
-  (let ((target (tangld--target-file file 'link)))
-    (unless (f-symlink-p file)
-      (f-symlink file target)
-      (tangld--message "symlink %s -> %s" (f-abbrev file) (f-abbrev target)))))
+  (unless (f-symlink-p file)
+    (f-symlink file target)
+    (tangld--message "symlink %s -> %s" (f-abbrev file) (f-abbrev target))))
 
-(defun tangld--link-type-stow-install (file)
+(defun tangld--install-stow (file)
   "Use stow to symlink file."
   (tangld--message "Not yet implemented."))
 
@@ -64,8 +62,10 @@
   "Symlink files in dotfiles directory to system directory."
   (interactive)
   (run-hooks 'tangld-pre-install-hook)
-  (mapc #'tangld--link-type-install
-	(directory-files-recursively (alist-get 'install tangld-project-dirs) "."))
+  (let ((build-dir)
+	(files))
+    (dolist (file files)
+      (tangld--link-type-install file)))
   (run-hooks 'tangld-post-install-hook))
 
 (provide 'tangld-install)
