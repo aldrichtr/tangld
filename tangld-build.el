@@ -42,8 +42,8 @@ The function takes two arguments, file and the path of the file to be built."
 
 (defun tangld--build-target-fn (file)
   "Map file to build target."
-  (let ((source-dir (alist-get 'source tangld-project-dirs))
-	(build-dir (alist-get 'build tagnld-project-dirs)))
+  (tangld--let* ((source-dir (alist-get 'source tangld-project-dirs))
+		 (build-dir (alist-get 'build tagnld-project-dirs)))
     (f-expand (f-relative file source-dir) build-dir)))
 
 (defun tangld--default-build-fn (file target)
