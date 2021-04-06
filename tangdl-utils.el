@@ -23,7 +23,7 @@ The function should accept two arguments, the file and the target. The function
 should return (OUTCOME FILE TARGET), where OUTCOME is non-nil when tangling has
 been successful.")
 
-(defcustom tangld-tangle-result-fn #'tangld--tangle-outcome
+(defcustom tangld-tangle-result-fn #'tangld--tangle-result
   "Function that outputs a result based on tangling.")
 
 (defun tangld-tangle-fn (file target)
@@ -49,7 +49,7 @@ FORCE is enabled, tangle no matter what."
     (tangld--message "tangling %s -> %s")
     (tangld--async-tangle-file file target)))
 
-(defun tangld--tangle-outcome (result)
+(defun tangld--tangle-result (result)
   "Output the result of tangling in the messages buffer."
   (cl-destructuring-bind (outcome file target) result
     (tangld--message "%s in tangling %s to %s" (if outcome "Succeded" "Failed") file target)))
