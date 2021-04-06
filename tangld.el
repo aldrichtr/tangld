@@ -104,5 +104,3 @@ That is, when the target file either does not exist or is older than the source 
   :type 'boolean)
 
 (provide 'tangld)
-
-;;; tangld.el ends here
