@@ -140,9 +140,6 @@ That is, when the target file either does not exist or is older than the source 
   :group 'tangld
   :type 'boolean)
 
-(defcustom tangld-tangld-build-fn #'tangld--default-build-fn
-  "Function that specifies how a file will be built.")
-
 (defun tangld--target-file (file source-dir target-dir)
   "Return the tangle target of link-type based on FILE."
   (f-expand (f-relative file source-dir) target-dir))
