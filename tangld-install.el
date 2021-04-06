@@ -37,9 +37,11 @@
 
 (defun tangld--link-type-default-install (_) nil)
 
+;;;###autoload
 (defun tangld-install ()
   "Symlink files in dotfiles directory to system directory."
   (interactive)
   (run-hooks 'tangld-pre-install-hook)
-  (mapc #'tangld--link-type-install (directory-files-recursively (alist-get 'install tangld-project-dirs) "."))
+  (mapc #'tangld--link-type-install
+	(directory-files-recursively (alist-get 'install tangld-project-dirs) "."))
   (run-hooks 'tangld-post-install-hook))
