@@ -99,6 +99,16 @@ during init"
   :group 'tangld
   :type 'boolean)
 
+(defcustom tangld-cache-org-babel-library-p t
+  "Non-nil means cache the org babel library."
+  :group 'tangld
+  :type 'boolean)
+
+(defcustom tangld-use-cached-library-p t
+  "Non-nil means use the cache if it exists."
+  :group 'tangld
+  :type 'boolean)
+
 (defcustom tangld-config-file "config.org"
   "File where config details are written."
   :group 'tangld
