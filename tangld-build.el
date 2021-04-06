@@ -28,7 +28,7 @@
   :type 'hook)
 
 (defcustom tangld-file-target-fn #'tangld--file-target-fn
-  "Function that returns the file path.")
+  "Function that returns the file path a built.")
 
 (defcustom tangld-build-fn #'tangld--default-build-fn
   "Function that specifies how a file will be built.
