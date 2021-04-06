@@ -39,7 +39,7 @@ That is, when the target file either does not exist or is older than the source 
 (defmacro tangld--let* (vars &rest body)
   `(tangld--with-dirs (let* ,vars ,@body)))
 
-(defun tangld-tangle-fn (file target)
+(defun tangld--tangle-fn (file target)
   "Return a lambda tha tangles FILE to TARGET."
   `(lambda ()
      (require 'org)
@@ -51,7 +51,7 @@ That is, when the target file either does not exist or is older than the source 
 
 (defun tangld--async-tangle-file (file target)
   "Asynchronously tangle FILE to TARGET."
-  (async-start (funcall tangld-tangle-fn file target) #'tangld--tangle-outcome))
+  (async-start (tangld--tangle-fn file target) #'tangld--tangle-outcome))
 
 (defun tangld--tangle (file target &optional force)
   "Tangle FILE into PROJECT-DIR.
@@ -59,7 +59,7 @@ That is, when the target file either does not exist or is older than the source 
 Only tangles if target file either does not exist or is older than FILE. If
 FORCE is enabled, tangle no matter what."
   (when (or force (not (f-exists-p target)) (file-newer-than-file-p file target))
-    (tangld--message "tangling %s -> %s")
+    (tangld--message "tangling %s -> %s" (f-abbrev file) (f-abbrev target))
     (tangld--async-tangle-file file target)))
 
 (defun tangld--tangle-result (result)
@@ -73,7 +73,8 @@ FORCE is enabled, tangle no matter what."
 
 (defun tangld--message (format-string &rest args)
   "Display message if `tangld-verbose-p' is non-nil."
-  (when tangld-verbose-p (message "[tangld] %s" (format format-string args))))
+  (when tangld-verbose-p
+    (message "[tangld] %s" (apply #'format format-string args))))
 
 (defun tangld--expanded-project-dir-paths ()
   "Return `tangld-project-dirs' with values all expanded."
