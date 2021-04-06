@@ -34,10 +34,11 @@ This function target directory."
 
 (defun tangld-default-build-fn (file)
   "Build FILE into the build directory."
-  (cond ((file-ext-p file "org")
-	 (tangld--tangle file target tangld--lazy-tangle-p))
-	(t
-	 (f-symlink file target))))
+  (let ((target-file))
+    (cond ((file-ext-p file "org")
+	   (tangld--tangle file target-file tangld--lazy-tangle-p))
+	  (t
+	   (f-symlink file target-file)))))
 
 ;;;###autoload
 (defun tangld-build (&optional force)
