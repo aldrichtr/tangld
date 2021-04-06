@@ -45,10 +45,10 @@ This function target directory."
 
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
-  (run-hooks 'tangld-pre-build-hooks)
+  (run-hooks 'tangld-pre-build-hook)
   (let ((tangld--lazy-tangle force)
 	(source-dir (alist-get 'source tangld-project-dirs))
 	(files (directory-files-recursively source-dir "."))))
-  (run-hooks 'tangld-post-build-hooks))
+  (run-hooks 'tangld-post-build-hook))
 
 (provide 'tangld-build)
