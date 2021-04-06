@@ -54,8 +54,7 @@ By default, build will only tangle files that have changed since last run."
 	(source-dir (alist-get 'source tangld-project-dirs))
 	(files (directory-files-recursively source-dir ".")))
     (dolist (file files)
-      (funcall tagnld-build-fn ))
-    (mapc tangld-build-fn files))
+      (funcall tangld-build-fn )))
   (run-hooks 'tangld-post-build-hook))
 
 (provide 'tangld-build)
