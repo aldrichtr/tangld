@@ -32,21 +32,18 @@
   :group 'tangld
   :type 'symbol)
 
-(defcustom tangld-install-fn #'tangld--install-direct
+(defcustom tangld-install-fn #'tangld--install-link
   "Function used to install file to."
   :group 'tangld
   :type 'symbol)
 
 (defun tangld--install (file)
   "Apply appropriate install action based on `tangld-install-type'."
-  (let ((target))
-    (let* ((tangld-install-type (or tangld-install-type 'default))
-	   (install-fn (intern (format "tangld--link-type-%s-install" tangld-install-type))))
-      (funcall install-fn file))))
+  (funcall tangld-install-fn file))
 
 (defun tangld--install-direct (file)
   "Move FILE from build-dir to system-dir."
-  (let ((target))
+  (let ((target (funcall tangld-build-target-fn file)))
     (unless (f-exists-p (f-parent target))
       (mkdir (f-parent target) t))
     (f-move file target)
@@ -54,7 +51,7 @@
 
 (defun tangld--install-link (file)
   "Symlink FILE to system-dir."
-  (let ((target))
+  (let ((target (funcall tangld-build-target-fn file)))
     (unless (f-symlink-p file)
       (f-symlink file target)
       (tangld--message "symlink %s -> %s" (f-abbrev file) (f-abbrev target)))))
