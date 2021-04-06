@@ -36,15 +36,12 @@ The function takes one argument, the file to build."
   :group 'tangld
   :type 'symbol)
 
-(defun tangld--default-build-fn (file)
+(defun tangld--default-build-fn (file target)
   "Build FILE into the build directory."
-  (let ((source-dir (alist-get 'source tangld-project-dirs))
-	(build-dir (alist-get 'build tangld-project-dirs))
-	(target-file (f-expand (f-relative file source) build-dir)))
-    (cond ((file-ext-p file "org")
-	   (tangld--tangle file target-file tangld-lazy-tangle-p))
-	  (t
-	   (f-symlink file target-file)))))
+  (cond ((file-ext-p file "org")
+	 (tangld--tangle file target tangld-lazy-tangle-p))
+	(t
+	 (f-symlink file target))))
 
 ;;;###autoload
 (defun tangld-build (&optional force)
