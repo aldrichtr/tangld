@@ -1,4 +1,4 @@
-;;; tangld.el --- literate config development environment -*- lexical-binding: t; -*-
+;;; tangld-build.el --- literate config development environment -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2021 Timothy Aldrich
 
@@ -17,12 +17,12 @@
 ;; document, build, and install configuration files, scripts and other
 ;; files on a system.  More details are available in the README.org file.
 
-(defcustom tangld-prebuild-hook nil
+(defcustom tangld-pre-build-hook nil
   "Hook run before `tangld-build' is called."
   :group 'tangld
   :type 'hook)
 
-(defcustom tangld-postbuild-hook nil
+(defcustom tangld-post-build-hook nil
   "Hook run after `tangld-build' is called."
   :group 'tangld
   :type 'hook)
@@ -34,7 +34,6 @@
 (defun tangld-default-build-fn (file source-dir target-dir)
   "Build FILE from SOURCE to TARGET."
   (let-alist nil
-    ;; ((target (f-expand (f-relative file source-dir) target-dir)))
     (cond ((file-ext-p file "org")
 	   (tangld--tangle file target tangld--lazy-tangle-p))
 	  (t
@@ -66,10 +65,11 @@
 
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
-  (run-hooks 'tangld-prebuild-hooks)
+  (run-hooks 'tangld-pre-build-hooks)
   (let ((tangld--lazy-tangle force)
 	(source-dir (alist-get 'source tangld-project-dirs))
 	(files (directory-files-recursively source-dir ".")))
-    (mapc #'tangld--link-type-build files)))
+    (mapc #'tangld--link-type-build files))
+  (run-hooks 'tangld-post-build-hooks))
 
 (provide 'tangld-build)
