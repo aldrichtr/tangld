@@ -89,32 +89,10 @@ Elements appearing earlier in the list override later elements"
   "Do not overwrite and existing project with tangld-init"
   :group 'tangld
   :type 'boolean)
-
-(defcustom tangld-add-project-lib-dir-on-init t
-  "Add the lib directory of the project to the tangld-babel-library-dirs
-during init"
-  :group 'tangld
-  :type 'boolean)
-
 (defcustom tangld-init-vc-on-init-p t
   "Non-nil means a version control system is initialized when starting a new tangld project."
   :group 'tangld
   :type 'boolean)
-
-(defcustom tangld-cache-org-babel-library-p t
-  "Non-nil means cache the org babel library."
-  :group 'tangld
-  :type 'boolean)
-
-(defcustom tangld-use-cached-library-p t
-  "Non-nil means use the cache if it exists."
-  :group 'tangld
-  :type 'boolean)
-
-(defcustom tangld-config-file "config.org"
-  "File where config details are written."
-  :group 'tangld
-  :type 'string)
 
 (defcustom tangld-verbose-p nil
   "Whether tangled should display many messages."
