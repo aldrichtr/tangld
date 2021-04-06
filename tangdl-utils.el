@@ -1,4 +1,4 @@
-;;; tangld.el --- literate config development environment -*- lexical-binding: t; -*-
+;;; tangld-utils.el --- literate config development environment -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2021 Timothy Aldrich
 
