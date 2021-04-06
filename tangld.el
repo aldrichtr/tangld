@@ -73,13 +73,6 @@ Elements appearing earlier in the list override later elements"
   :group 'tangld
   :type '(alist :value-type (group string )))
 
-(defcustom tangld-confirm-on-eval nil
-  "If non-nil, emacs will ask before evaluating code in source blocks"
-  :group 'tangld
-  :type '(choice
-          (const :tag "Don't ask" nil)
-          (const :tag "Ask" t)))
-
 (defcustom tangld-add-src-return-link-comments t
   "Add a link to the source code block in the output"
   :group 'tangld
