@@ -114,16 +114,6 @@ during init"
   :group 'tangld
   :type 'string)
 
-(defcustom tangld-prebuild-hook nil
-  "Hook run before `tangld-build' is called."
-  :group 'tangld
-  :type 'hook)
-
-(defcustom tangld-postbuild-hook nil
-  "Hook run after `tangld-build' is called."
-  :group 'tangld
-  :type 'hook)
-
 (defcustom tangld-preinstall-hook nil
   "Hook run before `tangld-install' is called."
   :group 'tangld
