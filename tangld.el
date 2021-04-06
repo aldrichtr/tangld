@@ -31,6 +31,7 @@
 (require 'tangld-init)
 (require 'tangld-build)
 (require 'tangld-clean)
+(require 'tangld-utils)
 
 ;;;; Constants
 
