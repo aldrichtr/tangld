@@ -189,4 +189,6 @@ build type i.e. OS specific, shell options alternate install directory, etc."
   (interactive)
   (tangld--message "Not yet implemented."))
 
+(provide 'tangld)
+
 ;;; tangld.el ends here
