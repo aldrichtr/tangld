@@ -30,7 +30,8 @@
 (defcustom tangld-build-fn #'tangld--default-build-fn
   "Function that specifies how a file will be built.
 The function takes one argument, the file to build."
-  :group 'tangld)
+  :group 'tangld
+  :type 'symbol)
 
 (defun tangld--default-build-fn (file)
   "Build FILE into the build directory."
