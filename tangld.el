@@ -28,10 +28,10 @@
 (require 'ob-text-var-expansion)
 (require 'ob-var-table)
 
+(require 'tangld-utils)
 (require 'tangld-init)
 (require 'tangld-build)
 (require 'tangld-clean)
-(require 'tangld-utils)
 
 ;;;; Constants
 
