@@ -260,9 +260,6 @@ build type i.e. OS specific, shell options alternate install directory, etc."
       (tangld--ignore (f-write config-file))
       (tangld--message "Build options saved to '%s'" config-file))))
 
-;;;; Clean - tangld-clean
-;;;; Check - tangld-check
-
 (defun tangld-check ()
   "Run tests"
   (interactive)
