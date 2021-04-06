@@ -31,35 +31,11 @@
 (require 'tangld-build)
 (require 'tangld-clean)
 
-;;;; Constants
-
-(defconst tangld--load-dir
-  (file-name-directory (or load-file-name buffer-file-name))
-  "Directory that yasnippet was loaded from.")
-
-(defconst tangld--installed-lib-dir
-  (expand-file-name "lib" tangld--load-dir))
-
-(defconst tangld--default-user-lib-dir
-  (expand-file-name "tangld-lib" user-emacs-directory))
-
 ;;;; Global settings
 
 (defgroup tangld nil
   "Literate Config Manager"
   :prefix "tangld-")
-
-(defcustom tangld-babel-library-dirs (list tangld--default-user-lib-dir)
-  "List of top-level tangld library directories.
-
-Each element, a string or a symbol whose value is a string,
-designates a top-level directory where org-mode files can be found.
-
-Elements appearing earlier in the list override later elements"
-  :group 'tangld
-  :type '(choice (directory :tag "Single directory")
-                 (repeat :tag "List of directories"
-                         (choice (directory) (variable)))))
 
 (defcustom tangld-project-dirs
   '((root    . "~/.tangld")
@@ -71,11 +47,6 @@ Elements appearing earlier in the list override later elements"
   "A list of default project directory names"
   :group 'tangld
   :type '(alist :value-type (group string )))
-
-(defcustom tangld-add-src-return-link-comments t
-  "Add a link to the source code block in the output"
-  :group 'tangld
-  :type 'boolean)
 
 (defcustom tangld-inhibit-init-if-exists t
   "Do not overwrite and existing project with tangld-init"
