@@ -32,7 +32,7 @@
 
 (defcustom tangld-build-fn #'tangld--default-build-fn
   "Function that specifies how a file will be built.
-The function takes two arguments, file and the location."
+The function takes two arguments, file and the path of the file to be built."
   :group 'tangld
   :type 'symbol)
 
