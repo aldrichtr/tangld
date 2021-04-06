@@ -36,6 +36,9 @@ The function takes one argument, the file to build."
   :group 'tangld
   :type 'symbol)
 
+(defun tangld--file-target-fn (file)
+  "Map file to ")
+
 (defun tangld--default-build-fn (file target)
   "Build FILE into the build directory."
   (cond ((file-ext-p file "org")
