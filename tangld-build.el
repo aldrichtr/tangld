@@ -29,7 +29,7 @@
   :group 'tangld
   :type 'hook)
 
-(defcustom tangld-build-target-fn #'tangld--target-fn
+(defcustom tangld-build-target-fn #'tangld--build-target-fn
   "Function that returns where a built file should go."
   :group 'tangld
   :type 'symbol)
@@ -40,7 +40,7 @@ The function takes two arguments, file and the path of the file to be built."
   :group 'tangld
   :type 'symbol)
 
-(defun tangld--target-fn (file)
+(defun tangld--build-target-fn (file)
   "Map file to build target."
   (let ((source-dir (alist-get 'source tangld-project-dirs))
 	(build-dir (alist-get 'build tagnld-project-dirs)))
