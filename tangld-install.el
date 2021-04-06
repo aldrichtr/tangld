@@ -39,6 +39,10 @@
   :type 'symbol
   :set #'tangld--update-install-type)
 
+(defun tangld--update-install-fn () nil)
+
+(defun tangld--update-install-type () nil)
+
 (defun tangld--install (file)
   "Apply appropriate install action based on `tangld-install-type'."
   (funcall tangld-install-fn file))
