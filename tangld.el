@@ -28,6 +28,7 @@
 
 (require 'tangld-utils)
 (require 'tangld-init)
+(require 'tangld-install)
 (require 'tangld-build)
 (require 'tangld-clean)
 
