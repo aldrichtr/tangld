@@ -156,8 +156,6 @@ FORCE is enabled, tangle no matter what."
 	(push (cons name (expand-file-name val root)) expanded)))
     expanded))
 
-;;;; Initialization - tangld-init
-
 ;;;; Configuration - tangld-config
 
 (defun tangld-config (&optional type)
