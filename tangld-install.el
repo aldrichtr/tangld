@@ -27,6 +27,11 @@
   :group 'tangld
   :type 'hook)
 
+(defcustom tangld-install-type 'link
+  "How to install on."
+  :group 'tangld
+  :type 'symbol)
+
 (defun tangld--link-type-install (file)
   "Apply appropriate install action based on `tangld-install-type'."
   (let* ((tangld-install-type (or tangld-install-type 'default))
