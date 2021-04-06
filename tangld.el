@@ -64,11 +64,6 @@
   :group 'tangld
   :type 'boolean)
 
-(defcustom tangld-install-type 'link
-  "How to."
-  :group 'tangld
-  :type 'symbol)
-
 (defcustom tangld-lazy-tangle-p t
   "Only tangle when necessary.
 That is, when the target file either does not exist or is older than the source file."
