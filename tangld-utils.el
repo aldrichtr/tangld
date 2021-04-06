@@ -32,6 +32,13 @@ That is, when the target file either does not exist or is older than the source 
   :group 'tangld
   :type 'boolean)
 
+(defmacro tangld--with-dirs (&rest body)
+  `(let-alist (tangld--expanded-project-dir-paths)
+     ,@body))
+
+(defmacro tangld--let* (vars &rest body)
+  `(tangld--with-dirs (let* ,vars ,@body)))
+
 (defun tangld-tangle-fn (file target)
   "Return a lambda tha tangles FILE to TARGET."
   `(lambda ()
