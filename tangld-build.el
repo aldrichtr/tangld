@@ -34,7 +34,7 @@ This function target directory."
 
 (defun tangld-default-build-fn (file)
   "Build FILE into the build directory."
-  (let ((target-file))
+  (let ((target-file ()))
     (cond ((file-ext-p file "org")
 	   (tangld--tangle file target-file tangld--lazy-tangle-p))
 	  (t
@@ -47,7 +47,7 @@ This function target directory."
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
   (run-hooks 'tangld-pre-build-hook)
-  (let ((tangld--lazy-tangle force)
+  (let ((tangld-lazy-tangle-p force)
 	(source-dir (alist-get 'source tangld-project-dirs))
 	(files (directory-files-recursively source-dir "."))))
   (run-hooks 'tangld-post-build-hook))
