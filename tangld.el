@@ -209,7 +209,20 @@ By default, build will only tangle files that have changed since last run."
   ;;       - direct :: write to the system dir/file specified (destructive?)
   ;;   - record the mod date in the db
   ;; run the post-build hooks if any
-  )
+  (let ((source-dir (alist-get 'source tangld)))
+    (dolist (file (cddr (directory-files source-dir)))
+      (when (or force (not (= (file-attribute-modification-time) date)))
+	(cl-case tangled-install-type
+	  (stage)
+	  (tangld-install)
+	  (link)
+	  (stow)
+	  (direct)
+	  (nil)
+	  (t)))))
+  
+  ;; Run the post-build hooks.
+  (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Install - tangld-install
 
