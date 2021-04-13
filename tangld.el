@@ -232,11 +232,15 @@ By default, build will only tangle files that have changed since last run."
 The build step tangles org files into their source, the install step moves them
 to their target location."
   (interactive)
+  (run-hooks 'tangld-pre-install-hook)
   ;; read the config for options pertaining to the install
   ;; for each file in the build directory
   ;;   identify the install type for this file
   ;;   if
-  )
+  (let (install-type)
+    (dolist (file (cddr (directory-files)))
+      (org-babel-tangle-file file)))
+  (run-hooks 'tangld-post-install-hook))
 
 ;;;; Clean - tangld-clean
 
