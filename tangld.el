@@ -262,14 +262,15 @@ build type i.e. OS specific, shell options alternate install directory, etc."
 
 By default, build will only tangle files that have changed since last run."
   (interactive "P")
-  (tangld--message "Run `tangld-prebuild-hooks'.")
   (run-hooks 'tangld-prebuild-hooks)
 
   (let-alist (tangld--expanded-project-dirs)
     (let ((files (directory-files-recursively .source ".")))
       (unless files (tangld--message "Nothing todo, no files."))
       (dolist (file files)
-	(when (or force (file-newer-than-file-p target file))
+	(when (or force
+		  (not (f-exists-p target))
+		  (file-newer-than-file-p target file))
 	  (cl-case tangld-install-type
 	    (stage
 	     (tangld--async-tangle-file file .build))
@@ -287,7 +288,6 @@ By default, build will only tangle files that have changed since last run."
 	    (t
 	     (error "Unknown link type '%S'" type)))))))
   
-  ;; run the post-build hooks if any
   (run-hooks 'tangld-postbuild-hooks))
 
 ;;;; Install - tangld-install
