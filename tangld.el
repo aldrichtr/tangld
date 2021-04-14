@@ -313,10 +313,6 @@ to their target location."
 (defun tangld-clean ()
   "Remove any files or settings created by the build phase."
   (interactive)
-  ;; (tangld--message "Remove the cache")
-  ;; (when (f-exists-p tangld-cache-file) (f-delete tangld-cache-file))
-  ;; (tangld--message "Remove the db")
-  ;; (when (f-exists-p tangld-db-file) (f-delete tangld-db-file))
   (dolist (file files)
     ())
   )
