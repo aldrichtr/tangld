@@ -1,5 +1,3 @@
-Readme file for tangld project repo
-------------------------------------------------------------------------------
 #+TITLE: tangld: A literate config system built on emacs and org-mode
 #+AUTHOR: Timothy Aldrich
 #+EMAIL: timothy.r.aldrich@gmail.com
@@ -12,9 +10,64 @@ Readme file for tangld project repo
  | Version: | 0.0.1 |
 
 * Introduction
-  A literate config system built on emacs and org-mode.  Using org-mode and
-  it's built in babel/tangle functionality, =tangld= provides a /developer environment/
-  for documenting, automating, and versioning configuration files on your system.
+  Manage all of your dotfiles using emacs and org-mode.  tangld blends the concept
+  of a dotfiles manager with the concept of literate programming.  The result is
+  a system similar to the software development cycle, but for the configuration
+  of your system.
+  - org-mode files :: source files containing org headings and /src blocks/
+  - dotfiles :: the "output" of the tangle process (your configuration files)
+  - library of babel :: org-mode files containing functions and data for use by
+    the tangle process.
+
+
+  |              | gcc                   | tangld     | notes                             |
+  |--------------+-----------------------+------------+-----------------------------------|
+  | source file  | source.c              | source.org | flat text files with              |
+  |              |                       |            | instructions for the compiler     |
+  | library file | lib.h                 | lib.org    | functions used in the source file |
+  | output file  | hello(.so, .exe, etc) | .tmux.conf | the result of the build           |
+
+
+  #+BEGIN_EXAMPLE
+  $> gcc -o hello source.c
+  $> ./hello
+  $> Hello World!
+  #+END_EXAMPLE
+
+
+  #+BEGIN_EXAMPLE
+  M-x load-file source.org
+  M-x tangld-build
+  $> tmux source-file ~/.tmux.conf # reload tmux config to see your changes
+  #+END_EXAMPLE
+
+  Obviously, this is a very simple one-file example.  For more complex projects,
+  there are /build systems/ such as make etc.
+
+  A build system allows you to define all the files that need to be compiled,
+  the order in which they are to be compiled, compiler options etc. as well as
+  defining other tasks related to managing the project such as configuration,
+  cleanup, install, uninstall etc.
+
+  This is what tangld does for your dotfiles.
+
+
+
+* The tangld workflow(s)
+  As much as possible, tangld attempts to match the workflow of other build
+  systems.
+
+   The first time running tangld on a system:
+   - init :: Create a new instance of a tangld project on the system.
+     Set up the directories, files, and settings tangld uses to create dotfiles.
+
+   Anytime you want to change the way tangld operates
+   - config :: Setup the tangld project.  Identify settings used by other
+     tangld functions.
+
+   After that, just add/modify source and lib files and create output:
+   - build :: Load library files, tangle source files, write output.
+
 
 * Installing / Getting started
   This is a very new project, so the install process is not really built out yet.
@@ -29,44 +82,6 @@ Readme file for tangld project repo
   : (add-to-list 'load-path "/path/to/tangld/lib/elisp)
   : (require 'tangld)
   #+END_SRC
-* Overview
-  If you've landed here, chances are you're looking for a "dotfiles manager".
-  tangld /is/ that, but in the same way that Emacs is a text editor...
-
-  tangld aims to be a complete development environment for your dotfiles.  It
-  implements literate programming concepts, putting your system's configuration
-  files, scripts and setup files in the same file as the documentation of those
-  files... a concept called literate config.
-** dotfile management
-  There are [[https://github.com/webpro/awesome-dotfiles][so many]] dotfiles managers out there.  Almost all of them, revolve
-  around:
-  1) A git repo that tracks changes to, and publishes (usually to github) the
-     actual configuration files in the users home directory and the "standard"
-     config locations (~/. , ~/config , etc. )
-  2) links from the git repo to the standard locations (scripted linking or a
-     utility like GNU stow)
-
-  Although there are so many, they all are basically trying to accomplish the
-  same two goals:
-  1) version control the configuration of a workspace, environment and/or
-     system, which is really a collection of tools and utilities such as window
-     managers, text editors, script engines, compilers, applications, and
-     processes, etc.
-  2) make a holistic process to capture, document, and transfer that set of tool's
-     configurations from one system to another.
-
-** Literate config
-   Literate programming is the idea that you have an explanation of the program's
-   logic, written for a _human_, and in the same document, you have the source
-   code, written for a _computer_ to create the program.
-   That idea, transferred to configuration files for your system, is literate
-   configuration.
-** Tangling
-   Emacs and it's borderline-magical org-mode system does this using source
-   blocks in an org-mode file, and a library called org-babel.  Now, org-mode can
-   also _export_ your source blocks, but that's just making it print with pretty
-   colors... babel lets you /execute/ the source in a process called tangling.
-
 * Usage
   Please see [[file:doc/tangld-manual.org][the manual]]
 
