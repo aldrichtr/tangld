@@ -7,7 +7,6 @@
 
  | Status: | Under Development |
  | Location: | [[https://github.com/aldrichtr/tangld][github]] |
- | Version: | 0.0.1 |
 
 * Introduction
   Manage all of your dotfiles using emacs and org-mode.  tangld blends the concept
