@@ -86,8 +86,8 @@ each file prior to tangle."
   (run-hooks 'tangld-pre-build-hook)
   ;; 2. Set options that control tangling
   (setq org-confirm-babel-evaluate tangld-confirm-on-eval)
+  (if (cfg) (funcall cfg))
   ;; 3. Load the library
-
   (if (and (tangld-load-library-on-build-p
             inc))
       (tangld-build-load-library inc))

@@ -146,7 +146,7 @@
 
 ;;;; Projects
 
-(defun tangld-project-generate (name doc src inc)
+(defun tangld-project-generate (name doc src inc cfg)
   "Add a project definition to the list `tangld-projects-plist'.
 NAME is a unique name given to the project.  This is used in other functions like 
 `tangld-build-project' <name>
@@ -166,9 +166,13 @@ INC is a list of files to be ingested into the library of babel prior to tanglin
         (includes (-map (lambda (f)
                               (tangld-log-message 3 "      '%s' is in list" f)
                           f)
-                        inc)))
+                        inc))
+        ;; Also, the config settings don't need to be processed here right now, so I'm
+        ;; just leaving this "place-holder" for future config processing prior to generating
+        ;; the project 
+        (config cfg))
         (tangld-log-message 2 "adding %s to projects-plist" name)
-    (setq tangld-projects-plist (plist-put tangld-projects-plist name (list sources includes)))))
+    (setq tangld-projects-plist (plist-put tangld-projects-plist name (list sources includes config)))))
 
 
 (defmacro tangld-project-define (name &optional doc &rest project-plist)
@@ -188,11 +192,17 @@ or a path description:
                      :exclude-dir \"^\\.\"    ; don't look in these subdirs
                      :include \".*default.*\" ; cancel the exclusion for these
                      )
-:include same options as :source"
+:include same options as :source
+
+:config add any customization options here, like:
+
+:config (progn
+    (setq tangld-clear-library-before-build-p t))"
   (declare (indent defun))
   (tangld-log-message 4 "define: project %s" name)
   (let ((source (plist-get project-plist :source))
         (include (plist-get project-plist :include))
+        (config (plist-get project-plist :config))
         (source-files nil)
         (include-files nil))
     (cond ((listp source)
@@ -241,7 +251,7 @@ or a path description:
           )
     (tangld-log-message 4 "      calling generate now:")
     (tangld-log-message 4 (string-join source-files "\n"))
-    `(tangld-project-generate ,name ,doc (quote ,source-files) (quote ,include-files))))
+    `(tangld-project-generate ,name ,doc (quote ,source-files) (quote ,include-files) (quote ,config))))
 
 ;;; tangld.el ends here
 
