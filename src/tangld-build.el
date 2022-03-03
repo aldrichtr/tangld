@@ -93,8 +93,11 @@ each file prior to tangle."
       (tangld-build-load-library inc))
   ;; 4. Tangle the source files
   (mapcar (lambda (f)
-            ((tangld-log-message 3 "Tangling '%s'" f)
-             (org-babel-tangle-file f)))
+            (if (tangld-file-changed-p f)
+                ((tangld-log-message 3 "Tangling '%s'" f)
+                 (org-babel-tangle-file f)
+                 (tangld-file-last-checksum-put f))
+              (tangld-log-message 3 "'%s' no changes since last tangle" f)))
           src)
   ;; 5. Run any post-build hooks
   (run-hooks 'tangld-post-build-hook))

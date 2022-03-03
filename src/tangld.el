@@ -130,9 +130,10 @@
   "Get a checksum from the database"
   (gethash path tangld-file-tracking-db))
 
-(defun tangld-file-last-checksum-put (path chksum)
+(defun tangld-file-last-checksum-put (path &optional chksum)
   "Add or update a checksum to the database"
-  (puthash path chksum tangld-file-tracking-db))
+  (let ((checksum (or chksum (tangld-compute-file-hash path))))
+    (puthash path checksum tangld-file-tracking-db)))
 
 (defun tangld-file-tracking-db-init ()
   (let ((db  (make-hash-table
