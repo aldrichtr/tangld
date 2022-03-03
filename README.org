@@ -16,12 +16,64 @@
     
 * Walkthrough
   =tangld= provides three basic functions:
-  - tangld-init :: =tangld= sets up a new, local repository for managing the configuration files.
-  - tangld-config :: =tangld= gathers environment, system and user settings and stores them in your local =tangld
+  - [ ] tangld-init :: =tangld= sets up a new, local repository for managing the configuration files.
+  - [ ] tangld-config :: =tangld= gathers environment, system and user settings and stores them in your local =tangld
     project= 
-  - tangld-build :: =tangld= calls =org-babel-tangle= on all of your source files, which produce your system's
+  - [ ] tangld-build :: =tangld= calls =org-babel-tangle= on all of your source files, which produce your system's
     configuration files.
 
-  Using these three functions, tangld provides the same functionality that a build system such as cmake, ant or
+  Using these three functions, tangld provides the same functionality as a build system such as cmake, ant or
   rake.
+
+* A tangld project
+  A project consists of :
+  - a unique (within this emacs session) name
+  - one or more source files (org-mode files to be tangled)
+  - zero or more include files (org-mode files to be ingested into the library of babel)
+  - zero or more configuration settings
+
+  As an example, if we have two source files 'fileA.org' and 'fileB.org, and we want two files to be loaded into the
+  library of babel first 'file1.org' and 'file2.org' , we can define the project like this:
+  #+begin_src emacs-lisp
+    (tangld-project-define "simple-tangld-project"
+      "This is a simple example tangld project"
+      :source ("fileA.org" "fileB.org")
+      :include ("file1.org" "file2.org"))
+  #+end_src
+
+  This project will be added to =tangld-projects-plist=.  Now to tangle the project, you can refer to it like so:
+  #+begin_src emacs-lisp
+    (tangld-build-project "simple-tangld-project")
+  #+end_src
+
+  Output of the build process is sent to the =*tangld*= buffer.
+
+  In addition to specifying a list of files, the =:source= and/or =:include= sections can have search criteria,
+  which tangld-project-define will use to build the list.
+
+    #+begin_src emacs-lisp
+    (tangld-project-define "all-config-files"
+      "All the files in my .tangld directory"
+      :source (:path "~/.tangld/src"        ; root directory to traverse
+                     :recurse t             ; look in subdirectories
+                     :files "\\.org$"       ; files to add to source
+                     :exclude "^\\."        ; unless they match this
+                     :exclude-dir "^\\."    ; don't look in these subdirs
+                     :include ".*default.*" ; cancel the exclusion for these
+                     )
+      :include (:path "~/.tangld/lib"       ; root directory to traverse
+                     :recurse t             ; look in subdirectories
+                     :files "\\.org$"       ; files to add to source
+                     :exclude "^\\."        ; unless they match this
+                     :exclude-dir "^\\."    ; don't look in these subdirs
+                     :include ".*default.*" ; cancel the exclusion for these
+                     )
+      :config (progn
+                (setq tangld-clear-library-before-build-p t)
+                ;...
+                ))
+  #+end_src
+  
+
+
   
