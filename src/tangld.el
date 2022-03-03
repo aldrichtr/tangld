@@ -68,6 +68,15 @@
   :group 'tangld
   :type 'boolean)
 
+(defcustom tangld-file-tracking-file "~/.tangld/.tangld-db"
+  "File to store database of files and checksums at last tangle"
+  :group 'tangld
+  :type 'file)
+
+(defvar tangld-file-tracking-db '()
+  "Variable to store current file tracking database")
+
+
 ;;;; Logging
 
 (defun tangld-log-message (lvl msg &rest args)
@@ -75,6 +84,63 @@
   (let ((log-msg (apply #'format msg args)))
     (if (<= lvl tangld-log-level)
         (print log-msg (get-buffer-create tangld-log-buffer-name)))))
+
+;;;; Checksums
+
+
+(defun tangld-file-changed-p (path)
+  "return non-nil if the file has changed since the checksum was last computed"
+  (let ((new-chksum (tangld-compute-file-hash path))
+        (old-chksum (tangld-file-last-checksum-get path)))
+                                        ; if either the old and new checksum are different, or there is no old checksum,
+                                        ; then the file has changed since last time.
+    (or (not (string-equal new-chksum old-chksum))
+        (equal nil old-chksum))))
+
+(defun tangld-compute-file-hash (path)
+  "compute the checksum of the file at PATH"
+  (interactive)
+  (let ((old-point (point))
+        (old-buff (current-buffer))
+        (chksum (secure-hash 'sha1 (find-file-existing path))))
+    (tangld-log-message 4 "the sha1 is %s for %s" chksum path)
+    (unless (eq (current-buffer) old-buff)
+      (switch-to-buffer old-buff))
+    (goto-char old-point)
+    chksum))
+
+(defun tangld-file-checksums-load ()
+  "Read the data from `tangld-file-checksums-file'"
+  (with-temp-buffer
+    (condition-case nil
+        (progn
+          (insert-file-contents tangld-file-tracking-file)
+          (setq tangld-file-tracking-db (read (current-buffer))))
+      (error
+       (message "tangld: Could not read file checksums from %s. Setting list to nil" tangld-file-tracking-file)))))
+
+(defun tangld-file-checksums-save ()
+  "Store the data to `tangld-file-checksums-file'"
+  (with-temp-file tangld-file-tracking-file
+    (let ((print-length nil)
+          (print-level nil))
+      (print tangld-file-tracking-db (current-buffer)))))
+
+(defun tangld-file-last-checksum-get (path)
+  "Get a checksum from the database"
+  (gethash path tangld-file-tracking-db))
+
+(defun tangld-file-last-checksum-put (path chksum)
+  "Add or update a checksum to the database"
+  (puthash path chksum tangld-file-tracking-db))
+
+(defun tangld-file-tracking-db-init ()
+  (let ((db  (make-hash-table
+              :test 'equal
+              :weakness nil
+              :size 30)))
+    (setq tangld-file-tracking-db db)))
+
 
 
 ;;;; Projects
