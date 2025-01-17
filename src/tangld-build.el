@@ -1,11 +1,18 @@
 ;;; tangld-build.el --- literate config development environment -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2021 Timothy Aldrich
 
-;; Author: Timothy Aldrich <timothy.r.aldrich@gmail.com>
-;; Version: 0.0.1
-;; Keywords: tools processes
-;; URL: https://github.com/aldrichtr/tangld
+;; GNU Emacs is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; GNU Emacs is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 ;; A Literate Programming Environment for configuration files and scripts
@@ -16,6 +23,7 @@
 ;; document, build, and install configuration files, scripts and other
 ;; files on a system.  More details are available in the README.org file.
 
+
 ;;; Code:
 
 ;;;; Customization settings
@@ -41,7 +49,7 @@ the library (or cache), and before the list of sources is built. Also see:
 
 (defcustom tangld-build-file-regex "\\.org$"
   "Regular expression used to gather files to be used in a project.  Combine regular
-expressions in `tangld-build-file-regex' ,`tangld-build-file-include-regex', 
+expressions in `tangld-build-file-regex' ,`tangld-build-file-include-regex',
 and `tangld-build-file-exclude-regex' to provide tangld-build fine-grained control
 over which files are ingested (library) and tangled (source)"
   :group 'tangld
@@ -49,7 +57,7 @@ over which files are ingested (library) and tangled (source)"
 
 (defcustom tangld-build-file-include-regex "\\+"
   "Regular expression used to match org-source file names that should be
-tangled.  By default any file that starts with '+' is included even if the 
+tangled.  By default any file that starts with '+' is included even if the
 `tangld-build-file-exclude-regex' would match"
   :group 'tangld
   :type 'string)
@@ -75,12 +83,12 @@ skipped.  By default any directory that starts with a '.' is skipped"
          (sources (or (pop project) '()))
          (includes (or (pop project) '()))
          (config   (or (project)) '()))
-        (tangld-build sources includes config)))
-    
+    (tangld-build sources includes config)))
+
 
 (defun tangld-build (src &optional inc cfg)
-  "Call org-babel-tangle on each file in SRC.  If INC is present, call 'org-babel-lob-ingest' on
-each file prior to tangle."
+  "Call org-babel-tangle on each file in SRC.
+If INC is present, call 'org-babel-lob-ingest' on each file prior to tangle."
   (interactive)
   ;; 1. Run any pre-build hooks
   (run-hooks 'tangld-pre-build-hook)
@@ -101,30 +109,29 @@ each file prior to tangle."
           src)
   ;; 5. Run any post-build hooks
   (run-hooks 'tangld-post-build-hook))
-
 
 ;;;; library files
 (defun tangld-build-load-library (lib-files &optional clear)
-  "Ingest org-mode files into a library of babel for use by other source blocks
+  "Ingest `org-mode' files into a library of babel for use by other source blocks.
 if LIB-FILES is a list of one or more files, use them for the library-of-babel
 
 if CLEAR is non-nil, clear prior to loading"
   (interactive)
   (setq org-confirm-babel-evaluate tangld-confirm-on-eval)
   (let ((clear-p (or (clear tangld-clear-library-before-build-p))))
-  (if (clear-p (tangld--clear-library)))
-  (mapcar (lambda (f)
-            ((tangld-log-message 3 "Loading library '%s'" f)
-             (org-babel-lob-ingest f)))
-             lib-files)))
+    (if (clear-p (tangld--clear-library)))
+    (mapcar (lambda (f)
+              ((tangld-log-message 3 "Loading library '%s'" f)
+               (org-babel-lob-ingest f)))
+            lib-files)))
 
 
 ;;;; Find files
 
 (defun tangld-build-file-filter (file root &rest args)
   "Compare FILE to the regexen in ARGS.  ROOT is the root of the tangld project.
-                `:files'       matches against the file name (with extension)
-                `:exclude'     unless the match this
+`:files'       matches against the file name (with extension)
+`:exclude'     unless the match this
                 `:include'     cancel the exclusion for these
                 `:exclude-dir' don't look in these subdirectories"
   (interactive)
@@ -174,8 +181,9 @@ if CLEAR is non-nil, clear prior to loading"
                                         ; it matches the file inclusion (canceling the exclusion)
          (s-matches? include-regex file-name)))))
 
-(defun tangld-build-find-files (dir &rest args)
-  "Collect all files in DIR.  The files are passed to `tangld-build-file-filter'"
+(defun tangld-build--find-files (dir &rest args)
+  "Collect all files in DIR.
+The files are passed to `tangld-build-file-filter'."
   (interactive)
   (tangld-log-message 4 "find: looking for files in %s" dir)
   (tangld-log-message 4 "      - recurse is %s" (plist-get args :recurse))
@@ -185,5 +193,6 @@ if CLEAR is non-nil, clear prior to loading"
               (apply #'tangld-build-file-filter it dir args)
               recurse-p)))
 
+(provide 'tangld-build)
 
 ;;; tangld-build.el ends here
