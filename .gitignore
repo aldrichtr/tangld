@@ -1,2 +1,4 @@
 # Eask build system
 .eask/
+# Copy of org-mode source
+org-src/**

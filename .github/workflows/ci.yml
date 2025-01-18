@@ -1,0 +1,102 @@
+name: Continuous Integration
+run-name:
+  "Continuous Integration jobs for ${{ github.event_name }} on ${{ github.base_ref }} by ${{ github.actor }}"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  repo: ${{ github.event.repository.name }}
+  emacs_version: 29.3 # Version used for running tests
+  context_var: ${{ vars.ENV_CONTEXT_VAR }}
+
+jobs:
+  lint:
+    name: Lint emacs-lisp code
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        name: Checkout ${{ env.repo }}
+        uses: actions/checkout@v4
+        # TODO: Move the `emacs` and `eask` steps into a composite to reuse in jobs
+      - id: emacs
+        name: Setup GNU Emacs
+        uses: jcs090218/setup-emacs@master
+        with:
+          version: ${{ env.emacs_version }}
+      - id: eask
+        name: Setup eask build system
+        uses: emacs-eask/setup-eask@master
+        with:
+          version: 'snapshot'
+      - id: lint-formatting
+        name: Check the formatting of code
+        run: |
+          eask clean all
+          eask analyze
+          eask lint indent src/*
+          eask lint indent tests/*
+      - id: lint-syntax
+        name: Check the syntax of code
+        run: |
+          eask lint elint
+          eask lint elisp-lint
+      - id: lint-docs
+        name: Check documentation
+        run: |
+          eask lint checkdoc
+
+  test:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        emacs-version:
+          - 28.2
+          - 29.4
+        experimental: [false]
+        include:
+        - os: ubuntu-latest
+          emacs-version: snapshot
+          experimental: true
+        - os: macos-latest
+          emacs-version: snapshot
+          experimental: true
+        - os: windows-latest
+          emacs-version: snapshot
+          experimental: true
+    steps:
+      - id:   checkout
+        name: Checkout the repository
+        uses: actions/checkout@v4
+        ## TODO: Should we add caching ?
+
+      - id: emacs
+        name: Setup GNU Emacs
+        uses: jcs090218/setup-emacs@master
+        with:
+          version: ${{ matrix.emacs-version }}
+
+      - id: eask
+        name: Setup eask build system
+        uses: emacs-eask/setup-eask@master
+        with:
+          version: 'snapshot'
+
+      - id: buttercup
+        name: Run tests using buttercup
+        run: |
+          eask clean all
+          eask install-deps --dev
+          eask test buttercup
