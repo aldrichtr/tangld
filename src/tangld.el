@@ -32,6 +32,7 @@
 (require 'tangld-core)
 (require 'tangld-log)
 (require 'tangld-checksum)
+(require 'tangld-project)
 (require 'tangld-build)
 
 (provide 'tangld)

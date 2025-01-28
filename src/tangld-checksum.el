@@ -22,7 +22,10 @@
 ;; contents of the file).
 ;;
 ;; When `tangld-build' starts, it initializes the checksum database, and loads
+
 ;;; Code:
+
+;; TODO: Update hash functions to ht.el
 
 (defvar tangld-data-dir) ; Set in tangld-core
 
@@ -34,11 +37,11 @@
   :group 'tangld
   :type 'file)
 
+;; Hashtable of full-path -> checksum (SHA1 hash of file content)
 (defvar tangld-checksums '()
   "Variable to store current file tracking database.")
 
 ;; -----------------------------------------------------------------------------
-;; Single-file checksum operations
 ;; tangld--file* functions perform operations on individual files.
 ;; compute the checksum, add it to the database, and retrieve it from database.
 
@@ -66,10 +69,12 @@ Optional argument CHKSUM Checksum of PATH."
     (puthash path chksum tangld-checksums)))
 
 ;; -----------------------------------------------------------------------------
-;; Checksum database operations
 ;; tangld--checksums* functions perform operations on the checksum database
 ;; load and store the database to disk
 
+;; Elisp does not have a convenient way to serialize/deserialize a Hashtable the
+;; way that it can an alist
+;; TODO: consider serializing to json?
 (defun tangld--checksum-to-alist (hash)
   "Turn the HASH into an alist for writing to a file"
   (let (newlist item)
