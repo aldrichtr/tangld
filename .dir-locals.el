@@ -1,5 +1,5 @@
 ((emacs-lisp-mode . ((fill-column . 80)
                      (indent-tabs-mode . nil)
                      (elisp-lint-ignored-validators . ("byte-compile"))
-                     (elisp-lint-indent-specs . ((describe . 1)
-                                                 (it . 1))))))
+                     (elisp-lint-indent-specs . ((describe . 2)
+                                                 (it . 2))))))
