@@ -35,11 +35,13 @@ README.org file"
 (source "gnu")
 (source "melpa")
 
-
-(depends-on "emacs" "25.1")
+;; TODO: Confirm why these versions are required
+(depends-on "emacs" "28.1")
 (depends-on "org" "8")
 (depends-on "f" "0.20.0")
 (depends-on "s" "1.12.0")
 
 (development
- (depends-on "buttercup" "1.36"))
+ (depends-on "buttercup" "1.36")
+ (depends-on "ht" "2.4")
+ (depends-on "projectile" "2.8"))
